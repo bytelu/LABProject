@@ -2,62 +2,60 @@ package com.example.labproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.os.Handler;
+import android.util.Pair;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView textView;
-
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-
-    // recordar cambiar por su ip
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.10:1521:XE";
-    private static final String USERNAME = "system";
-    private static final String PASSWORD = "SysPass";
-
-    private Connection connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = findViewById(R.id.textView);
+        //AGREGAR ANIMACIONES
+        Animation animacion1 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_arriba);
+        Animation animacion2 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_abajo);
 
-        StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(threadPolicy);
-    }
+        //ASIGNAR VARIABLES
+        TextView deTexView = findViewById(R.id.deTextView2);
+        TextView ipnTextView = findViewById(R.id.ipnTextView);
+        ImageView logoImageView = findViewById(R.id.logoImageView);
+        TextView elaboradoTextView = findViewById(R.id.elaboradoTextView);
 
-    public void buttonConnectToOracleDB(View view){
-        try {
-            Class.forName(DRIVER);
-            this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        //ASIGNAR ANIMACIONES
+        deTexView.setAnimation(animacion2);
+        ipnTextView.setAnimation(animacion2);
+        logoImageView.setAnimation(animacion1);
+        elaboradoTextView.setAnimation(animacion2);
 
-            Toast.makeText(this, "CONNECTED", Toast.LENGTH_LONG);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, InicioActivity.class);
+                Pair[] pairs = new Pair[2];
+                pairs[0] = new Pair<View, String>(logoImageView, "logoImageTrans");
+                pairs[1] = new Pair<View, String>(elaboradoTextView, "textTrans");
 
-            Statement statement = connection.createStatement();
-            StringBuffer stringBuffer = new StringBuffer();
-            ResultSet resultSet = statement.executeQuery("select TABLE_NAME from cat");
-
-            while(resultSet.next()){
-                stringBuffer.append(resultSet.getString(0) + "\n");
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                    ActivityOptions options= ActivityOptions.makeSceneTransitionAnimation(MainActivity.this,pairs);
+                    startActivity(intent, options.toBundle());
+                }else{
+                    startActivity(intent);
+                    finish();
+                }
             }
-
-            textView.setText(stringBuffer.toString());
-            connection.close();
-
-        }
-        catch (Exception e){
-            textView.setText(e.toString());
-        }
+        }, 4000);
     }
 }

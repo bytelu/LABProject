@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/boton_inicio"
+        android:title="Inicio"
+        android:icon="@drawable/ico_casa"/>
+    <item
+        android:id="@+id/boton_profesores"
+        android:title="Profesores"
+        android:icon="@drawable/ico_profesor"/>
+    <item
+        android:title=""
+        android:enabled="true"/>
+    <item
+        android:id="@+id/boton_alumnos"
+        android:title="Alumnos"
+        android:icon="@drawable/ico_alumno"/>
+    <item
+        android:id="@+id/boton_reportes"
+        android:title="Reportes"
+        android:icon="@drawable/ico_reportes" />
+</menu>

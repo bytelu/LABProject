@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/encargados"
+            android:icon="@drawable/ico_encargados"
+            android:title="Encargados"/>
+        <item
+            android:id="@+id/sesion_individual"
+            android:icon="@drawable/ico_vercompus"
+            android:title="Sesiones Individuales"/>
+        <item
+            android:id="@+id/sesion_grupal"
+            android:icon="@drawable/ico_doscompus"
+            android:title="Sesiones Grupales"/>
+        <item
+            android:id="@+id/perfil"
+            android:icon="@drawable/ico_perfil"
+            android:title="Perfil"/>
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:title=""
+                android:enabled="false"/>
+            <item
+                android:title=""
+                android:enabled="false"/>
+            <item
+                android:title=""
+                android:enabled="false"/>
+            <item
+                android:title=""
+                android:enabled="false"/>
+            <item
+                android:id="@+id/ayuda"
+                android:icon="@drawable/ico_ayuda"
+                android:title="Ayuda" />
+            <item
+                android:id="@+id/salir"
+                android:icon="@drawable/ico_salir"
+                android:title="Salir"/>
+        </menu>
+    </item>
+
+</menu>
