@@ -20,8 +20,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MenuPrincipalActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
+public class MenuPrincipalActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    /*  */
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
     FragmentManager fragmentManager;
@@ -86,6 +91,7 @@ public class MenuPrincipalActivity extends AppCompatActivity implements Navigati
         int itemId = item.getItemId();
         /* aqui se abren cada uno de los fragmento que queremos acceder del lado derecho */
         if(itemId == R.id.encargados){
+            // Abrir el fragmento "FragmentoEncargados"
             abrirFragmento(new FragmentoEncargados());
         } else if (itemId == R.id.sesion_individual) {
             abrirFragmento(new FragmentoSesionIndividual());
