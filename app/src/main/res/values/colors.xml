@@ -9,4 +9,11 @@
     <color name="ipnNivel3">#8C657B</color>
     <color name="ipnNivel4">#F2DCEB</color>
     <color name="esime">#23B609</color>
+
+    <color name="azulMorado">#363554</color>
+    <color name="gris">#DDDDE2</color>
+    <color name="grisClaro">#F2F0F0</color>
+    <color name="naranja">#FF9933</color>
+    <color name="crema">#23B609</color>
+
 </resources>
