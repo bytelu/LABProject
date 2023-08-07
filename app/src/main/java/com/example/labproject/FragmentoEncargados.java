@@ -76,7 +76,7 @@ public class FragmentoEncargados extends Fragment {
 
             Statement statement = connection.createStatement();
             StringBuffer stringBuffer = new StringBuffer();
-            ResultSet resultSet = statement.executeQuery("select cod_cpu from COMPUTADORA");
+            ResultSet resultSet = statement.executeQuery("select usuario from ENCARGADO");
             while (resultSet.next()){
                 stringBuffer.append(resultSet.getString(1)+"\n");
             }

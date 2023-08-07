@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +38,15 @@ public class MenuPrincipalActivity extends AppCompatActivity implements Navigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
+
+        // Obtener el nombre de usuario guardado en SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        String usuario = sharedPreferences.getString("usuario", "");
+
+        // Ahora se puede utiliza el nombre de usuario para mostrarlo o hacer querys con el
+        // Por ejemplo, mostrarlo en un TextView
+        // TextView nombreUsuarioTextView = findViewById(R.id.nombreUsuarioTextView);
+        // nombreUsuarioTextView.setText(usuario);
 
         fab = findViewById(R.id.fab);
         toolbar = findViewById(R.id.toolbar);
@@ -80,7 +91,8 @@ public class MenuPrincipalActivity extends AppCompatActivity implements Navigati
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MenuPrincipalActivity.this, "Creando Sesion", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MenuPrincipalActivity.this, "Creando Sesion", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuPrincipalActivity.this, "Creando sesión para el usuario: " + usuario, Toast.LENGTH_SHORT).show();
                 abrirFragmento(new FragmentoSesiones());
             }
         });
