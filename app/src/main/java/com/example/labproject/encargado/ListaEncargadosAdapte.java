@@ -22,7 +22,7 @@ public class ListaEncargadosAdapte extends RecyclerView.Adapter<ListaEncargadosA
     @NonNull
     @Override
     public EncargadoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listaencargados, null, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listaencargados, parent, false);
         return new EncargadoViewHolder(view);
     }
 
