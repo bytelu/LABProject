@@ -50,26 +50,37 @@ public class ListaEncargadosAdapte extends RecyclerView.Adapter<ListaEncargadosA
             listaEncargados.addAll(listaOriginal);
         } else {
             String textoBusqueda = txtBuscar.toLowerCase(); // Convertir el texto de búsqueda a minúsculas
+            String[] palabrasBusqueda = textoBusqueda.split(" "); // Dividir el texto en palabras
+
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 List<encargado> collecion = listaOriginal.stream()
-                        .filter(i -> i.getNombre().toLowerCase().contains(textoBusqueda) ||
-                                i.getApellido_p().toLowerCase().contains(textoBusqueda) ||
-                                i.getApellido_m().toLowerCase().contains(textoBusqueda))
+                        .filter(i -> contienePalabras(i, palabrasBusqueda))
                         .collect(Collectors.toList());
                 listaEncargados.clear();
                 listaEncargados.addAll(collecion);
             } else {
                 listaEncargados.clear();
                 for (encargado c: listaOriginal){
-                    if (c.getNombre().toLowerCase().contains(textoBusqueda) ||
-                            c.getApellido_p().toLowerCase().contains(textoBusqueda) ||
-                            c.getApellido_m().toLowerCase().contains(textoBusqueda)) {
+                    if (contienePalabras(c, palabrasBusqueda)) {
                         listaEncargados.add(c);
                     }
                 }
             }
         }
         notifyDataSetChanged();
+    }
+
+    private boolean contienePalabras(encargado encargado, String[] palabrasBusqueda) {
+        String nombreCompleto = encargado.getNombre().toLowerCase() + " " +
+                encargado.getApellido_p().toLowerCase() + " " +
+                encargado.getApellido_m().toLowerCase();
+
+        for (String palabra : palabrasBusqueda) {
+            if (!nombreCompleto.contains(palabra)) {
+                return false; // Si alguna palabra no coincide, se retorna false
+            }
+        }
+        return true;
     }
 
     @Override

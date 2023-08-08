@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Botones y título de la aplicación -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <!-- Coloca aquí los botones y otros elementos necesarios -->
-
-    </LinearLayout>
-
     <!-- Contenedor del título de encargados y RecyclerView -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +26,7 @@
             android:textStyle="bold"
             android:gravity="center_horizontal"
             android:padding="16dp"
-            android:layout_marginTop="20dp"/> <!-- Ajusta el valor de layout_marginTop según tus preferencias -->
+            android:layout_marginTop="80dp"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/txtBuscar"
