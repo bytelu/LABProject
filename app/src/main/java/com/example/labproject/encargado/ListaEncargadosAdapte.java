@@ -11,12 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.labproject.R;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListaEncargadosAdapte extends RecyclerView.Adapter<ListaEncargadosAdapte.EncargadoViewHolder> {
 
     ArrayList<encargado> listaEncargados;
+    ArrayList<encargado> listaOriginal;
     public ListaEncargadosAdapte(ArrayList<encargado> listaEncargados){
         this.listaEncargados = listaEncargados;
+        listaOriginal = new ArrayList<>();
+        listaOriginal.addAll(listaEncargados);
     }
 
     @NonNull
@@ -36,6 +41,35 @@ public class ListaEncargadosAdapte extends RecyclerView.Adapter<ListaEncargadosA
         holder.encUsuario.setText(listaEncargados.get(position).getUsuario());
         holder.encActivo.setText(String.valueOf(listaEncargados.get(position).getEstado()));
 
+    }
+
+    public void filtrado(String txtBuscar){
+        int longitud = txtBuscar.length();
+        if( longitud == 0){
+            listaEncargados.clear();
+            listaEncargados.addAll(listaOriginal);
+        } else {
+            String textoBusqueda = txtBuscar.toLowerCase(); // Convertir el texto de búsqueda a minúsculas
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                List<encargado> collecion = listaOriginal.stream()
+                        .filter(i -> i.getNombre().toLowerCase().contains(textoBusqueda) ||
+                                i.getApellido_p().toLowerCase().contains(textoBusqueda) ||
+                                i.getApellido_m().toLowerCase().contains(textoBusqueda))
+                        .collect(Collectors.toList());
+                listaEncargados.clear();
+                listaEncargados.addAll(collecion);
+            } else {
+                listaEncargados.clear();
+                for (encargado c: listaOriginal){
+                    if (c.getNombre().toLowerCase().contains(textoBusqueda) ||
+                            c.getApellido_p().toLowerCase().contains(textoBusqueda) ||
+                            c.getApellido_m().toLowerCase().contains(textoBusqueda)) {
+                        listaEncargados.add(c);
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override

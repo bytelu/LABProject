@@ -37,7 +37,14 @@
             android:textStyle="bold"
             android:gravity="center_horizontal"
             android:padding="16dp"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="20dp"/> <!-- Ajusta el valor de layout_marginTop según tus preferencias -->
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/txtBuscar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp" />
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -54,5 +61,6 @@
             android:padding="16dp"/>
 
     </LinearLayout>
+
 
 </LinearLayout>

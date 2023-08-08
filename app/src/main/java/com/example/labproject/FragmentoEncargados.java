@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,13 +28,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class FragmentoEncargados extends Fragment {
+public class FragmentoEncargados extends Fragment implements SearchView.OnQueryTextListener{
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
+    //private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
+    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
+
+    SearchView txtBuscar;
+    ListaEncargadosAdapte adapter;
     private Connection connection;
     private TextView textView;
 
@@ -49,6 +53,9 @@ public class FragmentoEncargados extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragmento_encargados, container, false);
 
+        //referencia del buscar
+        txtBuscar = view.findViewById(R.id.txtBuscar);
+        txtBuscar.setQueryHint("Búsqueda por nombre");
         // Obtener referencia al RecyclerView desde la vista inflada del fragmento
         listaEncargados = view.findViewById(R.id.listaEncargados);
         listaEncargados.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -57,7 +64,20 @@ public class FragmentoEncargados extends Fragment {
         ConexionAsyncTask task = new ConexionAsyncTask();
         task.execute();
 
+        txtBuscar.setOnQueryTextListener(this);
+
         return view;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filtrado(newText);
+        return false;
     }
 
     private  class ConexionAsyncTask extends AsyncTask<Void, Void, ArrayList<encargado>>{
@@ -83,7 +103,6 @@ public class FragmentoEncargados extends Fragment {
                 // Recorrer el resultado y crear los objetos encargado
                 while (resultSet.next()) {
                     encargado encargados = new encargado();
-                    encargados = new encargado();
                     encargados.setNombre(resultSet.getString("nombre"));
                     encargados.setApellido_p(resultSet.getString("apellido_p"));
                     encargados.setApellido_m(resultSet.getString("apellido_m"));
@@ -121,7 +140,7 @@ public class FragmentoEncargados extends Fragment {
 
         protected void onPostExecute(ArrayList<encargado> lista){
             // Una vez terminada la consulta en segundo plano, actualizamos el RecyclerView con los datos
-            ListaEncargadosAdapte adapter = new ListaEncargadosAdapte(lista);
+            adapter = new ListaEncargadosAdapte(lista);
             listaEncargados.setAdapter(adapter);
         }
     }
