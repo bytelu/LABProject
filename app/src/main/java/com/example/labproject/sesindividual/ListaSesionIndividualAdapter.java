@@ -3,6 +3,7 @@ package com.example.labproject.sesindividual;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,22 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
     public void onBindViewHolder(@NonNull ListaSesionIndividualViewHolder holder, int position) {
         holder.fecha.setText(listaSesionIndividual.get(position).getFecha());
         holder.computadora.setText(listaSesionIndividual.get(position).getComputadora());
+
+        // Obtener el valor del laboratorio en la posición actual
+        String laboratorio = listaSesionIndividual.get(position).getLaboratorio();
+
+        // Obtener el ImageView para la imagen del laboratorio
+        ImageView imgLaboratorio = holder.itemView.findViewById(R.id.imagenLaboratorio);
+
+        // Determinar qué imagen mostrar según el valor del laboratorio
+        if (laboratorio.equals("1")) {
+            imgLaboratorio.setImageResource(R.drawable.laboratorio1);
+        } else if (laboratorio.equals("2")) {
+            imgLaboratorio.setImageResource(R.drawable.laboratorio2);
+        } else {
+            imgLaboratorio.setImageResource(R.drawable.iclogoo);
+        }
+
         holder.aluNombre.setText(listaSesionIndividual.get(position).getAluNombre());
         holder.aluApeP.setText(listaSesionIndividual.get(position).getAluApeP());
         holder.aluApeM.setText(listaSesionIndividual.get(position).getAluApeM());
@@ -91,10 +108,12 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
 
     public class ListaSesionIndividualViewHolder extends RecyclerView.ViewHolder {
         TextView fecha,computadora,aluNombre,aluApeP,aluApeM,encNombre,encApeP,encApeM,sesEntrada,sesSalida;
+        ImageView laboratorioComputadora;
         public ListaSesionIndividualViewHolder(@NonNull View itemView) {
             super(itemView);
             fecha = itemView.findViewById(R.id.fecha);
             computadora = itemView.findViewById(R.id.computadora);
+            laboratorioComputadora = itemView.findViewById(R.id.imagenLaboratorio);
             aluNombre= itemView.findViewById(R.id.aluNombre);
             aluApeP= itemView.findViewById(R.id.aluApeP);
             aluApeM = itemView.findViewById(R.id.aluApeM);

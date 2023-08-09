@@ -12,6 +12,8 @@ public class SesionIndividual {
     private String sesEntrada;
     private String sesSalida;
 
+    private String laboratorio;
+
     public String getFecha() {
         return fecha;
     }
@@ -90,5 +92,13 @@ public class SesionIndividual {
 
     public void setSesSalida(String sesSalida) {
         this.sesSalida = sesSalida;
+    }
+
+    public String getLaboratorio() {
+        return laboratorio;
+    }
+
+    public void setLaboratorio(String laboratorio) {
+        this.laboratorio = laboratorio;
     }
 }

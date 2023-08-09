@@ -24,7 +24,7 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/imagenEstudiante"
+            android:id="@+id/imagenLaboratorio"
             android:src="@drawable/iclogoo"
             android:scaleType="centerCrop"
             android:layout_marginTop="8dp"/>

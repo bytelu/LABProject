@@ -91,6 +91,7 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                         "    encargado.apellido_p AS encargado_apellido_p,\n" +
                         "    encargado.apellido_m AS encargado_apellido_m,\n" +
                         "    computadora.numero AS numero_computadora,\n" +
+                        "    computadora.laboratorio as laboratorio_computadora,\n" +
                         "    estudiante.nombre AS nombre_alumno,\n" +
                         "    estudiante.apellido_p AS alumno_apellido_p,\n" +
                         "    estudiante.apellido_m AS alumno_apellido_m,\n" +
@@ -109,7 +110,8 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                     String fecha = resultSet.getString("fecha");
                     String fechaFormateada = fecha.substring(0, 10); // Obtener los primeros 10 caracteres (YYYY-MM-DD)
                     sesionIndv.setFecha(fechaFormateada);
-                    sesionIndv.setComputadora(Integer.toString(resultSet.getInt("numero_computadora"))); // Convertir int a String
+                    sesionIndv.setComputadora(Integer.toString(resultSet.getInt("numero_computadora")));
+                    sesionIndv.setLaboratorio(Integer.toString(resultSet.getInt("laboratorio_computadora")));// Convertir int a String
                     sesionIndv.setAluNombre(resultSet.getString("nombre_alumno"));
                     sesionIndv.setAluApeP(resultSet.getString("alumno_apellido_p"));
                     sesionIndv.setAluApeM(resultSet.getString("alumno_apellido_m"));
