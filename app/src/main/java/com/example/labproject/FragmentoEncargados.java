@@ -1,6 +1,5 @@
 package com.example.labproject;
 
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -13,8 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.labproject.encargado.ListaEncargadosAdapte;
 import com.example.labproject.encargado.encargado;
@@ -23,24 +20,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class FragmentoEncargados extends Fragment implements SearchView.OnQueryTextListener{
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    //private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
-    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
+    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
+    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
 
     SearchView txtBuscar;
     ListaEncargadosAdapte adapter;
-    private Connection connection;
-    private TextView textView;
-
     RecyclerView listaEncargados;
     ArrayList<encargado> listaArrayEncargados;
 

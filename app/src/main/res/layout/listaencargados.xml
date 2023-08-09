@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="@drawable/fondo_recyclerview_encargados"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    android:padding="4dp"><!-- Aqui es para agregar espacio entre cada Recycler y no este muy junto -->
 
     <!-- Fila de Nombre -->
     <LinearLayout

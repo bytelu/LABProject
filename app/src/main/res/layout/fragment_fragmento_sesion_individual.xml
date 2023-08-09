@@ -15,11 +15,11 @@
 
         <!-- Título de encargados -->
         <TextView
-            android:id="@+id/tituloEncargados"
+            android:id="@+id/tituloSesIndv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Sesiones Individuales"
             android:textColor="@color/white"
             android:textSize="24sp"
@@ -32,8 +32,8 @@
             android:id="@+id/txtBuscar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp" />
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -42,11 +42,9 @@
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:elevation="4dp"
-            android:padding="16dp"/>
+            android:padding="6dp"/>
 
     </LinearLayout>
 

@@ -1,12 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="8dp">
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_background_enc"
+    android:layout_marginBottom="8dp"
+    android:padding="5dp"><!-- Aqui es para agregar espacio entre cada Recycler -->
 
     <LinearLayout
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_width="85dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
@@ -17,7 +19,7 @@
             android:layout_marginEnd="6dp"
             android:textColor="@color/gris"
             android:textSize="13sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="40dp"
@@ -39,7 +41,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginStart="8dp">
         <!-- Fila de ALUMNO -->
@@ -74,11 +76,13 @@
                 android:textStyle="bold"/>
 
         </LinearLayout>
+
         <!-- Fila de Hora de Encargado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="9dp">
             <TextView
                 android:id="@+id/encNombreID"
                 android:layout_width="wrap_content"
@@ -93,23 +97,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:textColor="@color/gris"
-                android:textStyle="bold"/>
+                android:textColor="@color/gris" />
 
             <TextView
                 android:id="@+id/encApeP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:textColor="@color/gris"
-                android:textStyle="bold"/>
+                android:textColor="@color/gris" />
 
             <TextView
                 android:id="@+id/encApeM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gris"
-                android:textStyle="bold"/>
+                android:textColor="@color/gris" />
 
         </LinearLayout>
         <!-- Fila de Hora de entrada y Salida -->
@@ -127,12 +128,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hora de entrada: "
+                    android:text="Entrada:"
                     android:textStyle="bold"
                     android:textColor="@color/gris"/>
 
                 <TextView
-                    android:id="@+id/encEntrada"
+                    android:id="@+id/sesEntrada"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
@@ -151,12 +152,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hora de Salida: "
+                    android:text="Salida:"
                     android:textStyle="bold"
                     android:textColor="@color/gris"/>
 
                 <TextView
-                    android:id="@+id/encSalida"
+                    android:id="@+id/sesSalida"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
