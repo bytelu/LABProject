@@ -97,6 +97,10 @@ public class RegistroActivity extends AppCompatActivity {
                     Toast.makeText(RegistroActivity.this, mensajeError, Toast.LENGTH_LONG).show();
                     return;
                 }
+                if (contrasenia.length() < 8 || repeatcontrasenia.length() < 8) {
+                    contraseniaTextField.setError("La contraseña debe tener al menos 8 caracteres");
+                    return;
+                }
 
                 // Validar que las contraseñas coincidan
                 if (!contrasenia.equals(repeatcontrasenia)) {

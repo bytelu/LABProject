@@ -64,12 +64,12 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
 
     public void filtrado(String txtBuscar){
         int longitud = txtBuscar.length();
-        if( longitud == 0){
+        if (longitud == 0) {
             listaSesionIndividual.clear();
             listaSesionIndividual.addAll(listaOriginal);
         } else {
-            String textoBusqueda = txtBuscar.toLowerCase(); // Convertir el texto de búsqueda a minúsculas
-            String[] palabrasBusqueda = textoBusqueda.split(" "); // Dividir el texto en palabras
+            String textoBusqueda = txtBuscar.toLowerCase();
+            String[] palabrasBusqueda = textoBusqueda.split(" ");
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 List<SesionIndividual> collecion = listaOriginal.stream()
@@ -79,7 +79,7 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
                 listaSesionIndividual.addAll(collecion);
             } else {
                 listaSesionIndividual.clear();
-                for (SesionIndividual c: listaOriginal){
+                for (SesionIndividual c : listaOriginal) {
                     if (contienePalabras(c, palabrasBusqueda)) {
                         listaSesionIndividual.add(c);
                     }
@@ -94,8 +94,10 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
                 sesIndv.getAluApeP().toLowerCase() + " " +
                 sesIndv.getAluApeM().toLowerCase();
 
+        String fechaSesion = sesIndv.getFecha(); // Obtener la fecha formateada de la sesión
+
         for (String palabra : palabrasBusqueda) {
-            if (!nombreCompleto.contains(palabra)) {
+            if (!nombreCompleto.contains(palabra) && !fechaSesion.contains(palabra)) {
                 return false; // Si alguna palabra no coincide, se retorna false
             }
         }

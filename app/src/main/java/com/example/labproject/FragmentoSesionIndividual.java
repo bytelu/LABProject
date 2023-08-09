@@ -26,8 +26,8 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
 
-    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
+    //private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
+    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
 
@@ -46,7 +46,7 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
 
         //referencia del buscar
         txtBuscar = view.findViewById(R.id.txtBuscar);
-        txtBuscar.setQueryHint("Búsqueda por nombre del alumno");
+        txtBuscar.setQueryHint("Búsqueda");
         // Obtener referencia al RecyclerView desde la vista inflada del fragmento
         listaSesionIndividual = view.findViewById(R.id.listaSesIndividual);
         listaSesionIndividual.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -84,7 +84,7 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar los encargados
                 String sql = "SELECT\n" +
-                        "    fecha AS fecha,\n" +
+                        "    TO_CHAR(fecha, 'DD-MM-YYYY') AS fecha,\n" +
                         "    TO_CHAR(sesion.hora_inicio, 'HH24:MI') AS hora_inicio,\n" +
                         "    TO_CHAR(sesion.hora_final, 'HH24:MI') AS hora_final,\n" +
                         "    encargado.nombre AS nombre_encargado,\n" +
