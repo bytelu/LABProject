@@ -1,64 +1,95 @@
 package com.example.labproject;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentoProfesores#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class FragmentoProfesores extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    /*Conexion con BD*/
+    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private static final String URL = "jdbc:oracle:thin:@192.168.1.82:1521/XEPDB1";
+    private static final String USERNAME = "ENCARGADO";
+    private static final String PASSWORD = "ENCARGADO";
+    private Connection connection;
+    private TextView textView;
 
     public FragmentoProfesores() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentoProfesores.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentoProfesores newInstance(String param1, String param2) {
-        FragmentoProfesores fragment = new FragmentoProfesores();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_fragmento_profesores, container, false);
+
+        // Obtener referencia al TextView desde la vista inflada del fragmento
+        textView = view.findViewById(R.id.textProfesores);
+        // Realizar la consulta y mostrar los datos en el TextView
+        new FragmentoProfesores.ConexionAsyncTask().execute();
+        return view;
+        // Inflate the layout for this fragment
+        //return inflater.inflate(R.layout.fragment_fragmento_encargados, container, false);
+    }
+
+
+    // AsyncTask para realizar la conexión y consulta en segundo plano
+    private class ConexionAsyncTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... voids) {
+            String resultadoConsulta = "";
+            try {
+                resultadoConsulta = consultaProfesores();
+            }catch (Exception e){
+                // Manejo de errores en caso de problemas con la conexión o consulta
+                resultadoConsulta = "Error: " + e.toString();
+            }
+            return resultadoConsulta;
+        }
+
+        @Override
+        protected void onPostExecute(String resultado) {
+            // Actualizar la interfaz de usuario con los resultados de la consulta
+            textView.setText(resultado);
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragmento_profesores, container, false);
+    public String consultaProfesores() {
+        String resultadoConsulta = "";
+        try {
+            Class.forName(DRIVER);
+            this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+            Log.d("Conexion", "Conexión a la base de datos exitosa");
+
+            Statement statement = connection.createStatement();
+            StringBuffer stringBuffer = new StringBuffer();
+            ResultSet resultSet = statement.executeQuery("select nombre from PROFESOR");
+            while (resultSet.next()){
+                stringBuffer.append(resultSet.getString(1)+"\n");
+            }
+
+            resultadoConsulta = stringBuffer.toString();
+            connection.close();
+
+            Log.d("Consulta", "Consulta exitosa: " + resultadoConsulta);
+        }
+        catch (Exception e){
+            resultadoConsulta = "Error: " + e.toString();
+            Log.e("Error", "Error en la consulta: " + e.toString());
+        }
+        return resultadoConsulta;
     }
 }

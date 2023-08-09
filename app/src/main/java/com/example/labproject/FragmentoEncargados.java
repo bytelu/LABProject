@@ -20,7 +20,7 @@ import java.sql.Statement;
 public class FragmentoEncargados extends Fragment {
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1";
+    private static final String URL = "jdbc:oracle:thin:@192.168.1.82:1521/XEPDB1";
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
     private Connection connection;
