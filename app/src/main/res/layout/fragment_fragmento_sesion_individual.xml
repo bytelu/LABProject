@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!-- Contenedor del título de SESION INDIVIDUAL y RecyclerView -->
@@ -36,7 +36,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/searchview_contorno"
-            android:elevation="6dp"/>
+            android:elevation="6dp"
+            android:theme="@style/SearchViewStyle"/>
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView

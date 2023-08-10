@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/rounded_background_enc"
+    android:elevation="10dp"
     android:layout_marginBottom="6dp"
     android:padding="8dp"><!-- Aqui es para agregar espacio entre cada Recycler y no este muy junto -->
 
@@ -139,12 +140,12 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"/>
 
-            <TextView
+            <ImageView
                 android:id="@+id/encActivo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/white"/>
+                android:layout_width="34dp"
+                android:layout_height="20dp"
+                android:src="@drawable/iclogoo"
+                android:scaleType="centerCrop" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

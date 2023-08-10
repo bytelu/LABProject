@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.labproject.sesindividual.ListaSesionIndividualAdapter;
 import com.example.labproject.sesindividual.SesionIndividual;
@@ -47,6 +48,12 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
         //referencia del buscar
         txtBuscar = view.findViewById(R.id.txtBuscar);
         txtBuscar.setQueryHint("Búsqueda");
+
+        // Cambiar color del texto y hint del SearchView
+        EditText searchEditText = txtBuscar.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(android.R.color.black)); // Cambia el color del texto
+        searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray)); // Cambia el color del hint
+
         // Obtener referencia al RecyclerView desde la vista inflada del fragmento
         listaSesionIndividual = view.findViewById(R.id.listaSesIndividual);
         listaSesionIndividual.setLayoutManager(new LinearLayoutManager(getContext()));

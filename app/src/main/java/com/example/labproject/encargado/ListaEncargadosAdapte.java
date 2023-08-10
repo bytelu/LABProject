@@ -3,6 +3,7 @@ package com.example.labproject.encargado;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,8 +40,20 @@ public class ListaEncargadosAdapte extends RecyclerView.Adapter<ListaEncargadosA
         holder.encEntrada.setText(listaEncargados.get(position).getHora_entrada());
         holder.encSalida.setText(listaEncargados.get(position).getHora_salida());
         holder.encUsuario.setText(listaEncargados.get(position).getUsuario());
-        holder.encActivo.setText(String.valueOf(listaEncargados.get(position).getEstado()));
 
+        // Obtener el valor del laboratorio en la posición actual
+        int estadoEnc = listaEncargados.get(position).getEstado();
+
+        // Obtener el ImageView para la imagen del laboratorio
+        ImageView imgActivo = holder.itemView.findViewById(R.id.encActivo);
+        // Determinar qué imagen mostrar según el valor del laboratorio
+        if (estadoEnc == 1) {
+            imgActivo.setImageResource(R.drawable.encendido);
+        } else if (estadoEnc == 0) {
+            imgActivo.setImageResource(R.drawable.apagado);
+        } else {
+            imgActivo.setImageResource(R.drawable.iclogoo);
+        }
     }
 
     public void filtrado(String txtBuscar){
@@ -90,7 +103,8 @@ public class ListaEncargadosAdapte extends RecyclerView.Adapter<ListaEncargadosA
 
     public class EncargadoViewHolder extends RecyclerView.ViewHolder {
 
-        TextView encNombre, encApeP, encApeM, encEntrada, encSalida, encUsuario, encActivo;
+        TextView encNombre, encApeP, encApeM, encEntrada, encSalida, encUsuario;
+        ImageView encActivo;
         public EncargadoViewHolder(@NonNull View itemView) {
             super(itemView);
             encNombre = itemView.findViewById(R.id.encNombre);
