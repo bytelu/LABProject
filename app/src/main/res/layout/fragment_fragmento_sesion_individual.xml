@@ -21,20 +21,22 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="Sesiones Individuales"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
             android:padding="16dp"
-            android:layout_marginTop="80dp"/>
+            android:layout_marginTop="60dp"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/txtBuscar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:queryHint="Búsqueda"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            android:queryHint="Búsqueda por nombre o fecha"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/searchview_contorno"
+            android:elevation="6dp"/>
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView

@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
-            android:textColor="@color/gris"
+            android:textColor="@color/white"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
-            android:textColor="@color/gris"
+            android:textColor="@color/white"
             android:textSize="13sp"
             android:textStyle="bold"/>
     </LinearLayout>
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:textColor="@color/gris"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:textColor="@color/gris"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -71,7 +71,7 @@
                 android:id="@+id/aluApeM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gris"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:text="Encargado:"
-                android:textColor="@color/gris"
+                android:textColor="@color/white"
                 android:textStyle="bold"/>
 
             <TextView
@@ -97,20 +97,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:textColor="@color/gris" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/encApeP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:textColor="@color/gris" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/encApeM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gris" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
         <!-- Fila de Hora de entrada y Salida -->
@@ -130,14 +130,14 @@
                     android:layout_height="wrap_content"
                     android:text="Entrada:"
                     android:textStyle="bold"
-                    android:textColor="@color/gris"/>
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/sesEntrada"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:textColor="@color/gris"/>
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <Space
@@ -154,14 +154,14 @@
                     android:layout_height="wrap_content"
                     android:text="Salida:"
                     android:textStyle="bold"
-                    android:textColor="@color/gris"/>
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/sesSalida"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textColor="@color/gris"/>
+                    android:textColor="@color/white"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
