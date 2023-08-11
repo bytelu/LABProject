@@ -4,19 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".FragmentoAlumnos">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listaalumnos"
-        android:layout_width="400dp"
-        android:layout_height="620dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tituloAlumnos" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:textAlignment="center">
+
+        <TextView
+            android:id="@+id/TitleAlumnos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="Alumnos"
+            android:textAlignment="center"
+            android:textColor="@color/ipnNivel2"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
+            android:layout_marginTop="60dp"/>
+
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/textBuscarAlum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:elevation="20dp"
+            android:background="@drawable/searchview_contorno"
+            app:searchIcon="?android:attr/actionModeWebSearchDrawable" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaalumnos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:elevation="10dp"
+            android:padding="6dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 </LinearLayout>
