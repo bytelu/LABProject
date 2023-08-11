@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryTextListener {
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.0.8:1521/XEPDB1"; //JENNY
+    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //JENNY
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
 
@@ -86,8 +86,9 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
                 // Establecer la conexión a la base de datos
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar los encargados
-                String sql = "SELECT NOMBRE, APELLIDO_P, APELLIDO_M, BOLETA, CARRERA, SEMESTRE " +
-                        "FROM ESTUDIANTE";
+                String sql = "SELECT ESTUDIANTE.NOMBRE as Nombre, ESTUDIANTE.APELLIDO_P AS ApellidoPat, ESTUDIANTE.APELLIDO_M AS ApellidoMat, ESTUDIANTE.BOLETA as Boleta, CARRERA.CARRERA AS Carrera, ESTUDIANTE.SEMESTRE as Semestre\n" +
+                        "FROM ESTUDIANTE\n" +
+                        "JOIN CARRERA ON ESTUDIANTE.CARRERA_ID = CARRERA.ID";
                 statement = connection.prepareStatement(sql);
                 // Ejecutar la consulta
                 resultSet = statement.executeQuery();

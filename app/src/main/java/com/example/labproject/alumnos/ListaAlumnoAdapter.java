@@ -97,7 +97,7 @@ public class ListaAlumnoAdapter extends RecyclerView.Adapter<ListaAlumnoAdapter.
             aluBoleta = itemView.findViewById(R.id.aluBoleta);
             aluCarrera = itemView.findViewById(R.id.aluCarrera);
             aluSemestre = itemView.findViewById(R.id.aluSemestre);
-            aluComp = itemView.findViewById(R.id.aluComp);
+            //aluComp = itemView.findViewById(R.id.aluComp);
 
         }
 
