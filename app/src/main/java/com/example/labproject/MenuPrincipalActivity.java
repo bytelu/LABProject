@@ -20,11 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 public class MenuPrincipalActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     /*  */
     DrawerLayout drawerLayout;
@@ -61,7 +56,7 @@ public class MenuPrincipalActivity extends AppCompatActivity implements Navigati
                     abrirFragmento(new FragmentoInicio());
                     return true;
                 } else if (itemId == R.id.boton_profesores) {
-                    abrirFragmento(new FragmentoProfesores());
+                    abrirFragmento(new FragmentProfessors());
                     return true;
                 } else if (itemId == R.id.boton_alumnos) {
                     abrirFragmento(new FragmentoAlumnos());

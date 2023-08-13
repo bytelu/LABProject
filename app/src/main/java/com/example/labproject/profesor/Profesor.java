@@ -1,4 +1,4 @@
-package com.example.labproject.entidades;
+package com.example.labproject.profesor;
 
 public class Profesor {
 
@@ -6,16 +6,6 @@ public class Profesor {
     private String APELLIDO_P;
     private String APELLIDO_M;
     private String BOLETA;
-
-
-    public Profesor(String nombre, String apellidoP, String apellidoM, String boleta) {
-        this.NOMBRE = nombre;
-        this.APELLIDO_P = apellidoP;
-        this.APELLIDO_M = apellidoM;
-        this.BOLETA = boleta;
-    }
-
-
 
     public String getNOMBRE() {
         return NOMBRE;
