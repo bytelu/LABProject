@@ -2,6 +2,7 @@ package com.example.labproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -10,6 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +36,15 @@ public class MenuPrincipalActivity extends AppCompatActivity implements Navigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
+
+        // Obtener el nombre de usuario guardado en SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        String usuario = sharedPreferences.getString("usuario", "");
+
+        // Ahora se puede utiliza el nombre de usuario para mostrarlo o hacer querys con el
+        // Por ejemplo, mostrarlo en un TextView
+        // TextView nombreUsuarioTextView = findViewById(R.id.nombreUsuarioTextView);
+        // nombreUsuarioTextView.setText(usuario);
 
         fab = findViewById(R.id.fab);
         toolbar = findViewById(R.id.toolbar);
@@ -75,7 +89,8 @@ public class MenuPrincipalActivity extends AppCompatActivity implements Navigati
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MenuPrincipalActivity.this, "Creando Sesion", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MenuPrincipalActivity.this, "Creando Sesion", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuPrincipalActivity.this, "Creando sesión para el usuario: " + usuario, Toast.LENGTH_SHORT).show();
                 abrirFragmento(new FragmentoSesiones());
             }
         });
@@ -97,8 +112,37 @@ public class MenuPrincipalActivity extends AppCompatActivity implements Navigati
         } else if (itemId == R.id.ayuda) {
             abrirFragmento(new FragmentoAyuda());
         } else if (itemId == R.id.salir) {
-            Toast.makeText(this,"Saliendo" ,Toast.LENGTH_LONG).show();
-            /*aqui iria el codigo de cerrar sesion y lo mande a cerrar la sesion*/
+            // Mostrar cuadro de diálogo de confirmación
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+            builder.setTitle("Confirmar");
+            builder.setMessage("¿Estás seguro de que deseas cerrar sesión?");
+            builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // Borrar datos de SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear(); // Borrar todos los datos almacenados
+                    editor.apply();
+
+                    // Abrir ActivityInicio
+                    Intent intent = new Intent(MenuPrincipalActivity.this, InicioActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Limpiar la pila de actividades
+                    startActivity(intent);
+
+                    finish(); // Cierra la actividad actual
+                }
+            });
+            builder.setNegativeButton("No",null);
+
+            AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+                    dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.GONE);
+                }
+            });
+            dialog.show();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

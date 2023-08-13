@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentoSesiones">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Pestañas -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="CREAR SESION"
-        android:textSize="36sp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:textColor="@color/white"/>
+        android:layout_marginTop="55sp"
+        android:background="@color/ipnNivel2"
+        android:padding="6sp">
 
-</FrameLayout>
+        <!-- Pestaña de Sesión Grupal -->
+        <TextView
+            android:id="@+id/tabSesionGrupal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sesión Grupal"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="@drawable/rounded_background_enc"
+            android:layout_marginEnd="3sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onTabClick"/> <!-- Agrega espacio a la derecha -->
+
+        <!-- Pestaña de Sesión Individual -->
+        <TextView
+            android:id="@+id/tabSesionIndividual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sesión Individual"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="@drawable/rounded_background_enc"
+            android:layout_marginStart="3sp" />
+
+    </LinearLayout>
+
+    <!-- Contenedor de fragmentos -->
+    <FrameLayout
+        android:id="@+id/fragmentContenedor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
+

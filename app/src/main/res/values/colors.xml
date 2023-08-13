@@ -2,11 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorAccent">#8D9A3D70</color>
 
     <color name="color_launch">#6D1A42</color>
     <color name="ipn">#6C1D45</color>
     <color name="ipnNivel2">#8C1858</color>
     <color name="ipnNivel3">#8C657B</color>
     <color name="ipnNivel4">#F2DCEB</color>
-    <color name="esime">#23B609</color>
+    <color name="esime">#009933</color>
+
+    <color name="azulMorado">#363554</color>
+    <color name="gris">#44444D</color>
+    <color name="grisClaro">#F2F0F0</color>
+    <color name="naranja">#FF9933</color>
+    <color name="crema">#23B609</color>
+
 </resources>
