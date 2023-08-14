@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.labproject.alumnos.Alumno;
 import com.example.labproject.alumnos.ListaAlumnoAdapter;
@@ -49,6 +50,12 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
         //referencia del buscar
         textBuscarAlum = view.findViewById(R.id.textBuscarAlum);
         textBuscarAlum.setQueryHint("Búsqueda por nombre");
+
+        // Cambiar color del texto y hint del SearchView
+        EditText searchEditText = textBuscarAlum.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(android.R.color.black)); // Cambia el color del texto
+        searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray)); // Cambia el color del hint
+
         // Obtener referencia al RecyclerView desde la vista inflada del fragmento
         listaalumnos = view.findViewById(R.id.listaalumnos);
         listaalumnos.setLayoutManager(new LinearLayoutManager(getContext()));

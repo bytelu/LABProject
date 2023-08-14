@@ -2,6 +2,7 @@
     <string name="app_name">Laboratorio de Computación</string>
     <string name="abrir_cajon_navegacion">Abrir Cajon de Navegacion</string>
     <string name="cerrar_cajon_navegacion">Cerrar Cajon de Navegacion</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -5,13 +5,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/degradado_redondo"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="20dp"
     android:layout_marginBottom="10dp"
-    android:padding="10dp">
+    android:padding="8dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="233dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
@@ -37,78 +37,87 @@
             android:textColorHint="@color/ipnNivel4"
             android:textSize="18dp" />
 
-        <Space
-            android:layout_width="22dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="367dp"
+        android:layout_height="42dp"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="144dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_width="389dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <EditText
+            <TextView
                 android:id="@+id/FechaRep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                android:layout_width="190dp"
+                android:layout_height="36dp"
                 android:hint="  Fecha"
                 android:inputType="date"
                 android:textColorHint="@color/ipnNivel4" />
 
-            <EditText
+            <TextView
                 android:id="@+id/HoraRep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
                 android:ems="10"
                 android:hint="  Hora"
                 android:inputType="time"
                 android:textColorHint="@color/ipnNivel4" />
-
         </LinearLayout>
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre Encargado/a"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16"/>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="389dp"
         android:layout_height="40dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/NombreCompletoEncRep"
-            android:layout_width="wrap_content"
-            android:layout_height="39dp"
-            android:text="Nombre Encargado/a:"
-            android:textColor="#F3F3F3"
-            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/NombreEncRep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="151dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="6dp"
+            android:hint="Nombre(s)"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textColorHint="@color/ipnNivel3"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/ApePEncRep"
-            android:layout_width="201dp"
+            android:layout_width="109dp"
             android:layout_height="39dp"
             android:layout_marginStart="6dp"
-            android:hint="Nombre Completo"
+            android:hint="Apellido Pat"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:textColorHint="@color/ipnNivel4"
-            android:textSize="18sp"
+            android:textColorHint="@color/ipnNivel3"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/ApeMEncRep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="108dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="6dp"
+            android:hint="Apellido Mat"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textColorHint="@color/ipnNivel3"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -128,7 +137,7 @@
 
         <TextView
             android:id="@+id/NumCompu"
-            android:layout_width="180dp"
+            android:layout_width="178dp"
             android:layout_height="31dp"
             android:hint="Numero de Computadora"
             android:textAlignment="center"
@@ -166,12 +175,12 @@
 
     <Button
         android:id="@+id/AgregarRep"
-        android:layout_width="261dp"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:text="Agregar Reporte"
-        android:textColor="@color/azulMorado"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="80dp"/>
+        android:textColor="@color/azulMorado" />
 
 </LinearLayout>

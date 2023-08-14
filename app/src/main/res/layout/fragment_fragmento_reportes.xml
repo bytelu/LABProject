@@ -18,15 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
             android:text="Reportes"
             android:textAlignment="center"
             android:textColor="@color/ipnNivel2"
             android:textSize="24dp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:layout_marginTop="10dp"/>
+            android:textStyle="bold" />
 
 
         <androidx.appcompat.widget.SearchView
@@ -35,20 +35,38 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:elevation="20dp"
             android:background="@drawable/searchview_contorno"
-            app:searchIcon="?android:attr/actionModeWebSearchDrawable" />
+            android:elevation="20dp"
+            app:searchIcon="?android:attr/actionModeWebSearchDrawable">
+
+        </androidx.appcompat.widget.SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mostrarreportes"
+            android:id="@+id/listareportes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
             android:elevation="10dp"
             android:padding="6dp"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="208dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/NuevoRep"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="10dp"
+            android:layout_weight=".1"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/signomas"
+            app:backgroundTint="@color/ipnNivel2" />
 
     </LinearLayout>
 </LinearLayout>
