@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.labproject.sesiongrupallab1.ListaSesionGrupalLabUnoAdapter;
 import com.example.labproject.sesiongrupallab1.SesionGrupalLaboratorioUno;
@@ -30,10 +31,11 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
 
-    //private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
-    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
+    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
+    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
+    TextView txtNombreEnc,txtEncApeP,txtEncApeM, txtNombreProf, txtProfApeP, txtProfApeM, txtFecha, txtEntrada, txtSalida;
 
     SearchView txtBuscar;
     ListaSesionGrupalLabUnoAdapter adapter;
@@ -48,10 +50,20 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragmento_lab_uno, container, false);
+        //VARIABLES MUY REPETIDAS
+        txtNombreEnc = view.findViewById(R.id.encargadoNombreLab1);
+        txtEncApeP = view.findViewById(R.id.encargadoApePLab1);
+        txtEncApeM = view.findViewById(R.id.encargadoApeMLab1);
+        txtNombreProf = view.findViewById(R.id.profNombreLab1);
+        txtProfApeP = view.findViewById(R.id.profApePLab1);
+        txtProfApeM = view.findViewById(R.id.profApeMLab1);
+        txtFecha = view.findViewById(R.id.fecha);
+        txtEntrada = view.findViewById(R.id.lab1Entrada);
+        txtSalida = view.findViewById(R.id.lab1Salida);
 
         //referencia del buscar
         txtBuscar = view.findViewById(R.id.txtBuscar);
-        txtBuscar.setQueryHint("Búsqueda");
+        txtBuscar.setQueryHint("Búsqueda por Alumno");
 
         // Cambiar color del texto y hint del SearchView
         EditText searchEditText = txtBuscar.findViewById(androidx.appcompat.R.id.search_src_text);
@@ -120,9 +132,19 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
                 statement = connection.prepareStatement(sql);
                 //ejecutar consulta
                 resultSet = statement.executeQuery();
-                // Recorrer el resultado y crear los objetos de los alumnos
                 while (resultSet.next()){
                     SesionGrupalLaboratorioUno sesGruLabUno = new SesionGrupalLaboratorioUno();
+                    //VARIABLES REPETIDAS
+                    sesGruLabUno.setNombreEnc(resultSet.getString("nombre_encargado"));
+                    sesGruLabUno.setEncApeP(resultSet.getString("encargado_apellido_p"));
+                    sesGruLabUno.setEncApeM(resultSet.getString("encargado_apellido_m"));
+                    sesGruLabUno.setNombreProf(resultSet.getString("nombre_profesor"));
+                    sesGruLabUno.setProfApeP(resultSet.getString("profesor_apellido_p"));
+                    sesGruLabUno.setProfApeM(resultSet.getString("profesor_apellido_m"));
+                    sesGruLabUno.setFecha(resultSet.getString("fecha"));
+                    sesGruLabUno.setEntrada(resultSet.getString("hora_inicio"));
+                    sesGruLabUno.setSalida(resultSet.getString("hora_final"));
+                    //VARIABLES DIFERENTES
                     sesGruLabUno.setComputadora(Integer.toString(resultSet.getInt("numero_computadora")));
                     sesGruLabUno.setNoBoleta(Integer.toString(resultSet.getInt("no_boleta")));// Convertir int a String
                     sesGruLabUno.setAluNombre(resultSet.getString("nombre_alumno"));
@@ -153,6 +175,30 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
         }
 
         protected void onPostExecute(ArrayList<SesionGrupalLaboratorioUno> lista){
+            if (!lista.isEmpty()) {
+                SesionGrupalLaboratorioUno primerRegistro = lista.get(0);
+
+                String nombreEnc = primerRegistro.getNombreEnc();
+                String encApeP = primerRegistro.getEncApeP();
+                String encApeM = primerRegistro.getEncApeM();
+                String nombreProf = primerRegistro.getNombreProf() ;
+                String profApeP = primerRegistro.getProfApeP() ;
+                String profApeM = primerRegistro.getProfApeM();
+                String fecha = primerRegistro.getFecha();
+                String entrada = primerRegistro.getEntrada();
+                String salida = primerRegistro.getSalida();
+
+                txtNombreEnc.setText(nombreEnc);
+                txtEncApeP.setText(encApeP);
+                txtEncApeM.setText(encApeM);
+                txtNombreProf.setText(nombreProf);
+                txtProfApeP.setText(profApeP);
+                txtProfApeM.setText(profApeM);
+                txtFecha.setText(fecha);
+                txtEntrada.setText(entrada);
+                txtSalida.setText(salida);
+            }
+
             adapter = new ListaSesionGrupalLabUnoAdapter(lista);
             listaLaboratorioUnoGrupal.setAdapter(adapter);
         }
