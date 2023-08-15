@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.labproject.alumnos.Alumno;
 import com.example.labproject.alumnos.ListaAlumnoAdapter;
@@ -31,18 +34,26 @@ import java.util.ArrayList;
 public class FragmentoReportes extends Fragment implements SearchView.OnQueryTextListener {
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.0.8:1521/XEPDB1"; //JENNY CASA WINDOWS
+    //private static final String URL = "jdbc:oracle:thin:@192.168.0.8:1521/XEPDB1"; //JENNY CASA WINDOWS
     //private static final String URL = "jdbc:oracle:thin:@192.168.0.12:1521/XEPDB1"; //JENNY CASA MAC
-
-    //private static final String URL = "jdbc:oracle:thin:@192.168.100.30:1521/XEPDB1"; //JENNY SERVICIO SOCIAL
+    private static final String URL = "jdbc:oracle:thin:@192.168.100.30:1521/XEPDB1"; //JENNY SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
 
+    private TextView NumRep;
+    private TextView FechaRep;
+    private TextView HoraRep;
+    private TextView textView4;
+    private TextView NombreEncRep;
+    private TextView ApePEncRep;
+    private TextView ApeMEncRep;
+    private TextView NumCompu;
+    private TextView TitleRep;
+    private TextView DescRep;
+    private Button AgregarRep;
     SearchView textBuscarRep;
     ListaReporteAdapter adapter;
     RecyclerView listareportes;
-    ArrayList<Reporte> listaArrayReportes;
-
     public FragmentoReportes() {
         // Required empty public constructor
     }
@@ -51,6 +62,8 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragmento_reportes, container, false);
+        View view1 = inflater.inflate(R.layout.vistareportes, container, false);
+        View view2 = inflater.inflate(R.layout.crearreportes, container, false);
 
         //referencia del buscar
         textBuscarRep = view.findViewById(R.id.textBuscarRep);
@@ -69,6 +82,17 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
         ConexionAsyncTask task = new ConexionAsyncTask();
         task.execute();
 
+        NumRep = view1.findViewById(R.id.ViewNumRep);
+        FechaRep = view1.findViewById(R.id.Textfecha);
+        HoraRep = view1.findViewById(R.id.Texthora);
+        NombreEncRep = view1.findViewById(R.id.ViewNombreEncRep);
+        ApePEncRep = view1.findViewById(R.id.ViewApePEncRep);
+        ApeMEncRep = view1.findViewById(R.id.ViewApeMEncRep);
+        NumCompu = view1.findViewById(R.id.TextViewNumComputadora);
+        DescRep = view1.findViewById(R.id.ViewDescripcion);
+        TitleRep = view1.findViewById(R.id.ViewTitulo);
+
+
         textBuscarRep.setOnQueryTextListener(this);
         return view;
     }
@@ -84,9 +108,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
         return false;
     }
 
-    private void AgregarReporte (String URL){
-        StringRequest stringRequest =
-    }
+
     private class ConexionAsyncTask extends AsyncTask<Void, Void, ArrayList<Reporte>> {
 
         @Override
@@ -150,6 +172,19 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
             // Una vez terminada la consulta en segundo plano, actualizamos el RecyclerView con los datos
             adapter = new ListaReporteAdapter(lista);
             listareportes.setAdapter(adapter);
+            if(!lista.isEmpty()){
+                Reporte nuevoReporte = lista.get(lista.size()-1);
+                NumRep.setText(nuevoReporte.getID());
+                FechaRep.setText(nuevoReporte.getFECHA());
+                HoraRep.setText(nuevoReporte.getHORA());
+                NombreEncRep.setText(nuevoReporte.getNOMBRE());
+                ApePEncRep.setText(nuevoReporte.getAPELLIDO_P());
+                ApeMEncRep.setText(nuevoReporte.getAPELLIDO_M());
+                NumCompu.setText(nuevoReporte.getCOMPUTADOORA());
+                DescRep.setText(nuevoReporte.getDESCRIPCION());
+                TitleRep.setText(nuevoReporte.getTITULO());
+
+            }
         }
     }
 }

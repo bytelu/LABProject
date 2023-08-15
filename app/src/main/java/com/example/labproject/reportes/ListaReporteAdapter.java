@@ -1,9 +1,11 @@
 package com.example.labproject.reportes;
 
+import android.app.MediaRouteButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,9 +34,22 @@ public class ListaReporteAdapter extends RecyclerView.Adapter<ListaReporteAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListaReporteAdapter.ReporteViewHolder holder, int position) {
-
+    public void onBindViewHolder(ReporteViewHolder holder, int position) {
+        holder.flechadesplegable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean contenidoExpandido = false;
+                if (contenidoExpandido) {
+                    holder.layoutContenido.setVisibility(View.GONE);
+                    contenidoExpandido = false;
+                } else {
+                    holder.layoutContenido.setVisibility(View.VISIBLE);
+                    contenidoExpandido = true;
+                }
+            }
+        }
     }
+
 
     public void filtrado(String textBuscarRep) {
         int longitud = textBuscarRep.length();
@@ -79,7 +94,12 @@ public class ListaReporteAdapter extends RecyclerView.Adapter<ListaReporteAdapte
     public int getItemCount() {return listareportes.size();}
     TextView Textfecha, Texthora, EncFecHora, ViewTitulo, TextNombreEnc, ViewNombreEncRep, ViewApePEncRep, ViewApeMEncRep, TextViewNumComputadora, ViewNumRep, ViewDescripcion;
     ImageView flechadesplegable, VistaNumeroCompu, ImagenReportes;
+    LinearLayout layoutcontenido;
+    boolean contenidoExpandido = false;
     public class ReporteViewHolder extends RecyclerView.ViewHolder {
+        public View flechadesplegable;
+        public MediaRouteButton layoutContenido;
+
         public ReporteViewHolder(View view) {
             super(view);
             Textfecha = itemView.findViewById(R.id.Textfecha);
@@ -97,6 +117,9 @@ public class ListaReporteAdapter extends RecyclerView.Adapter<ListaReporteAdapte
             flechadesplegable = itemView.findViewById(R.id.flechadesplegable);
             VistaNumeroCompu = itemView.findViewById(R.id.VistaNumeroCompu);
             ImagenReportes = itemView.findViewById(R.id.ImagenReportes);
+
+            flechadesplegable = itemView.findViewById(R.id.flechadesplegable);
+            layoutContenido = itemView.findViewById(R.id.DesplegableVistaRep);
 
         }
     }

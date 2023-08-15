@@ -76,7 +76,7 @@
         android:text="Nombre Encargado/a"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16"/>
+        android:textSize="16dp"/>
 
     <LinearLayout
         android:layout_width="389dp"
