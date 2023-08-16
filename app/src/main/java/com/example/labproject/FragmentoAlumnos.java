@@ -76,7 +76,7 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        adapter.filtrado(newText);
+        adapter.filtradoA(newText);
         return false;
     }
 

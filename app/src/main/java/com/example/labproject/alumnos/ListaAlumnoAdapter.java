@@ -41,7 +41,7 @@ public class ListaAlumnoAdapter extends RecyclerView.Adapter<ListaAlumnoAdapter.
 
     }
 
-    public void filtrado(String textBuscarAlum) {
+    public void filtradoA(String textBuscarAlum) {
         int longitud = textBuscarAlum.length();
         if (longitud == 0) {
             listaalumnos.clear();
@@ -52,14 +52,14 @@ public class ListaAlumnoAdapter extends RecyclerView.Adapter<ListaAlumnoAdapter.
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 List<Alumno> collecion = listaOriginal.stream()
-                        .filter(i -> contienePalabras(i, palabrasbuscar))
+                        .filter(i -> contienePalabrasA(i, palabrasbuscar))
                         .collect(Collectors.toList());
                 listaalumnos.clear();
                 listaalumnos.addAll(collecion);
             } else {
                 listaalumnos.clear();
                 for (Alumno c : listaOriginal) {
-                    if (contienePalabras(c,palabrasbuscar)){
+                    if (contienePalabrasA(c,palabrasbuscar)){
                         listaalumnos.add(c);
                     }
                 }
@@ -68,7 +68,7 @@ public class ListaAlumnoAdapter extends RecyclerView.Adapter<ListaAlumnoAdapter.
         notifyDataSetChanged();
     }
 
-    private boolean contienePalabras(Alumno Alumno, String [] palabrasbuscar) {
+    private boolean contienePalabrasA(Alumno Alumno, String [] palabrasbuscar) {
         String nombreCompleto = Alumno.getNOMBRE().toLowerCase() + " " +
                 Alumno.getAPELLIDO_P().toLowerCase() + " " +
                 Alumno.getAPELLIDO_M().toLowerCase();

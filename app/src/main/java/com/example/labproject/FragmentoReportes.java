@@ -34,9 +34,9 @@ import java.util.ArrayList;
 public class FragmentoReportes extends Fragment implements SearchView.OnQueryTextListener {
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    //private static final String URL = "jdbc:oracle:thin:@192.168.0.8:1521/XEPDB1"; //JENNY CASA WINDOWS
+    private static final String URL = "jdbc:oracle:thin:@192.168.0.2:1521/XEPDB1"; //JENNY CASA WINDOWS
     //private static final String URL = "jdbc:oracle:thin:@192.168.0.12:1521/XEPDB1"; //JENNY CASA MAC
-    private static final String URL = "jdbc:oracle:thin:@192.168.100.30:1521/XEPDB1"; //JENNY SERVICIO SOCIAL
+    //private static final String URL = "jdbc:oracle:thin:@192.168.100.30:1521/XEPDB1"; //JENNY SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
 
@@ -62,8 +62,6 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragmento_reportes, container, false);
-        View view1 = inflater.inflate(R.layout.vistareportes, container, false);
-        View view2 = inflater.inflate(R.layout.crearreportes, container, false);
 
         //referencia del buscar
         textBuscarRep = view.findViewById(R.id.textBuscarRep);
@@ -81,18 +79,6 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
         // Llamar al AsyncTask para realizar la consulta en segundo plano
         ConexionAsyncTask task = new ConexionAsyncTask();
         task.execute();
-
-        NumRep = view1.findViewById(R.id.ViewNumRep);
-        FechaRep = view1.findViewById(R.id.Textfecha);
-        HoraRep = view1.findViewById(R.id.Texthora);
-        NombreEncRep = view1.findViewById(R.id.ViewNombreEncRep);
-        ApePEncRep = view1.findViewById(R.id.ViewApePEncRep);
-        ApeMEncRep = view1.findViewById(R.id.ViewApeMEncRep);
-        NumCompu = view1.findViewById(R.id.TextViewNumComputadora);
-        DescRep = view1.findViewById(R.id.ViewDescripcion);
-        TitleRep = view1.findViewById(R.id.ViewTitulo);
-
-
         textBuscarRep.setOnQueryTextListener(this);
         return view;
     }
@@ -104,7 +90,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        adapter.filtrado(newText);
+        adapter.filtradoR(newText);
         return false;
     }
 
@@ -124,7 +110,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar los encargados
                 String sql = "SELECT REPORTE.ID as Numero de Reporte,REPORTE.TITULO AS Titulo, REPORTE.DESCRIPCION as Descripcion,TO_CHAR(REPORTE.HORA, 'HH24:MI') AS Hora, TO_CHAR(REPORTE.FECHA, 'DD/MM/YYYY') AS Fecha, \n" +
-                        "ENCARGADO.NOMBRE as Nombre, ENCARGADO.APELLIDO_P as ApellidoPat,ENCARGADO.APELLIDO_M as ApellidoMat, COMPUTADORA.OCUPADA AS Compu\n" +
+                        "ENCARGADO.NOMBRE as Nombre, ENCARGADO.APELLIDO_P as ApellidoPat,ENCARGADO.APELLIDO_M as ApellidoMat, COMPUTADORA.ID AS Compu\n" +
                         "FROM REPORTE\n" +
                         "JOIN ENCARGADO ON REPORTE.ENCARGADO_ID = ENCARGADO.ID\n" +
                         "JOIN COMPUTADORA ON REPORTE.COMPUTADORA_ID = COMPUTADORA.ID;";
@@ -172,19 +158,6 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
             // Una vez terminada la consulta en segundo plano, actualizamos el RecyclerView con los datos
             adapter = new ListaReporteAdapter(lista);
             listareportes.setAdapter(adapter);
-            if(!lista.isEmpty()){
-                Reporte nuevoReporte = lista.get(lista.size()-1);
-                NumRep.setText(nuevoReporte.getID());
-                FechaRep.setText(nuevoReporte.getFECHA());
-                HoraRep.setText(nuevoReporte.getHORA());
-                NombreEncRep.setText(nuevoReporte.getNOMBRE());
-                ApePEncRep.setText(nuevoReporte.getAPELLIDO_P());
-                ApeMEncRep.setText(nuevoReporte.getAPELLIDO_M());
-                NumCompu.setText(nuevoReporte.getCOMPUTADOORA());
-                DescRep.setText(nuevoReporte.getDESCRIPCION());
-                TitleRep.setText(nuevoReporte.getTITULO());
-
             }
         }
     }
-}
