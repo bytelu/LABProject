@@ -90,7 +90,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar los encargados
                 String sql = "SELECT\n" +
-                        "    REPORTE.ID AS Numero_de_Reporte,\n" +
+                        "    REPORTE.ID AS NumeroReporte,\n" +
                         "    REPORTE.TITULO AS Titulo,\n" +
                         "    REPORTE.DESCRIPCION AS Descripcion,\n" +
                         "    TO_CHAR(REPORTE.HORA, 'HH24:MI') AS Hora,\n" +
@@ -99,7 +99,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
                         "    ENCARGADO.NOMBRE AS Nombre,\n" +
                         "    ENCARGADO.APELLIDO_P AS ApellidoPat,\n" +
                         "    ENCARGADO.APELLIDO_M AS ApellidoMat,\n" +
-                        "    COMPUTADORA.ID AS Compu\n" +
+                        "    COMPUTADORA.NUMERO AS Compu\n" +
                         "FROM\n" +
                         "    REPORTE\n" +
                         "JOIN\n" +
@@ -112,12 +112,17 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
                 // Recorrer el resultado y crear los objetos encargado
                 while (resultSet.next()) {
                     Reporte reportitos = new Reporte();
-                    reportitos.setID((resultSet.getInt("Numero_de_Reporte")));
+                    reportitos.setID(String.valueOf(resultSet.getInt("NumeroReporte")));
                     reportitos.setTITULO(resultSet.getString("Titulo"));
                     String fecha = resultSet.getString("Fecha");
                     reportitos.setFECHA(fecha);
                     String hora = resultSet.getString("Hora");
                     reportitos.setHORA(hora);
+                    reportitos.setDESCRIPCION(resultSet.getString("Descripcion"));
+                    reportitos.setNOMBRE(resultSet.getString("Nombre"));
+                    reportitos.setAPELLIDOPAT(resultSet.getString("ApellidoPat"));
+                    reportitos.setAPELLIDOMAT(resultSet.getString("ApellidoMat"));
+                    reportitos.setCOMPU(String.valueOf(resultSet.getInt("Compu")));
                     listaReportes.add(reportitos);
                 }
             } catch (Exception e){

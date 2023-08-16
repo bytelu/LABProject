@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:textStyle="bold"/>
 
         <TextView
@@ -43,62 +43,118 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/aluCarrera"
-        android:layout_width="369dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:hint="Carrera"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/ipnNivel3"
-        android:textSize="16sp" />
-
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@drawable/rounded_background_enc"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Boleta: "
-            android:textAlignment="center"
-            android:textColor="#FDFDFD" />
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/imagenLaboratorio"
+                android:src="@drawable/iclogoo"
+                android:scaleType="centerCrop" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/aluBoleta"
-            android:layout_width="128dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:hint="Boleta"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textColorHint="@color/ipnNivel3"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Semestre: "
-            android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="4dp">
 
-        <TextView
-            android:id="@+id/aluSemestre"
-            android:layout_width="38dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:hint="Semestre"
-            android:textAlignment="textEnd"
-            android:textColor="@color/white"
-            android:textColorHint="@color/ipnNivel3"
-            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/profNombreLab2ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="Carrera: "
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/aluCarrera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
+            <!-- Fila de Hora de entrada y Salida -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No. Boleta:"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/aluBoleta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="0dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sem.:"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/aluSemestre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="6dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

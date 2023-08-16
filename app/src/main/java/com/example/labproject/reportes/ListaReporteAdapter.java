@@ -3,6 +3,8 @@ package com.example.labproject.reportes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,9 +34,27 @@ public class ListaReporteAdapter extends RecyclerView.Adapter<ListaReporteAdapte
 
     @Override
     public void onBindViewHolder(ReporteViewHolder holder, int position) {
-        holder.ViewTitulo.setText(listareportes.get(position).getTITULO());
-        holder.Textfecha.setText(listareportes.get(position).getFECHA());
-        holder.Texthora.setText(listareportes.get(position).getHORA());
+        Reporte reporte = listareportes.get(position);
+        holder.ViewTitulo.setText(reporte.getTITULO());
+        holder.Textfecha.setText(reporte.getFECHA());
+        holder.Texthora.setText(reporte.getHORA());
+        holder.txtDescripcion.setText(reporte.getDESCRIPCION());
+        holder.txtNombre.setText(reporte.getNOMBRE());
+        holder.txtApellidoPat.setText(reporte.getAPELLIDOPAT());
+        holder.txtApellidoMat.setText(reporte.getAPELLIDOMAT());
+        holder.txtCompu.setText(reporte.getCOMPU());
+        holder.txtID.setText(reporte.getID());
+
+        if (reporte.isExpanded()) {
+            holder.linearLayoutMas.setVisibility(View.VISIBLE);
+        } else {
+            holder.linearLayoutMas.setVisibility(View.GONE);
+        }
+
+        holder.itemView.setOnClickListener(v -> {
+            reporte.toggleExpansion();
+            notifyItemChanged(position);
+        });
     }
 
 
@@ -72,13 +92,24 @@ public class ListaReporteAdapter extends RecyclerView.Adapter<ListaReporteAdapte
     @Override
     public int getItemCount() {return listareportes.size();}
     public class ReporteViewHolder extends RecyclerView.ViewHolder {
-        TextView Textfecha, Texthora,ViewTitulo;
+        TextView Textfecha, Texthora,ViewTitulo, txtDescripcion, txtNombre, txtApellidoPat, txtApellidoMat, txtCompu, txtID;
+        RelativeLayout relativeLayoutTitulo, relativeLayoutDescripcion;
+        LinearLayout linearLayoutMas;
 
         public ReporteViewHolder(View view) {
             super(view);
             Textfecha = view.findViewById(R.id.fechaReporte);
             Texthora = view.findViewById(R.id.horaReporte);
             ViewTitulo = view.findViewById(R.id.tituloReporte);
+            txtDescripcion = view.findViewById(R.id.descripcionReporte);
+            relativeLayoutTitulo = view.findViewById(R.id.relativeLayoutTitulo);
+            relativeLayoutDescripcion = view.findViewById(R.id.relativeLayoutDescripcion);
+            linearLayoutMas = view.findViewById(R.id.linearLayoutMas);
+            txtNombre = view.findViewById(R.id.nombreEncRe);
+            txtApellidoPat = view.findViewById(R.id.apePaRe);
+            txtApellidoMat = view.findViewById(R.id.apeMaRe);
+            txtCompu = view.findViewById(R.id.compuRe);
+            txtID = view.findViewById(R.id.numRe);
         }
     }
 }
