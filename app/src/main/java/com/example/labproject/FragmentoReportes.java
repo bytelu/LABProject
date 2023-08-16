@@ -23,12 +23,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class FragmentoReportes extends Fragment implements SearchView.OnQueryTextListener {
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    //private static final String URL = "jdbc:oracle:thin:@192.168.0.2:1521/XEPDB1"; //JENNY CASA WINDOWS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.0.12:1521/XEPDB1"; //JENNY CASA MAC
-    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //JENNY SERVICIO SOCIAL
+    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
+    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
     SearchView textBuscarRep;
@@ -51,6 +52,22 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
         EditText searchEditText = textBuscarRep.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setTextColor(getResources().getColor(android.R.color.black)); // Cambia el color del texto
         searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray)); // Cambia el color del hint
+
+        //Boton de crear reporte y acceder a el
+        FloatingActionButton fabNuevoRep = view.findViewById(R.id.NuevoRep);
+
+        fabNuevoRep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Reemplaza "FragmentoDestino" con el nombre de tu fragmento de destino
+                FragmentoCrearReporte fragmentoDestino = new FragmentoCrearReporte();
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragmentoDestino) // Reemplaza fragment_container con el ID de tu contenedor de fragmentos
+                        .addToBackStack(null) // Opcional: agrega la transacción a la pila de retroceso
+                        .commit();
+            }
+        });
 
         // Obtener referencia al RecyclerView desde la vista inflada del fragmento
         listareportes = view.findViewById(R.id.listareportes);
