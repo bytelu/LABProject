@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,19 +50,22 @@ public class FragmentoPerfil extends Fragment {
         UsuarioTextEdit = view.findViewById(R.id.UsuarioTextInput);
         ContrasenaTextEdit = view.findViewById(R.id.ContrasenaTextInput);
 
+        Button button = view.findViewById(R.id.saveChangesButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String nuevoUsuario = UsuarioTextEdit.getEditText().getText().toString();
+                String nuevaContrasena = ContrasenaTextEdit.getEditText().getText().toString();
+
+                UpdateAsyncTask updateTask = new UpdateAsyncTask();
+                updateTask.execute(nuevoUsuario, nuevaContrasena);
+            }
+        });
+
         ConexionAsyncTask task = new ConexionAsyncTask();
         task.execute();
 
         return view;
-    }
-
-    public void saveChanges(View view){
-        String nuevoUsuario = UsuarioTextEdit.getEditText().getText().toString();
-        String nuevaContrasena = ContrasenaTextEdit.getEditText().getText().toString();
-
-        // Lógica para actualizar los datos en la base de datos
-        UpdateAsyncTask updateTask = new UpdateAsyncTask();
-        updateTask.execute(nuevoUsuario, nuevaContrasena);
     }
 
     private class ConexionAsyncTask extends AsyncTask<Void, Void, Perfil>{
@@ -167,7 +171,7 @@ public class FragmentoPerfil extends Fragment {
                 statement = connection.prepareStatement(sql);
                 statement.setString(1, nuevoUsuario);
                 statement.setString(2, nuevaContrasena);
-                statement.setString(3, usuarioActual); // Reemplaza "usuarioActual" con el usuario actual recuperado
+                statement.setString(3, usuarioActual);
 
                 int rowsAffected = statement.executeUpdate();
 

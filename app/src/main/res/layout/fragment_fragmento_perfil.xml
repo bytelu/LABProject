@@ -209,7 +209,6 @@
                     android:id="@+id/saveChangesButton"
                     android:layout_width="0dp"
                     style="@android:style/Widget.Button"
-                    android:onClick="saveChanges"
                     android:background="@drawable/button_background"
                     android:textColor="@color/white"
                     android:textSize="12sp"
