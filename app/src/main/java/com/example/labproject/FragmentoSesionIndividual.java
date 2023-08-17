@@ -26,7 +26,9 @@ import java.util.ArrayList;
 public class FragmentoSesionIndividual extends Fragment implements SearchView.OnQueryTextListener{
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1";
+
+    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
+    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
 
@@ -87,7 +89,7 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                 Class.forName(DRIVER);
                 // Establecer la conexión a la base de datos
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-                // Preparar la consulta SQL para seleccionar los encargados
+                // Preparar la consulta SQL para seleccionar las sesiones individuales
                 String sql = "SELECT\n" +
                         "    TO_CHAR(fecha, 'DD-MM-YYYY') AS fecha,\n" +
                         "    TO_CHAR(sesion.hora_inicio, 'HH24:MI') AS hora_inicio,\n" +
@@ -99,17 +101,18 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                         "    computadora.laboratorio as laboratorio_computadora,\n" +
                         "    estudiante.nombre AS nombre_alumno,\n" +
                         "    estudiante.apellido_p AS alumno_apellido_p,\n" +
-                        "    estudiante.apellido_m AS alumno_apellido_m,\n" +
-                        "    profesor.id AS id_profesor\n" +
+                        "    estudiante.apellido_m AS alumno_apellido_m\n" +
                         "FROM sesion\n" +
                         "JOIN encargado ON sesion.encargado_id = encargado.id\n" +
                         "JOIN estudiante ON sesion.estudiante_id = estudiante.id\n" +
                         "JOIN computadora ON sesion.computadora_id = computadora.id\n" +
-                        "LEFT JOIN profesor ON sesion.profesor_id = profesor.id";
+                        "LEFT JOIN profesor ON sesion.profesor_id = profesor.id\n" +
+                        "WHERE sesion.activo = 1\n" +
+                        "  AND sesion.profesor_id IS NULL";
                 statement = connection.prepareStatement(sql);
                 // Ejecutar la consulta
                 resultSet = statement.executeQuery();
-                // Recorrer el resultado y crear los objetos encargado
+                // Recorrer el resultado y crear los objetos de los alumnos
                 while (resultSet.next()) {
                     SesionIndividual sesionIndv = new SesionIndividual();
                     String fecha = resultSet.getString("fecha");

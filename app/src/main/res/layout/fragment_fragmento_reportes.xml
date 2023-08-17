@@ -1,17 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentoReportes">
+    android:orientation="vertical"
+    android:layout_marginTop="65dp"
+    android:layout_marginBottom="65dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="REPORTES"
-        android:textSize="36sp"
-        android:gravity="center"
-        android:textColor="@color/white"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <!-- Título de reportes -->
+        <TextView
+            android:id="@+id/tituloReportes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Reportes"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:padding="16dp"/>
+
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/textBuscarRep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/searchview_contorno"
+            android:elevation="20dp"
+            app:searchIcon="?android:attr/actionModeWebSearchDrawable"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listareportes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="10dp"
+            android:padding="6dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/NuevoRep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ico_create"
+            app:backgroundTint="@color/ipnNivel2" />
+
+    </LinearLayout>
+</LinearLayout>

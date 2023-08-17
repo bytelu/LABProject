@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="65dp"
+    android:layout_marginBottom="65dp">
 
     <!-- Contenedor del título de encargados y RecyclerView -->
     <LinearLayout
@@ -26,8 +28,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:layout_marginTop="60dp"/>
+            android:padding="16dp" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/txtBuscar"
