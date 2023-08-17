@@ -26,7 +26,7 @@ public class FragmentProfessors extends Fragment {
 
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.73:1521/XEPDB1";
+    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1";
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
     ProfesorAdapter adapter;

@@ -26,9 +26,7 @@ import java.util.ArrayList;
 public class FragmentoSesionIndividual extends Fragment implements SearchView.OnQueryTextListener{
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-
-    //private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
-    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
+    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1";
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
 
