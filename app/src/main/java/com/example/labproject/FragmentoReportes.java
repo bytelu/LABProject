@@ -28,7 +28,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
     //private static final String URL = "jdbc:oracle:thin:@192.168.0.2:1521/XEPDB1"; //JENNY CASA WINDOWS
     //private static final String URL = "jdbc:oracle:thin:@192.168.0.12:1521/XEPDB1"; //JENNY CASA MAC
-    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //JENNY SERVICIO SOCIAL
+    private static final String URL = "jdbc:oracle:thin:@192.168.0.2:1521/XEPDB1"; //JENNY SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
     SearchView textBuscarRep;
