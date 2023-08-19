@@ -23,8 +23,7 @@ public class FragmentoCrearIndividual extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragmento_crear_individual, container, false);
         // Asignando variables al encargado
@@ -40,6 +39,7 @@ public class FragmentoCrearIndividual extends Fragment {
             @Override
             public void onClick(View view) {
                 //Aqui se manda a llamar a la camara y todo lo de web scraping
+
             }
         });
 
