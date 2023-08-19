@@ -9,4 +9,6 @@
     <string name="ArcDescription">Arc</string>
     <string name="CreandoReporteTitle">Creando Reporte</string>
     <string name="ArrowDescription">BackArrow</string>
+    <string name="InstruccionesCrearReporte">Ingresa los datos de tu reporte a continuación:</string>
+    <string name="GuardarReporteText">Guardar Reporte</string>
 </resources>
