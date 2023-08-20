@@ -17,6 +17,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.IOException;
+
 public class FragmentoCrearIndividual extends Fragment {
 
     TextView nombreEnc, apePaEnc, apeMaEnc;
@@ -43,7 +50,9 @@ public class FragmentoCrearIndividual extends Fragment {
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Aqui se manda a llamar a la camara y todo lo de web scraping
+
+                // Aqui se manda a llamar a la camara
+
                 IntentIntegrator integrator = IntentIntegrator.forSupportFragment(FragmentoCrearIndividual.this);
                 integrator.setPrompt("Escanear Codigo QR");
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
@@ -65,7 +74,24 @@ public class FragmentoCrearIndividual extends Fragment {
                 Toast.makeText(getActivity(), "Escaneo Cancelado", Toast.LENGTH_SHORT).show();
             } else {
                 String qrContent = result.getContents();
-                Toast.makeText(getActivity(), "Contenido del QR: " + qrContent, Toast.LENGTH_SHORT).show();
+
+                try {
+
+                    // Aqui se establece que es lo que se va a buscar en la pagina de acuerdo a su html  ---->
+
+                    Document doc = Jsoup.connect(qrContent).get();
+                    Element nombreElement = doc.selectFirst(".nombre");
+                    Element boletaElement = doc.selectFirst(".boleta");
+                    Element carreraElement = doc.selectFirst(".carrera");
+
+                    String nombre = nombreElement != null ? nombreElement.text() : "Nombre no encontrado";
+                    String boleta = boletaElement != null ? boletaElement.text() : "Boleta no encontrada";
+                    String carrera = carreraElement != null ? carreraElement.text() : "Carrera no encontrada";
+
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
             }
         }
     }
