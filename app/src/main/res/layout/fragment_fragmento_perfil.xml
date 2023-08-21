@@ -42,26 +42,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:src="@drawable/bottom_btn3"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView6"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
                 <TextView
                     android:id="@+id/ProfileText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:text="Perfil"
                     android:textColor="@color/white"
 
-                    android:textSize="35sp"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView7"
+                    android:textSize="60sp"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -70,64 +59,78 @@
             <TextView
                 android:id="@+id/nombreTextView"
                 android:layout_width="match_parent"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
                 android:text="Name"
+                android:textAlignment="center"
                 android:textColor="@color/ipn"
-                android:textSize="26sp"/>
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/usuarioTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
+                android:layout_marginBottom="15dp"
                 android:text="User" />
 
 
-            <TextView
-                android:id="@+id/textEntrada"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:text="Hora de entrada: "
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/horaEntradaTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="@string/voidHour"
-                android:textColor="@color/ipn" />
-
-            <TextView
-                android:id="@+id/textSalida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:text="Hora de salida: "
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/horaSalidaTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="@string/voidHour"
-                android:textColor="@color/ipn" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/UserNameConstrain"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textEntrada"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:text="Hora de entrada: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/horaEntradaTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/voidHour"
+                    android:textAlignment="center"
+                    android:textColor="@color/ipn" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textSalida"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:text="Hora de salida: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/horaSalidaTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/voidHour"
+                    android:textAlignment="center"
+                    android:textColor="@color/ipn" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
 
                 <TextView
                     android:id="@+id/textUsuario"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:text="Usuario: "
@@ -139,17 +142,13 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/UsuarioTextInput"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="0dp"
                     android:hint="Usuario"
                     android:textAlignment="center"
                     android:textColorHint="@color/ipn"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textUsuario"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -157,18 +156,18 @@
                         android:fontFamily="@font/abel"
                         android:textColor="@color/ipnNivel2" />
                 </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp">
 
                 <TextView
                     android:id="@+id/textContrasena"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:text="Contraseña: "
@@ -180,17 +179,12 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ContrasenaTextInput"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="0dp"
                     android:hint="Contraseña"
                     android:textAlignment="center"
-                    android:textColorHint="@color/ipn"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textContrasena"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:textColorHint="@color/ipn">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -198,9 +192,7 @@
                         android:fontFamily="@font/abel"
                         android:textColor="@color/ipnNivel2" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
