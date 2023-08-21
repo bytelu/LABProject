@@ -12,28 +12,24 @@
 
     <ImageView
         android:id="@+id/imageIconoCompu"
-        android:layout_width="365dp"
-        android:layout_height="321dp"
+        android:layout_width="362dp"
+        android:layout_height="318dp"
         android:transitionName="logoImageTrans"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/nuevoUsuario"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewBienvenido"
-        app:layout_constraintVertical_bias="0.331"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBienvenido"
         app:srcCompat="@drawable/icloo" />
 
     <ImageView
         android:id="@+id/imageIPN"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="20dp"
         android:transitionName="logoImageTrans"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/poliblanconegro" />
 
     <TextView
@@ -41,49 +37,40 @@
         style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/abel"
         android:text="Bienvenido al Laboratorio de Computación"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="28dp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:transitionName="textTrans"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.197" />
-
-    <TextView
-        android:id="@+id/textViewIniciarSesion"
-        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/abel"
-        android:text="Inicia sesión para continuar..."
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.023"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.342"
-        android:transitionName="iniciaSesionTextTrans"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageIPN" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="361dp"
-        android:layout_height="419dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nuevoUsuario"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBienvenido"
         tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/textViewIniciarSesion"
+            style="@style/Widget.AppCompat.TextView.SpinnerItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abel"
+            android:paddingBottom="10dp"
+            android:text="Inicia sesión para continuar..."
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:transitionName="iniciaSesionTextTrans" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/usuarioTextField"
@@ -92,8 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Usuario"
-            android:transitionName="usuarioInputTextTrans"
-            android:textColorHint="@android:color/black">
+            android:textColorHint="@android:color/black"
+            android:transitionName="usuarioInputTextTrans">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -110,8 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Contraseña"
-            android:transitionName="passwordInputTextTrans"
             android:textColorHint="@android:color/black"
+            android:transitionName="passwordInputTextTrans"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@android:color/black">
 
@@ -126,16 +113,15 @@
 
         <TextView
             android:id="@+id/olvidasteContra"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/abel"
-            android:minHeight="48dp"
             android:text="¿Olvidaste tu contraseña?"
             android:textAlignment="textStart"
             android:textColor="@android:color/black"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/inicioSesion"
@@ -144,26 +130,28 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="70dp"
             android:text="INICIAR SESION"
-            android:transitionName="buttonSignUpTrans"
             android:textColor="@color/white"
+            android:transitionName="buttonSignUpTrans"
             app:backgroundTint="@color/ipn" />
 
-        <TextView
-            android:id="@+id/nuevoUsuario"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/abel"
-            android:minHeight="48dp"
-            android:text="¿Eres nuevo? Registrate"
-            android:transitionName="newUserTrans"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/nuevoUsuario"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/abel"
+        android:text="¿Eres nuevo? Registrate"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:transitionName="newUserTrans"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
