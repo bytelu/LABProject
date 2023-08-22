@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -24,11 +23,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class FragmentoCrearIndividual extends Fragment {
 
     TextView nombreEnc, apePaEnc, apeMaEnc;
-    TextInputLayout horaEntrada, fechaEntrada;
     MaterialButton escanear;
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
@@ -45,9 +47,21 @@ public class FragmentoCrearIndividual extends Fragment {
         nombreEnc = view.findViewById(R.id.encNombre);
         apePaEnc = view.findViewById(R.id.encApeP);
         apeMaEnc = view.findViewById(R.id.encApeM);
-        // Asignando Variables a fecha y hora
-        horaEntrada = view.findViewById(R.id.horaEntradaTextView);
-        fechaEntrada = view.findViewById(R.id.fechaEntradaTextView);
+        // Obtener la referencia de los TextViews
+        TextView fechaEntradaTextView = view.findViewById(R.id.fechaEntradaTextView);
+        TextView horaEntradaTextView = view.findViewById(R.id.horaEntradaTextView);
+
+        // Obtén la fecha actual
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String fechaActual = dateFormat.format(new Date());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+        String horaActual = timeFormat.format(new Date());
+
+        // Establece la fecha actual en el TextView
+        fechaEntradaTextView.setText(fechaActual);
+        horaEntradaTextView.setText(horaActual);
+
+
         // Asignando variables al radiobutton
         laboratorio1 = view.findViewById(R.id.radioButtonLab1);
         laboratorio2 = view.findViewById(R.id.radioButtonLab2);

@@ -92,7 +92,7 @@
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="5dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:background="@drawable/vista_contorno">
@@ -101,24 +101,20 @@
                     android:id="@+id/horaEntradaID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hora de Entrada: "
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
+                    android:text="Hora: "
                     android:fontFamily="@font/abel"
                     android:textColor="@color/white"
-                    android:textSize="18dp"
-                    android:paddingStart="10dp"/>
+                    android:textSize="18dp"/>
 
                 <TextView
                     android:id="@+id/horaEntradaTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
                     android:fontFamily="@font/abel"
+                    android:text="20:29"
                     android:textColor="@color/white"
                     android:textSize="18dp"
-                    android:paddingStart="10dp"/>
+                    android:paddingStart="5dp"/>
 
             </LinearLayout>
 
@@ -126,7 +122,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -136,24 +132,20 @@
                     android:id="@+id/fechaEntradaID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hora de Entrada: "
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
+                    android:text="Fecha: "
                     android:fontFamily="@font/abel"
                     android:textColor="@color/white"
-                    android:textSize="18dp"
-                    android:paddingStart="10dp"/>
+                    android:textSize="18dp"/>
 
                 <TextView
                     android:id="@+id/fechaEntradaTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
                     android:fontFamily="@font/abel"
                     android:textColor="@color/white"
+                    android:text="10/29/2029"
                     android:textSize="18dp"
-                    android:paddingStart="10dp"/>
+                    android:paddingStart="5dp"/>
 
             </LinearLayout>
 
@@ -169,8 +161,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@color/white"
-            android:fontFamily="@font/abel"
             android:textSize="18dp"
+            android:textStyle="bold"
             android:paddingEnd="10dp"/>
 
         <LinearLayout
@@ -195,6 +187,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Laboratorio 1"
+                    android:textSize="18dp"
                     android:textColor="@color/white"
                     android:layout_marginEnd="10dp"/>
 
@@ -203,6 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Laboratorio 2"
+                    android:textSize="18dp"
                     android:textColor="@color/white"
                     android:layout_marginStart="10dp"/>
             </RadioGroup>
