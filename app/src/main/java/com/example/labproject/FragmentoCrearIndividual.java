@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ public class FragmentoCrearIndividual extends Fragment {
     TextView nombreEnc, apePaEnc, apeMaEnc;
     TextInputLayout horaEntrada, fechaEntrada;
     MaterialButton escanear;
+    RadioButton laboratorio1, laboratorio2;
+    private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
 
     public FragmentoCrearIndividual() {
         // Required empty public constructor
@@ -45,6 +48,20 @@ public class FragmentoCrearIndividual extends Fragment {
         // Asignando Variables a fecha y hora
         horaEntrada = view.findViewById(R.id.horaEntradaTextView);
         fechaEntrada = view.findViewById(R.id.fechaEntradaTextView);
+        // Asignando variables al radiobutton
+        laboratorio1 = view.findViewById(R.id.radioButtonLab1);
+        laboratorio2 = view.findViewById(R.id.radioButtonLab2);
+
+        View.OnClickListener radioClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRadioButtonClicked(view);
+            }
+        };
+
+        laboratorio1.setOnClickListener(radioClickListener);
+        laboratorio2.setOnClickListener(radioClickListener);
+
         // Asignado variable al boton
         escanear = view.findViewById(R.id.escanearBoton);
         escanear.setOnClickListener(new View.OnClickListener() {
@@ -96,5 +113,18 @@ public class FragmentoCrearIndividual extends Fragment {
         }
     }
 
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        if (checked) {
+            if (view == laboratorio1) {
+                radioButtonMessage = "Laboratorio 1 asignado";
+            } else if (view == laboratorio2) {
+                radioButtonMessage = "Laboratorio 2 asignado";
+            }
+        }
+
+        Toast.makeText(getActivity(), radioButtonMessage, Toast.LENGTH_SHORT).show();
+    }
 }
 
