@@ -215,5 +215,25 @@
             android:transitionName="buttonSignUpTrans"
             android:textColor="@color/black"
             app:background="@drawable/vista_contorno" />
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/botonGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:text="Guardar"
+            android:transitionName="buttonSignUpTrans"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+
 </FrameLayout>

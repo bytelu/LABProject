@@ -1,6 +1,8 @@
 package com.example.labproject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -40,14 +42,14 @@ public class FragmentoCrearIndividual extends Fragment {
 
     /*Conexion con BD*/
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //LUIS
+    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
     //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
     private static final String USERNAME = "ENCARGADO";
     private static final String PASSWORD = "ENCARGADO";
     SharedPreferences sharedPreferences;
 
     TextView nombreEnc, apePaEnc, apeMaEnc;
-    MaterialButton escanear;
+    MaterialButton escanear, guardar;
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
 
@@ -115,6 +117,16 @@ public class FragmentoCrearIndividual extends Fragment {
             }
         });
 
+        guardar = view.findViewById(R.id.botonGuardar);
+        guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Crea una instancia par Obtener el numero de computadora
+                ConsultaComputadora consultaCompu = new ConsultaComputadora();
+                consultaCompu.execute();
+                //mostrarComputadora("2019");
+            }
+        });
         return view;
     }
 
@@ -221,6 +233,135 @@ public class FragmentoCrearIndividual extends Fragment {
         }
 
         Toast.makeText(getActivity(), radioButtonMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private class ConsultaComputadora extends AsyncTask<Void, Void, String>{
+        @Override
+        protected String doInBackground(Void... voids) {
+            // Aquí realiza la consulta a la base de datos y obtén el mensaje
+            String computadora = "";
+            Connection connection = null;
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                // Preparar la consulta SQL para seleccionar la primera computadora disponible
+                String sql = "SELECT numero\n" +
+                        "FROM COMPUTADORA\n" +
+                        "WHERE estado = 1\n" +
+                        "AND ROWNUM = 1\n" +
+                        "AND ocupada = 0 \n" +
+                        "AND laboratorio = ?";
+                statement = connection.prepareStatement(sql);
+                Log.d("TAG", "RadioButton: "+ radioButtonMessage);
+                if (radioButtonMessage.equals("Laboratorio 1 asignado")){
+                    statement.setInt(1, 1);
+                    Log.d("TAG", "Este es laboratorio 1");
+                }else{
+                    statement.setInt(1, 2);
+                    Log.d("TAG", "Este es laboratorio 2");
+                }
+
+                // Ejecutar la consulta y obtener el resultado
+                resultSet = statement.executeQuery();
+
+                // Verificar si hay un resultado válido
+                if (resultSet.next()) {
+                    computadora = resultSet.getString("numero");
+                    Log.d("TAG", "Computadora: "+computadora);
+                }
+
+            }catch (Exception e){
+                Log.e("Error", "Error en la consulta: " + e.toString());
+            }finally {
+                // Cerrar los recursos
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error en la consultaa: " + e.toString());
+                }
+            }
+            return computadora;
+        }
+        protected void onPostExecute(String resultado){
+            // Aquí puedes llamar a un método para mostrar la ventana flotante con el resultado
+            Log.d("TAG", "On post Computadora: "+ resultado);
+            mostrarComputadora(resultado);
+            // Una vez que se mostró la computadora, ejecuta la AsyncTask para actualizar a computadora"ocupada"
+            ActualizarOcupada actualizarOcupada = new ActualizarOcupada(resultado);
+            actualizarOcupada.execute();
+
+        }
+    }
+
+    private class ActualizarOcupada extends AsyncTask<Void, Void, Void>{
+        private String numeroDeComputadora;
+
+        public ActualizarOcupada(String numeroDeComputadora) {
+            this.numeroDeComputadora = numeroDeComputadora;
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Connection connection = null;
+            PreparedStatement statement = null;
+            Log.d("TAG", "Computadora en Actualizar: "+ numeroDeComputadora);
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+                // Preparar la consulta SQL para actualizar la columna "ocupada" a 1
+                String sql = "UPDATE COMPUTADORA SET ocupada = 1 WHERE numero = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, numeroDeComputadora);
+
+                // Ejecutar la consulta para actualizar
+                statement.executeUpdate();
+
+            } catch (Exception e) {
+                Log.e("Error", "Error al actualizar ocupada: " + e.toString());
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e.toString());
+                }
+            }
+            return null;
+        }
+    }
+
+    private void mostrarComputadora(String mensaje) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Computadora Asignada");
+        builder.setMessage(mensaje);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Aquí puedes realizar acciones adicionales si el usuario hace clic en Aceptar
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
 
