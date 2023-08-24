@@ -15,8 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.EditText;
 
+import com.example.labproject.res.CData;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -24,16 +24,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class InicioActivity extends AppCompatActivity {
 
     /*Conexion con BD*/
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1"; //LUIS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
-    private static final String USERNAME = "ENCARGADO";
-    private static final String PASSWORD = "ENCARGADO";
+    private static final String DRIVER = CData.getDriver();
+    private static final String URL = CData.getUrl();
+    private static final String USERNAME = CData.getUsername();
+    private static final String PASSWORD = CData.getPassword();
 
     /*VARIABLES USADAS*/
     TextView bienvenidoLabel, continuarLabel, nuevoUsuario;
@@ -54,29 +52,26 @@ public class InicioActivity extends AppCompatActivity {
         inicioSesion = findViewById(R.id.inicioSesion);
         nuevoUsuario = findViewById(R.id.nuevoUsuario);
 
-        nuevoUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*esto solo son animaciones*/
-                Intent intent = new Intent(InicioActivity.this, RegistroActivity.class);
-                Pair[] pairs = new Pair[7];
-                pairs[0] = new Pair<View, String>(imageCompu, "logoImageTrans");
-                pairs[1] = new Pair<View, String>(bienvenidoLabel, "texTrans");
-                pairs[2] = new Pair<View, String>(continuarLabel, "iniciaSesionTextTrans");
-                pairs[3] = new Pair<View, String>(usuarioTextField, "usuarioInputTextTrans");
-                pairs[4] = new Pair<View, String>(contraseniaTextField, "passwordInputTextTrans");
-                pairs[5] = new Pair<View, String>(inicioSesion, "buttonSignUpTrans");
-                pairs[6] = new Pair<View, String>(nuevoUsuario, "newUserTrans");
+        nuevoUsuario.setOnClickListener(view -> {
+            /*esto solo son animaciones*/
+            Intent intent = new Intent(InicioActivity.this, RegistroActivity.class);
+            Pair[] pairs = new Pair[7];
+            pairs[0] = new Pair<View, String>(imageCompu, "logoImageTrans");
+            pairs[1] = new Pair<View, String>(bienvenidoLabel, "texTrans");
+            pairs[2] = new Pair<View, String>(continuarLabel, "iniciaSesionTextTrans");
+            pairs[3] = new Pair<View, String>(usuarioTextField, "usuarioInputTextTrans");
+            pairs[4] = new Pair<View, String>(contraseniaTextField, "passwordInputTextTrans");
+            pairs[5] = new Pair<View, String>(inicioSesion, "buttonSignUpTrans");
+            pairs[6] = new Pair<View, String>(nuevoUsuario, "newUserTrans");
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                    /*solo comprueba si puede realizar la animacion*/
-                    ActivityOptions options= ActivityOptions.makeSceneTransitionAnimation(InicioActivity.this,pairs);
-                    startActivity(intent, options.toBundle());
-                }else{
-                    /*si esta correcto ingresa al nuevo activity que es el de registro  lineas de abajo*/
-                    startActivity(intent);
-                    finish();
-                }
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                /*solo comprueba si puede realizar la animacion*/
+                ActivityOptions options= ActivityOptions.makeSceneTransitionAnimation(InicioActivity.this,pairs);
+                startActivity(intent, options.toBundle());
+            }else{
+                /*si esta correcto ingresa al nuevo activity que es el de registro  lineas de abajo*/
+                startActivity(intent);
+                finish();
             }
         });
 

@@ -23,12 +23,14 @@ import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.Locale;
 
+import com.example.labproject.res.CData;
+
 public class FragmentoCrearReporte extends Fragment {
 
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1";
-    private static final String USERNAME = "ENCARGADO";
-    private static final String PASSWORD = "ENCARGADO";
+    private static final String DRIVER = CData.getDriver();
+    private static final String URL = CData.getUrl();
+    private static final String USERNAME = CData.getUsername();
+    private static final String PASSWORD = CData.getPassword();
 
     private TextInputLayout tituloTextInput, computadoraTextInput, descripcionTextInput;
 

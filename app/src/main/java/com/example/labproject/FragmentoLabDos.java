@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.labproject.res.CData;
 import com.example.labproject.sesiongrupallab1.ListaSesionGrupalLabUnoAdapter;
 import com.example.labproject.sesiongrupallab1.SesionGrupalLaboratorioUno;
 
@@ -26,12 +27,10 @@ import java.util.ArrayList;
 
 public class FragmentoLabDos extends Fragment implements SearchView.OnQueryTextListener {
     /*Conexion con BD*/
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1"; //LUIS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
-    private static final String USERNAME = "ENCARGADO";
-    private static final String PASSWORD = "ENCARGADO";
+    private static final String DRIVER = CData.getDriver();
+    private static final String URL = CData.getUrl();
+    private static final String USERNAME = CData.getUsername();
+    private static final String PASSWORD = CData.getPassword();
     TextView txtNombreEnc2,txtEncApeP2,txtEncApeM2, txtNombreProf2, txtProfApeP2, txtProfApeM2, txtFecha2, txtEntrada2, txtSalida2;
 
     SearchView txtBuscar;
