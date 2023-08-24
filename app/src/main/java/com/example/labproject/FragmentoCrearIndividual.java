@@ -52,6 +52,7 @@ public class FragmentoCrearIndividual extends Fragment {
     MaterialButton escanear, guardar;
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
+    private String nombre = "", boleta = "", carrera="";
 
     public FragmentoCrearIndividual() {
         // Required empty public constructor
@@ -130,6 +131,7 @@ public class FragmentoCrearIndividual extends Fragment {
         return view;
     }
 
+    //CONSULTA A LA BASE DE DATOS PARA OBTENER NOMBRE DE ENCARGADO (1)
     private class ConsultaBaseDatosTask extends AsyncTask<String, Void, String[]>{
         @Override
         protected String[] doInBackground(String... strings) {
@@ -189,6 +191,9 @@ public class FragmentoCrearIndividual extends Fragment {
             }
         }
     }
+    //BOTON PARA ESCANEAR QR AQUI OBTENEMOS NOMBRE COMPLETO (debemos separarlo y dividirlo en apellidos)
+    // obtenemos carrera y obtenemos boleta.
+    //LO RECOMENDABLE ES AQUI DESPUES DE OBTENER ESOS DATOS REALIZAR UN REGISTRO DEL ALUMNO A LA BASE DE DATOS
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -209,10 +214,13 @@ public class FragmentoCrearIndividual extends Fragment {
                     Element boletaElement = doc.selectFirst(".boleta");
                     Element carreraElement = doc.selectFirst(".carrera");
 
-                    String nombre = nombreElement != null ? nombreElement.text() : "Nombre no encontrado";
-                    String boleta = boletaElement != null ? boletaElement.text() : "Boleta no encontrada";
-                    String carrera = carreraElement != null ? carreraElement.text() : "Carrera no encontrada";
+                    nombre = nombreElement != null ? nombreElement.text() : "Nombre no encontrado";
+                    boleta = boletaElement != null ? boletaElement.text() : "Boleta no encontrada";
+                    carrera = carreraElement != null ? carreraElement.text() : "Carrera no encontrada";
 
+                    //aqui separar el nombre completo en : nombre,apePA, apeMA.
+
+                    //despues llamar a la funcion y crear la consulta de insertar o comparar si ya esta registrado
 
                 } catch (IOException e){
                     e.printStackTrace();
@@ -221,6 +229,7 @@ public class FragmentoCrearIndividual extends Fragment {
         }
     }
 
+    //CLASE SOLO PARA EL RADIOBUTTON PARA SABER SI ELIGIO EL LAB 1 O LAB 2
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -235,6 +244,8 @@ public class FragmentoCrearIndividual extends Fragment {
         Toast.makeText(getActivity(), radioButtonMessage, Toast.LENGTH_SHORT).show();
     }
 
+    //CLASE PARA SABER QUE COMPUTADORA SE LE ASIGNO DE AHI MOVERNOS A "ACTUALIZAR COMPUTADORA"
+    //PARA PONERLA EN OCUPADA
     private class ConsultaComputadora extends AsyncTask<Void, Void, String>{
         @Override
         protected String doInBackground(Void... voids) {
@@ -305,6 +316,8 @@ public class FragmentoCrearIndividual extends Fragment {
         }
     }
 
+    //CLASE PARA PONER LA COMPUTADORA A OCUPADA Y DE AHI MOVERNOS A CREAR SESION YA CON TODOS LOS DATOS
+    // Y EL REGISTRO DEL ALUMNO OBTENIDOS
     private class ActualizarOcupada extends AsyncTask<Void, Void, Void>{
         private String numeroDeComputadora;
 
@@ -347,8 +360,23 @@ public class FragmentoCrearIndividual extends Fragment {
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            CrearSesion crearSesion = new CrearSesion();
+            crearSesion.execute();
+        }
+    }
+    //CLASE PARA CREAR LA SESION DEL ALUMNO QUE INGRESO
+    private class CrearSesion extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
     }
 
+    //ESTE ES SOLO PARA EL MENSAJE DE QUE COMPUTADORA SE LE ASIGNO
     private void mostrarComputadora(String mensaje) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Computadora Asignada");
