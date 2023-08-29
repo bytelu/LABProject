@@ -44,15 +44,15 @@ public class FragmentoCrearIndividual extends Fragment {
     /*Conexion con BD*/
     private static final String DRIVER = CData.getDriver();
     private static final String URL = CData.getUrl();
-    private static final String USERNAME = CData.getUrl();
+    private static final String USERNAME = CData.getUsername();
     private static final String PASSWORD = CData.getPassword();
     SharedPreferences sharedPreferences;
 
-    TextView nombreEnc, apePaEnc, apeMaEnc;
+    TextView nombreEnc, apePaEnc, apeMaEnc, nombreAlu, apePaAlu, apeMaAlu, carreraAlu, boletaAlu;
     MaterialButton escanear, guardar;
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
-    private String nombre = "", boleta = "", carrera="";
+    private String nombre = "Anastacio Dario", boleta = "2020351196", carrera="Ingenieria en Computación";
 
     public FragmentoCrearIndividual() {
         // Required empty public constructor
@@ -118,6 +118,21 @@ public class FragmentoCrearIndividual extends Fragment {
             }
         });
 
+        /*---------------------------------------------------*/
+        //ASIGNACION DE VARIABLES DE ALUMNOS
+        nombreAlu = view.findViewById(R.id.nombreAlu);
+        apePaAlu = view.findViewById(R.id.apePaternoAlu);
+        apeMaAlu = view.findViewById(R.id.apeMaAlu);
+        carreraAlu = view.findViewById(R.id.carreraAlu);
+        boletaAlu = view.findViewById(R.id.boletaAlu);
+
+        nombreAlu.setText(nombre);
+        apePaAlu.setText("Gutierrez");
+        apeMaAlu.setText("Quintana");
+        boletaAlu.setText(boleta);
+        carreraAlu.setText(carrera);
+        /*----------------------------------------------------*/
+
         guardar = view.findViewById(R.id.botonGuardar);
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +159,7 @@ public class FragmentoCrearIndividual extends Fragment {
             try {
                 // Cargar el controlador JDBC de Oracle
                 Class.forName(DRIVER);
-                // Establecer la conexión a la base de datos
+                // Establecer la conexion a la base de datos
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar los encargados
                 String sql = "SELECT nombre, apellido_p, apellido_m FROM ENCARGADO WHERE usuario = ?";
@@ -221,6 +236,7 @@ public class FragmentoCrearIndividual extends Fragment {
                     //aqui separar el nombre completo en : nombre,apePA, apeMA.
 
                     //despues llamar a la funcion y crear la consulta de insertar o comparar si ya esta registrado
+                    //aqui debo tener ApePa, apeMa, nombre, carrera, boleta, debo mandar todos esos archivos a
 
                 } catch (IOException e){
                     e.printStackTrace();
