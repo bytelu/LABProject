@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.labproject.res.CData;
 import com.google.android.material.button.MaterialButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -41,11 +42,10 @@ import java.util.Locale;
 public class FragmentoCrearIndividual extends Fragment {
 
     /*Conexion con BD*/
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.100.74:1521/XEPDB1"; //LUIS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
-    private static final String USERNAME = "ENCARGADO";
-    private static final String PASSWORD = "ENCARGADO";
+    private static final String DRIVER = CData.getDriver();
+    private static final String URL = CData.getUrl();
+    private static final String USERNAME = CData.getUrl();
+    private static final String PASSWORD = CData.getPassword();
     SharedPreferences sharedPreferences;
 
     TextView nombreEnc, apePaEnc, apeMaEnc;
