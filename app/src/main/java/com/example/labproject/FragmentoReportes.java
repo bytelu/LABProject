@@ -23,15 +23,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.example.labproject.res.CData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FragmentoReportes extends Fragment implements SearchView.OnQueryTextListener {
     /*Conexion con BD*/
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1"; //LUIS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
-    private static final String USERNAME = "ENCARGADO";
-    private static final String PASSWORD = "ENCARGADO";
+    private static final String DRIVER = CData.getDriver();
+    private static final String URL = CData.getUrl();
+    private static final String USERNAME = CData.getUsername();
+    private static final String PASSWORD = CData.getPassword();
     SearchView textBuscarRep;
     ListaReporteAdapter adapter;
     RecyclerView listareportes;
@@ -143,7 +143,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
                     listaReportes.add(reportitos);
                 }
             } catch (Exception e){
-                Log.e("Error", "Error en la consulta: " + e.toString());
+                Log.e("Error", "Error en la consulta: " + e);
             }finally{
                 // Cerrar los recursos
                 try {
@@ -157,7 +157,7 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
                         connection.close();
                     }
                 } catch (Exception e) {
-                    Log.e("Error", "Error al cerrar la conexion: " + e.toString());
+                    Log.e("Error", "Error al cerrar la conexion: " + e);
                 }
             }
             return listaReportes;

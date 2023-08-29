@@ -4,14 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="65dp"
+    android:layout_marginBottom="70dp"
     tools:context=".FragmentProfessors">
+
+    <TextView
+        android:id="@+id/tituloProfesores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profesores"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:padding="16dp" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/txtBuscarProfesores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="6dp"
+        android:background="@drawable/searchview_contorno"
+
+        app:searchIcon="?android:attr/actionModeWebSearchDrawable" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listProfesoresRecyclerView"
-        android:layout_width="409dp"
-        android:layout_height="624dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="60dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"

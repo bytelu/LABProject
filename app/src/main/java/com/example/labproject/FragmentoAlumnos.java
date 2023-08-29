@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.example.labproject.alumnos.Alumno;
 import com.example.labproject.alumnos.ListaAlumnosAdapter;
+import com.example.labproject.res.CData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,16 +27,14 @@ import java.util.ArrayList;
 public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryTextListener {
 
     /*Conexion con BD*/
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String URL = "jdbc:oracle:thin:@192.168.1.13:1521/XEPDB1"; //LUIS
-    //private static final String URL = "jdbc:oracle:thin:@192.168.3.11:1521/XEPDB1"; //SERVICIO SOCIAL
-    private static final String USERNAME = "ENCARGADO";
-    private static final String PASSWORD = "ENCARGADO";
+    private static final String DRIVER = CData.getDriver();
+    private static final String URL = CData.getUrl();
+    private static final String USERNAME = CData.getUsername();
+    private static final String PASSWORD = CData.getPassword();
 
     SearchView textBuscarAlum;
     ListaAlumnosAdapter adapter;
     RecyclerView listaalumnos;
-    ArrayList<Alumno> listaArrayAlumnos;
 
 
     public FragmentoAlumnos() {
@@ -110,7 +109,7 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
                     listaAlumnos.add(alumnitos);
                 }
             } catch (Exception e){
-                Log.e("Error", "Error en la consulta: " + e.toString());
+                Log.e("Error", "Error en la consulta: " + e);
             }finally{
                 // Cerrar los recursos
                 try {
@@ -124,7 +123,7 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
                         connection.close();
                     }
                 } catch (Exception e) {
-                    Log.e("Error", "Error al cerrar la conexion: " + e.toString());
+                    Log.e("Error", "Error al cerrar la conexion: " + e);
                 }
             }
             return listaAlumnos;
