@@ -53,7 +53,7 @@ public class FragmentoCrearIndividual extends Fragment {
     MaterialButton escanear, guardar;
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
-    private String nombre = "Anastacio Dario", boleta = "2020351196", carrera="Ingenieria en Computación";
+    private String nombre = "", boleta = "", carrera="", apePa="", apeMa="";
 
     public FragmentoCrearIndividual() {
         // Required empty public constructor
@@ -103,7 +103,7 @@ public class FragmentoCrearIndividual extends Fragment {
         laboratorio1.setOnClickListener(radioClickListener);
         laboratorio2.setOnClickListener(radioClickListener);
 
-        // Asignado variable al boton
+        // Asignado variable al boton de alumno
         escanear = view.findViewById(R.id.escanearBoton);
         escanear.setOnClickListener(view1 -> {
 
@@ -123,12 +123,6 @@ public class FragmentoCrearIndividual extends Fragment {
         apeMaAlu = view.findViewById(R.id.apeMaAlu);
         carreraAlu = view.findViewById(R.id.carreraAlu);
         boletaAlu = view.findViewById(R.id.boletaAlu);
-
-        nombreAlu.setText(nombre);
-        apePaAlu.setText("Gutierrez");
-        apeMaAlu.setText("Quintana");
-        boletaAlu.setText(boleta);
-        carreraAlu.setText(carrera);
         /*----------------------------------------------------*/
 
         guardar = view.findViewById(R.id.botonGuardar);
@@ -138,7 +132,14 @@ public class FragmentoCrearIndividual extends Fragment {
                 // Crea una instancia par Obtener el numero de computadora
                 ConsultaComputadora consultaCompu = new ConsultaComputadora();
                 consultaCompu.execute();
+                Toast.makeText(requireContext(), "Alumno " + nombre + "Registrado", Toast.LENGTH_SHORT).show();
+                nombreAlu.setText("");
+                apePaAlu.setText("");
+                apeMaAlu.setText("");
+                boletaAlu.setText("");
+                carreraAlu.setText("");
                 //mostrarComputadora("2019");
+
             }
         });
         return view;
@@ -204,9 +205,9 @@ public class FragmentoCrearIndividual extends Fragment {
             }
         }
     }
-    //BOTON PARA ESCANEAR QR AQUI OBTENEMOS NOMBRE COMPLETO (debemos separarlo y dividirlo en apellidos)
-    // obtenemos carrera y obtenemos boleta.
-    //LO RECOMENDABLE ES AQUI DESPUES DE OBTENER ESOS DATOS REALIZAR UN REGISTRO DEL ALUMNO A LA BASE DE DATOS
+    /*BOTON PARA ESCANEAR QR AQUI OBTENEMOS NOMBRE COMPLETO (debemos separarlo y dividirlo en apellidos)
+     obtenemos carrera y obtenemos boleta.
+    LO RECOMENDABLE ES AQUI DESPUES DE OBTENER ESOS DATOS REALIZAR UN REGISTRO DEL ALUMNO A LA BASE DE DATOS */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -234,14 +235,14 @@ public class FragmentoCrearIndividual extends Fragment {
                     //aqui separar el nombre completo en : nombre,apePA, apeMA.
                     List<String> fullname = parse.nameParser(nombre);
                     nombre = fullname.get(0);
-                    String apePa = fullname.get(1);
-                    String apeMa = fullname.get(2);
-
-
-
-                    //despues llamar a la funcion y crear la consulta de insertar o comparar si ya esta registrado
-                    //aqui debo tener ApePa, apeMa, nombre, carrera, boleta, debo mandar todos esos archivos a
-
+                    apePa = fullname.get(1);
+                    apeMa = fullname.get(2);
+                    /*------------------ DATOS PARA MOSTRAR --------------------*/
+                    nombreAlu.setText(nombre);
+                    apePaAlu.setText(apePa);
+                    apeMaAlu.setText(apeMa);
+                    boletaAlu.setText(boleta);
+                    carreraAlu.setText(carrera);
                 } catch (IOException e){
                     e.printStackTrace();
                 }

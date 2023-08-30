@@ -1,64 +1,357 @@
 package com.example.labproject;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentoCrearGrupal#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.labproject.res.CData;
+import com.google.android.material.button.MaterialButton;
+import com.google.zxing.integration.android.IntentIntegrator;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class FragmentoCrearGrupal extends Fragment {
+    /*Conexion con BD*/
+    private static final String DRIVER = CData.getDriver();
+    private static final String URL = CData.getUrl();
+    private static final String USERNAME = CData.getUsername();
+    private static final String PASSWORD = CData.getPassword();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    SharedPreferences sharedPreferences;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    TextView nombreEnc, apePaEnc, apeMaEnc, nombreAlu, apePaAlu, apeMaAlu, carreraAlu, boletaAlu, nombreProf, apePaProf, apeMaProf, boletaProf;
+    MaterialButton escanear, escanearProf, guardar;
+    RadioButton laboratorio1, laboratorio2;
+    private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
+    private String nombre = "", boleta = "", carrera="", apePa="", apeMa="", nombreP="", apePaP="", apeMaP="", boletaP="";
 
     public FragmentoCrearGrupal() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentoCrearGrupal.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentoCrearGrupal newInstance(String param1, String param2) {
-        FragmentoCrearGrupal fragment = new FragmentoCrearGrupal();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragmento_crear_grupal, container, false);
+        View view = inflater.inflate(R.layout.fragment_fragmento_crear_grupal, container, false);
+        // ASIGNACION DE MOSTRAR NOMBRE DEL ENCARGADO
+        sharedPreferences = requireContext().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        nombreEnc = view.findViewById(R.id.encNombre);
+        apePaEnc = view.findViewById(R.id.encApeP);
+        apeMaEnc = view.findViewById(R.id.encApeM);
+        String nombreUsuario = sharedPreferences.getString("usuario", "");
+
+        if(!nombreUsuario.isEmpty()){
+            new ConsultaBaseDatosTask().execute(nombreUsuario);
+        }
+
+        // ASIGNACION DE HORA Y FECHA ACTUALES
+        TextView fechaEntradaTextView = view.findViewById(R.id.fechaEntradaTextView);
+        TextView horaEntradaTextView = view.findViewById(R.id.horaEntradaTextView);
+
+        // Obtén la fecha actual
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String fechaActual = dateFormat.format(new Date());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        String horaActual = timeFormat.format(new Date());
+
+        // Establece la fecha actual en el TextView
+        fechaEntradaTextView.setText(fechaActual);
+        horaEntradaTextView.setText(horaActual);
+
+        // Asignando variables al radiobutton
+        laboratorio1 = view.findViewById(R.id.radioButtonLab1);
+        laboratorio2 = view.findViewById(R.id.radioButtonLab2);
+
+        View.OnClickListener radioClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRadioButtonClicked(view);
+            }
+        };
+
+        laboratorio1.setOnClickListener(radioClickListener);
+        laboratorio2.setOnClickListener(radioClickListener);
+
+        // Asignado variable al boton de profesor
+        escanearProf = view.findViewById(R.id.escanearProfBoton);
+        escanearProf.setOnClickListener(view1 -> {
+            // Aqui se manda a llamar a la camara
+            IntentIntegrator integrator = IntentIntegrator.forSupportFragment(FragmentoCrearGrupal.this);
+            integrator.setPrompt("Escanear Codigo QR para Profesor");
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+            integrator.setCameraId(0);
+            integrator.initiateScan();
+        });
+        /*----------------------------------------------------*/
+        //ASIGNACION DE VARIABLES DE PROFESOR
+        nombreProf = view.findViewById(R.id.profNombre);
+        apePaProf= view.findViewById(R.id.profApeP);
+        apeMaProf = view.findViewById(R.id.profApeM);
+        /*----------------------------------------------------*/
+
+        // Asignado variable al boton de alumno
+        escanear = view.findViewById(R.id.escanearBoton);
+        escanear.setOnClickListener(view1 -> {
+            // Aqui se manda a llamar a la camara
+            IntentIntegrator integrator = IntentIntegrator.forSupportFragment(FragmentoCrearGrupal.this);
+            integrator.setPrompt("Escanear Codigo QR para Alumno");
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+            integrator.setCameraId(0);
+            integrator.initiateScan();
+        });
+
+        /*----------------------------------------------------*/
+        //ASIGNACION DE VARIABLES DE ALUMNOS
+        nombreAlu = view.findViewById(R.id.nombreAlu);
+        apePaAlu = view.findViewById(R.id.apePaternoAlu);
+        apeMaAlu = view.findViewById(R.id.apeMaAlu);
+        carreraAlu = view.findViewById(R.id.carreraAlu);
+        boletaAlu = view.findViewById(R.id.boletaAlu);
+        /*----------------------------------------------------*/
+        guardar = view.findViewById(R.id.botonGuardar);
+        guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Crea una instancia par Obtener el numero de computadora
+                FragmentoCrearGrupal.ConsultaComputadora consultaCompu = new FragmentoCrearGrupal.ConsultaComputadora();
+                consultaCompu.execute();
+                Toast.makeText(requireContext(), "Alumno " + nombre + "Registrado", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return view;
     }
+
+    private class ConsultaBaseDatosTask extends AsyncTask<String, Void, String[]>{
+
+        @Override
+        protected String[] doInBackground(String... strings) {
+            String nombreUsuario = strings[0];
+            String[] nombresApellidos = new String[3];
+            Connection connection = null;
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexion a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                // Preparar la consulta SQL para seleccionar los encargados
+                String sql = "SELECT nombre, apellido_p, apellido_m FROM ENCARGADO WHERE usuario = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, nombreUsuario);
+
+                // Ejecutar la consulta y obtener el resultado
+                resultSet = statement.executeQuery();
+
+                // Verificar si hay un resultado válido
+                if (resultSet.next()) {
+                    nombresApellidos[0] = resultSet.getString("nombre");
+                    nombresApellidos[1] = resultSet.getString("apellido_p");
+                    nombresApellidos[2] = resultSet.getString("apellido_m");
+                }
+
+            }catch (Exception e){
+                Log.e("Error", "Error en la consulta: " + e.toString());
+            }finally {
+                // Cerrar los recursos
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error en la consulta: " + e.toString());
+                }
+            }
+            return nombresApellidos;
+        }
+
+        @Override
+        protected void onPostExecute(String[] nombresApellidos) {
+            super.onPostExecute(nombresApellidos);
+            if (nombresApellidos != null) {
+                nombreEnc.setText(nombresApellidos[0]);
+                apePaEnc.setText(nombresApellidos[1]);
+                apeMaEnc.setText(nombresApellidos[2]);
+            }
+        }
+    }
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        if (checked) {
+            if (view == laboratorio1) {
+                radioButtonMessage = "Laboratorio 1 asignado";
+            } else if (view == laboratorio2) {
+                radioButtonMessage = "Laboratorio 2 asignado";
+            }
+        }
+
+        Toast.makeText(getActivity(), radioButtonMessage, Toast.LENGTH_SHORT).show();
+    }
+    private class ConsultaComputadora extends AsyncTask<Void, Void, String>{
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            // Aquí realiza la consulta a la base de datos y obtén el mensaje
+            String computadora = "";
+            Connection connection = null;
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                // Preparar la consulta SQL para seleccionar la primera computadora disponible
+                String sql = "SELECT numero\n" +
+                        "FROM COMPUTADORA\n" +
+                        "WHERE estado = 1\n" +
+                        "AND ROWNUM = 1\n" +
+                        "AND ocupada = 0 \n" +
+                        "AND laboratorio = ?";
+                statement = connection.prepareStatement(sql);
+                Log.d("TAG", "RadioButton: "+ radioButtonMessage);
+                if (radioButtonMessage.equals("Laboratorio 1 asignado")){
+                    statement.setInt(1, 1);
+                    Log.d("TAG", "Este es laboratorio 1");
+                }else{
+                    statement.setInt(1, 2);
+                    Log.d("TAG", "Este es laboratorio 2");
+                }
+
+                // Ejecutar la consulta y obtener el resultado
+                resultSet = statement.executeQuery();
+
+                // Verificar si hay un resultado válido
+                if (resultSet.next()) {
+                    computadora = resultSet.getString("numero");
+                    Log.d("TAG", "Computadora: "+computadora);
+                }
+
+            }catch (Exception e){
+                Log.e("Error", "Error en la consulta: " + e.toString());
+            }finally {
+                // Cerrar los recursos
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error en la consultaa: " + e.toString());
+                }
+            }
+            return computadora;
+        }
+
+        @Override
+        protected void onPostExecute(String resultado) {
+            super.onPostExecute(resultado);
+            // Aquí puedes llamar a un método para mostrar la ventana flotante con el resultado
+            Log.d("TAG", "On post Computadora: "+ resultado);
+            mostrarComputadora(resultado);
+            // Una vez que se mostró la computadora, ejecuta la AsyncTask para actualizar a computadora"ocupada"
+            FragmentoCrearGrupal.ActualizarOcupada actualizarOcupada = new FragmentoCrearGrupal.ActualizarOcupada(resultado);
+            actualizarOcupada.execute();
+        }
+    }
+    private class ActualizarOcupada extends  AsyncTask<Void, Void, Void>{
+        private String numeroDeComputadora;
+        public ActualizarOcupada(String numeroDeComputadora){
+            this.numeroDeComputadora = numeroDeComputadora;
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Connection connection = null;
+            PreparedStatement statement = null;
+            Log.d("TAG", "Computadora en Actualizar: "+ numeroDeComputadora);
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+                // Preparar la consulta SQL para actualizar la columna "ocupada" a 1
+                String sql = "UPDATE COMPUTADORA SET ocupada = 1 WHERE numero = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, numeroDeComputadora);
+
+                // Ejecutar la consulta para actualizar
+                statement.executeUpdate();
+
+            } catch (Exception e) {
+                Log.e("Error", "Error al actualizar ocupada: " + e.toString());
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e.toString());
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+        }
+    }
+    private void mostrarComputadora(String mensaje){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Computadora Asignada");
+        builder.setMessage(mensaje);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Aquí puedes realizar acciones adicionales si el usuario hace clic en Aceptar
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private class CrearSesion extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+    }
+
 }

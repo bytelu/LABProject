@@ -3,14 +3,453 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentoCrearGrupal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentoCrearGrupal"
+    android:layout_marginTop="25dp"
+    android:layout_marginBottom="65dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="SESION GRUPAL"
-        android:textSize="18sp"
-        android:textColor="@color/black" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_background_enc">
 
+        <TextView
+            android:id="@+id/sesionGrupal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Creando Sesion Grupal"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
+
+        <!-- Fila de Profesor -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/vista_contorno">
+
+            <TextView
+                android:id="@+id/profNombreID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Profesor: "
+                android:fontFamily="@font/abel"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:paddingStart="10dp"/>
+
+            <TextView
+                android:id="@+id/profNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/profApeP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/profApeM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:textSize="18dp"
+                android:paddingEnd="10dp"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/escanearProfBoton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="ESCANEAR PROFESOR"
+            android:transitionName="buttonSignUpTrans"
+            android:textColor="@color/black"
+            app:background="@drawable/vista_contorno" />
+
+        <!-- Fila de encargado -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/vista_contorno">
+
+            <TextView
+                android:id="@+id/encNombreID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Encargado: "
+                android:fontFamily="@font/abel"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:paddingStart="10dp"/>
+
+            <TextView
+                android:id="@+id/encNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/encApeP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/encApeM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:textSize="18dp"
+                android:paddingEnd="10dp"/>
+        </LinearLayout>
+
+        <!--FIla de hora entrada y fecha entrada-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/vista_contorno">
+
+                <TextView
+                    android:id="@+id/horaEntradaID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hora: "
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"/>
+
+                <TextView
+                    android:id="@+id/horaEntradaTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abel"
+                    android:text="20:29"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:paddingStart="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/vista_contorno">
+
+                <TextView
+                    android:id="@+id/fechaEntradaID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha: "
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"/>
+
+                <TextView
+                    android:id="@+id/fechaEntradaTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/white"
+                    android:text="10/29/2029"
+                    android:textSize="18dp"
+                    android:paddingStart="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewElegir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Laboratorio a Asignar"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingEnd="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <RadioGroup
+                android:id="@+id/radioGroupLaboratorio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtonLab1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Laboratorio 1"
+                    android:textSize="18dp"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioButtonLab2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Laboratorio 2"
+                    android:textSize="18dp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="10dp"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/escanearBoton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="ESCANEAR ALUMNO"
+            android:transitionName="buttonSignUpTrans"
+            android:textColor="@color/black"
+            app:background="@drawable/vista_contorno" />
+
+
+    </LinearLayout>
+    <!-- Datos obtenidos despues del web Scraping -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_enc"
+        android:orientation="vertical"
+        android:layout_marginTop="420dp">
+
+        <TextView
+            android:id="@+id/tituloGenerales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="Datos del alumno"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nombreAlu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:text="Nombre(s)"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/apePaternoAlu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:text="Apellido Paterno"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/apeMaAlu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/abel"
+                android:text="Apellido Materno"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_background_enc"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imagenLaboratorio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/iclogoo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/carreraID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="Carrera: "
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/carreraAlu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/abel"
+                        android:text="Nombre de la Carrera"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <!-- Fila de Hora de entrada y Salida -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No. Boleta:"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/boletaAlu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="@font/abel"
+                            android:text="Numero de boleta"
+                            android:textColor="@color/white"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Boton de guardar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/botonGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:text="Guardar"
+            android:textColor="@color/black" />
+    </LinearLayout>
 </FrameLayout>
