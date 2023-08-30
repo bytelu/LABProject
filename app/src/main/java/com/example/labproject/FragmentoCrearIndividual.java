@@ -35,9 +35,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import com.example.labproject.NameParser.parse;
 
 public class FragmentoCrearIndividual extends Fragment {
 
@@ -104,18 +105,15 @@ public class FragmentoCrearIndividual extends Fragment {
 
         // Asignado variable al boton
         escanear = view.findViewById(R.id.escanearBoton);
-        escanear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        escanear.setOnClickListener(view1 -> {
 
-                // Aqui se manda a llamar a la camara
+            // Aqui se manda a llamar a la camara
 
-                IntentIntegrator integrator = IntentIntegrator.forSupportFragment(FragmentoCrearIndividual.this);
-                integrator.setPrompt("Escanear Codigo QR");
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                integrator.setCameraId(0);
-                integrator.initiateScan();
-            }
+            IntentIntegrator integrator = IntentIntegrator.forSupportFragment(FragmentoCrearIndividual.this);
+            integrator.setPrompt("Escanear Codigo QR");
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+            integrator.setCameraId(0);
+            integrator.initiateScan();
         });
 
         /*---------------------------------------------------*/
@@ -234,6 +232,12 @@ public class FragmentoCrearIndividual extends Fragment {
                     carrera = carreraElement != null ? carreraElement.text() : "Carrera no encontrada";
 
                     //aqui separar el nombre completo en : nombre,apePA, apeMA.
+                    List<String> fullname = parse.nameParser(nombre);
+                    nombre = fullname.get(0);
+                    String apePa = fullname.get(1);
+                    String apeMa = fullname.get(2);
+
+
 
                     //despues llamar a la funcion y crear la consulta de insertar o comparar si ya esta registrado
                     //aqui debo tener ApePa, apeMa, nombre, carrera, boleta, debo mandar todos esos archivos a
