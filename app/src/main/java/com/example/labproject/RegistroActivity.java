@@ -193,7 +193,7 @@ public class RegistroActivity extends AppCompatActivity {
 
     private boolean verificarRegistros(String Usuario){
         try {
-            // Cargar el controlador JDBC de Oracle
+            // Cargar el controlador JDBC de MySQL
             Class.forName(DRIVER);
             // Establecer la conexión a la base de datos
             Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -217,8 +217,11 @@ public class RegistroActivity extends AppCompatActivity {
             // Si count es mayor que 0, significa que el usuario ya está registrado
             return count > 0;
 
-        } catch (Exception e) {
-            Log.e("Error", "Error en la consulta: " + e.toString());
+        } catch (ClassNotFoundException e) {
+            Log.e("Error", "Clase no encontrada: " + e);
+        }
+        catch (Exception e) {
+            Log.e("Error", "Error en la consulta: " + e);
         }
 
         // En caso de algún error, consideramos que el usuario no está registrado
@@ -228,7 +231,7 @@ public class RegistroActivity extends AppCompatActivity {
     private boolean registrarUsuario(String apellido_p, String apellido_m, String nombre, String usuario, String contrasenia){
         try {
             // Cargar el controlador JDBC de Oracle
-            Class.forName(DRIVER);
+            Class.forName(DRIVER).newInstance();
             // Establecer la conexión a la base de datos
             Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             // Preparar la consulta SQL INSERT
