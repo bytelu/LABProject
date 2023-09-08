@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -34,7 +33,7 @@ public class FragmentoCrearReporte extends Fragment {
     private static final String USERNAME = CData.getUsername();
     private static final String PASSWORD = CData.getPassword();
 
-    private static String laboratorio;
+    private static String laboratorio = "";
 
     private TextInputLayout tituloTextInput, computadoraTextInput, descripcionTextInput;
 
@@ -51,8 +50,6 @@ public class FragmentoCrearReporte extends Fragment {
         computadoraTextInput = view.findViewById(R.id.computadoraReporteTextInput);
         descripcionTextInput = view.findViewById(R.id.descripcionReporteTextInput);
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
-        RadioButton radioButton1 = view.findViewById(R.id.laboratorioSelect1);
-        RadioButton radioButton2 = view.findViewById(R.id.laboratorioSelect2);
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             // Verifica cuál RadioButton se seleccionó y asigna el valor correspondiente a "laboratorio"
@@ -69,6 +66,18 @@ public class FragmentoCrearReporte extends Fragment {
             String titulo = tituloTextInput.getEditText().getText().toString();
             String computadora = computadoraTextInput.getEditText().getText().toString();
             String descripcion = descripcionTextInput.getEditText().getText().toString();
+            Boolean numberqq;
+
+            try {
+                Integer.parseInt(computadora);
+                numberqq = Boolean.TRUE;
+            } catch (NumberFormatException e){
+                numberqq = Boolean.FALSE;
+            }
+
+            if (!numberqq){
+                computadora = "";
+            }
 
             if (titulo.isEmpty() || descripcion.isEmpty() || laboratorio.isEmpty()){
                 String mensajeError = "Por favor completa los campos:\n";
