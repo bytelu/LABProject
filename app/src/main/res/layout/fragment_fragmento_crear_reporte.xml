@@ -110,6 +110,45 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/SelectLabtext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="Selecciona el laboratorio:"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <RadioGroup
+                            android:id="@+id/radioGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <RadioButton
+                                android:id="@+id/laboratorioSelect1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="1" />
+
+                            <RadioButton
+                                android:id="@+id/laboratorioSelect2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="2" />
+                        </RadioGroup>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -118,7 +157,7 @@
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="2dp"
                             android:hint="Ingresa un titulo"
                             android:textColorHint="@color/ipn"
                             app:boxBackgroundMode="outline"
@@ -140,7 +179,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="125dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="2dp"
                             android:layout_marginEnd="20dp"
                             android:hint="Computadora"
                             android:textColorHint="@color/ipn"
@@ -157,6 +196,7 @@
                                 android:textColor="@color/ipn" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
