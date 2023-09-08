@@ -97,17 +97,22 @@ public class InicioActivity extends AppCompatActivity {
             String usuario = strings[0];
             String contrasenia = strings[1];
             try {
+                Log.e("ValidarUserPassTask", "Iniciado");
                 // Cargar el controlador JDBC de Oracle
                 Class.forName(DRIVER);
 
                 // Establecer la conexión
                 Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
+                Log.e("ValidarUserPassTask", "Conexion correcta");
+
                 // Preparar la consulta
                 String sql = "SELECT COUNT(*) FROM ENCARGADO WHERE usuario = ? AND contrasenia = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, usuario);
                 statement.setString(2, contrasenia);
+
+                Log.e("ValidarUserPassTask", "Consulta construida");
 
                 // Ejecutar la consulta
                 ResultSet resultSet = statement.executeQuery();

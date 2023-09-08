@@ -41,8 +41,7 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
         // Required empty public constructor
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragmento_alumnos, container, false);
 
         //referencia del buscar
@@ -90,8 +89,9 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
                 Class.forName(DRIVER);
                 // Establecer la conexiÃ³n a la base de datos
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                Log.e("ConexionAsyncTask", "Conexion correcta");
                 // Preparar la consulta SQL para seleccionar los encargados
-                String sql = "SELECT ESTUDIANTE.NOMBRE as Nombre, ESTUDIANTE.APELLIDO_P AS ApellidoPat, ESTUDIANTE.APELLIDO_M AS ApellidoMat, ESTUDIANTE.BOLETA as Boleta, CARRERA.CARRERA AS Carrera, ESTUDIANTE.SEMESTRE as Semestre\n" +
+                String sql = "SELECT ESTUDIANTE.NOMBRE as Nombre, ESTUDIANTE.APELLIDO_P AS ApellidoPat, ESTUDIANTE.APELLIDO_M AS ApellidoMat, ESTUDIANTE.BOLETA as Boleta, CARRERA.CARRERA AS Carrera\n" +
                         "FROM ESTUDIANTE\n" +
                         "JOIN CARRERA ON ESTUDIANTE.CARRERA_ID = CARRERA.ID";
                 statement = connection.prepareStatement(sql);
@@ -104,7 +104,6 @@ public class FragmentoAlumnos extends Fragment implements SearchView.OnQueryText
                     alumnitos.setAPELLIDO_P(resultSet.getString("ApellidoPat"));
                     alumnitos.setAPELLIDO_M(resultSet.getString("ApellidoMat"));
                     alumnitos.setCARRERA(resultSet.getString("Carrera"));
-                    alumnitos.setSEMESTRE(resultSet.getInt("Semestre"));
                     alumnitos.setBOLETA(resultSet.getInt("Boleta"));
                     listaAlumnos.add(alumnitos);
                 }

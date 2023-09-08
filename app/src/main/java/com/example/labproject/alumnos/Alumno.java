@@ -7,7 +7,6 @@ public class Alumno {
     private String APELLIDO_M;
     private String CARRERA;
     private int BOLETA;
-    private int SEMESTRE;
 
     public String getNOMBRE() {
         return NOMBRE;
@@ -49,12 +48,6 @@ public class Alumno {
         this.BOLETA = BOLETA;
     }
 
-    public int getSEMESTRE() {
-        return SEMESTRE;
-    }
 
-    public void setSEMESTRE(int SEMESTRE) {
-        this.SEMESTRE = SEMESTRE;
-    }
 }
 

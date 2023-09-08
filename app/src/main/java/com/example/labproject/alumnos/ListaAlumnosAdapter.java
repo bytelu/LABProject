@@ -36,8 +36,6 @@ public class ListaAlumnosAdapter extends RecyclerView.Adapter<ListaAlumnosAdapte
         holder.aluApeM.setText(listaalumnos.get(position).getAPELLIDO_M());
         holder.aluBoleta.setText(String.valueOf(listaalumnos.get(position).getBOLETA()));
         holder.aluCarrera.setText(listaalumnos.get(position).getCARRERA());
-        holder.aluSemestre.setText(String.valueOf(listaalumnos.get(position).getSEMESTRE()));
-        //holder.aluComp.setText(listaalumnos.get(position).//cÃ³mo ponerle para Â°;
 
     }
 
@@ -96,8 +94,6 @@ public class ListaAlumnosAdapter extends RecyclerView.Adapter<ListaAlumnosAdapte
             aluApeM = itemView.findViewById(R.id.aluApeM);
             aluBoleta = itemView.findViewById(R.id.aluBoleta);
             aluCarrera = itemView.findViewById(R.id.aluCarrera);
-            aluSemestre = itemView.findViewById(R.id.aluSemestre);
-            //aluComp = itemView.findViewById(R.id.aluComp);
 
         }
     }
