@@ -105,13 +105,14 @@ public class FragmentoReportes extends Fragment implements SearchView.OnQueryTex
                 Class.forName(DRIVER);
                 // Establecer la conexiÃ³n a la base de datos
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                Log.e("ConexionAsyncTask", "Conexion establecida correctamente");
                 // Preparar la consulta SQL para seleccionar los encargados
                 String sql = "SELECT\n" +
                         "    REPORTE.ID AS NumeroReporte,\n" +
                         "    REPORTE.TITULO AS Titulo,\n" +
                         "    REPORTE.DESCRIPCION AS Descripcion,\n" +
-                        "    TO_CHAR(REPORTE.HORA, 'HH24:MI') AS Hora,\n" +
-                        "    TO_CHAR(REPORTE.FECHA, 'DD/MM/YYYY') AS Fecha,\n" +
+                        "    DATE_FORMAT(REPORTE.HORA, '%H:%i') AS Hora,\n" +
+                        "    DATE_FORMAT(REPORTE.FECHA, '%d/%m/%Y') AS Fecha,\n" +
                         "    REPORTE.SEGUIMIENTO AS Seguimiento,\n" +
                         "    ENCARGADO.NOMBRE AS Nombre,\n" +
                         "    ENCARGADO.APELLIDO_P AS ApellidoPat,\n" +
