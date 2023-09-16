@@ -90,9 +90,9 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar las sesiones individuales
                 String sql = "SELECT\n" +
-                        "    TO_CHAR(fecha, 'DD-MM-YYYY') AS fecha,\n" +
-                        "    TO_CHAR(sesion.hora_inicio, 'HH24:MI') AS hora_inicio,\n" +
-                        "    TO_CHAR(sesion.hora_final, 'HH24:MI') AS hora_final,\n" +
+                        "    DATE_FORMAT(fecha, '%d-%m-%Y') AS fecha,\n" +
+                        "    DATE_FORMAT(sesion.hora_inicio, '%H:%i') AS hora_inicio,\n" +
+                        "    DATE_FORMAT(sesion.hora_final, '%H:%i') AS hora_final,\n" +
                         "    encargado.nombre AS nombre_encargado,\n" +
                         "    encargado.apellido_p AS encargado_apellido_p,\n" +
                         "    encargado.apellido_m AS encargado_apellido_m,\n" +

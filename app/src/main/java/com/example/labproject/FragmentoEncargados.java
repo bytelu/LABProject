@@ -91,8 +91,8 @@ public class FragmentoEncargados extends Fragment implements SearchView.OnQueryT
                 // Establecer la conexión a la base de datos
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar los encargados
-                String sql = "SELECT nombre, apellido_p, apellido_m, TO_CHAR(hora_entrada, 'HH24:MI') AS hora_entrada, " +
-                        "TO_CHAR(hora_salida, 'HH24:MI') AS hora_salida, usuario, estado " +
+                String sql = "SELECT nombre, apellido_p, apellido_m, hora_entrada, " +
+                        "hora_salida, usuario, estado " +
                         "FROM ENCARGADO";
                 statement = connection.prepareStatement(sql);
                 // Ejecutar la consulta

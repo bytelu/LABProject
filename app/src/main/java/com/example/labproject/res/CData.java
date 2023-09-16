@@ -5,7 +5,7 @@ public class CData {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String USERNAME = "Encargado";
     private static final String PASSWORD = "ENCARGADO";
-    private static final String URL = "jdbc:mysql://192.168.1.75/db_laboratorio";
+    private static final String URL = "jdbc:mysql://192.168.1.9/db_laboratorio";
     public static String getDriver(){
         return DRIVER;
     }
