@@ -104,19 +104,18 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 //PREPARAR LA CONSULTA SQL PARA SELECCIONAR LAS SESIONES GRUPALES DEL LAB 1
                 String sql = "SELECT\n" +
-                        "    TO_CHAR(sesion.fecha, 'DD-MM-YYYY') AS fecha,\n" +
-                        "    TO_CHAR(sesion.hora_inicio, 'HH24:MI') AS hora_inicio,\n" +
-                        "    TO_CHAR(sesion.hora_final, 'HH24:MI') AS hora_final,\n" +
+                        "    DATE_FORMAT(sesion.fecha, '%d-%m-%Y') AS fecha,\n" +
+                        "    DATE_FORMAT(sesion.hora_inicio, '%H:%i') AS hora_inicio,\n" +
+                        "    DATE_FORMAT(sesion.hora_final, '%H:%i') AS hora_final,\n" +
                         "    encargado.nombre AS nombre_encargado,\n" +
                         "    encargado.apellido_p AS encargado_apellido_p,\n" +
                         "    encargado.apellido_m AS encargado_apellido_m,\n" +
                         "    computadora.numero AS numero_computadora,\n" +
-                        "    computadora.laboratorio as laboratorio_computadora,\n" +
+                        "    computadora.laboratorio AS laboratorio_computadora,\n" +
                         "    estudiante.nombre AS nombre_alumno,\n" +
                         "    estudiante.apellido_p AS alumno_apellido_p,\n" +
                         "    estudiante.apellido_m AS alumno_apellido_m,\n" +
                         "    estudiante.boleta AS no_boleta,\n" +
-                        "    estudiante.semestre AS semestre_alumno,\n" +
                         "    profesor.nombre AS nombre_profesor,\n" +
                         "    profesor.apellido_p AS profesor_apellido_p,\n" +
                         "    profesor.apellido_m AS profesor_apellido_m\n" +
@@ -127,6 +126,7 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
                         "JOIN profesor ON sesion.profesor_id = profesor.id\n" +
                         "WHERE sesion.activo = 1\n" +
                         "  AND computadora.laboratorio = 1";
+
                 statement = connection.prepareStatement(sql);
                 //ejecutar consulta
                 resultSet = statement.executeQuery();
@@ -148,7 +148,6 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
                     sesGruLabUno.setAluNombre(resultSet.getString("nombre_alumno"));
                     sesGruLabUno.setAluApeP(resultSet.getString("alumno_apellido_p"));
                     sesGruLabUno.setAluApeM(resultSet.getString("alumno_apellido_m"));
-                    sesGruLabUno.setSemestreAlu(Integer.toString(resultSet.getInt("semestre_alumno")));
 
                     listaSesionGrupalLabUno.add(sesGruLabUno);
                 }
