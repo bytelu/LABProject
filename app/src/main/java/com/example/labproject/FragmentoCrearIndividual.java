@@ -24,10 +24,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -217,38 +216,21 @@ public class FragmentoCrearIndividual extends Fragment {
             if (result.getContents() == null) {
                 Toast.makeText(getActivity(), "Escaneo Cancelado", Toast.LENGTH_SHORT).show();
             } else {
-                String qrContent = result.getContents();
 
-                try {
+                try{
 
-                    // Aqui se establece que es lo que se va a buscar en la pagina de acuerdo a su html  ---->
+                    String url = result.getContents();
+                    Log.d("qrContent","Este es el contenido del qr:\n" + url);
 
-                    Document doc = Jsoup.connect(qrContent).get();
-                    Element nombreElement = doc.selectFirst(".nombre");
-                    Element boletaElement = doc.selectFirst(".boleta");
-                    Element carreraElement = doc.selectFirst(".carrera");
+                    new WebScrapingTask().execute(url);
 
-                    nombre = nombreElement != null ? nombreElement.text() : "Nombre no encontrado";
-                    boleta = boletaElement != null ? boletaElement.text() : "Boleta no encontrada";
-                    carrera = carreraElement != null ? carreraElement.text() : "Carrera no encontrada";
-
-                    //aqui separar el nombre completo en : nombre,apePA, apeMA.
-                    List<String> fullname = parse.nameParser(nombre);
-                    nombre = fullname.get(0);
-                    apePa = fullname.get(1);
-                    apeMa = fullname.get(2);
-                    /*------------------ DATOS PARA MOSTRAR --------------------*/
-                    nombreAlu.setText(nombre);
-                    apePaAlu.setText(apePa);
-                    apeMaAlu.setText(apeMa);
-                    boletaAlu.setText(boleta);
-                    carreraAlu.setText(carrera);
-                } catch (IOException e){
-                    e.printStackTrace();
+                } catch (Exception e){
+                    Log.d("Tag","Este es el eror: " + e);
                 }
             }
         }
     }
+
 
     //CLASE SOLO PARA EL RADIOBUTTON PARA SABER SI ELIGIO EL LAB 1 O LAB 2
     public void onRadioButtonClicked(View view) {
@@ -263,6 +245,56 @@ public class FragmentoCrearIndividual extends Fragment {
         }
 
         Toast.makeText(getActivity(), radioButtonMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private class WebScrapingTask extends AsyncTask<String, Void, Void>{
+        @Override
+        protected Void doInBackground(String... urls){
+            String url = urls[0];
+
+            try {
+
+                // Aqui se establece que es lo que se va a buscar en la pagina de acuerdo a su html  ---->
+                Connection.Response response = Jsoup.connect(url).execute();
+                Log.d("Connection.Response", "doInBackground: Connections.Response pasado");
+
+                if (response.statusCode() == 200){
+                    Document document = response.parse();
+                    Elements nombreElement = document.select(".nombre");
+                    Elements boletaElement = document.select(".boleta");
+                    Elements carreraElement = document.select(".carrera");
+
+                    nombre = nombreElement.text();
+                    boleta = boletaElement.text();
+                    carrera = carreraElement.text();
+
+                }
+
+                //aqui separar el nombre completo en : nombre,apePA, apeMA.
+                List<String> fullname = parse.nameParser(nombre);
+                nombre = fullname.get(0);
+                apePa = fullname.get(1);
+                apeMa = fullname.get(2);
+
+            } catch (IOException e){
+                Log.d("Error de web scrapping","Este es el eror: " + e);
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid){
+            super.onPostExecute(aVoid);
+
+            /*------------------ DATOS PARA MOSTRAR --------------------*/
+            nombreAlu.setText(nombre);
+            apePaAlu.setText(apePa);
+            apeMaAlu.setText(apeMa);
+            boletaAlu.setText(boleta);
+            carreraAlu.setText(carrera);
+        }
     }
 
     //CLASE PARA SABER QUE COMPUTADORA SE LE ASIGNO DE AHI MOVERNOS A "ACTUALIZAR COMPUTADORA"
