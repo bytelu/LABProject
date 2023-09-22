@@ -260,7 +260,6 @@ public class FragmentoCrearIndividual extends Fragment {
         @Override
         protected Void doInBackground(String... urls){
             String url = urls[0];
-            Log.d("URL", "este sera el error?\nAqui deberia de aparecer el URL completo\n" + url);
 
             System.setProperty("jsse.enableSNIExtension", "false");
             System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");

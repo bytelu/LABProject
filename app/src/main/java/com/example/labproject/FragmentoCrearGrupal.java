@@ -1,12 +1,15 @@
 package com.example.labproject;
 
 import android.app.AlertDialog;
+import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -17,17 +20,33 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.labproject.NameParser.parse;
 import com.example.labproject.res.CData;
 import com.google.android.material.button.MaterialButton;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class FragmentoCrearGrupal extends Fragment {
     /*Conexion con BD*/
@@ -48,8 +67,7 @@ public class FragmentoCrearGrupal extends Fragment {
         // Required empty public constructor
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragmento_crear_grupal, container, false);
         // ASIGNACION DE MOSTRAR NOMBRE DEL ENCARGADO
@@ -132,7 +150,7 @@ public class FragmentoCrearGrupal extends Fragment {
             @Override
             public void onClick(View view) {
                 // Crea una instancia par Obtener el numero de computadora
-                FragmentoCrearGrupal.ConsultaComputadora consultaCompu = new FragmentoCrearGrupal.ConsultaComputadora();
+                ConsultaComputadora consultaCompu = new ConsultaComputadora();
                 consultaCompu.execute();
                 Toast.makeText(requireContext(), "Alumno " + nombre + "Registrado", Toast.LENGTH_SHORT).show();
             }
@@ -201,6 +219,28 @@ public class FragmentoCrearGrupal extends Fragment {
             }
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null){
+            if ( result.getContents() == null ){
+                Toast.makeText(getActivity(), "Escaneo Cancelado", Toast.LENGTH_SHORT).show();
+            } else {
+
+                try {
+                    String url = result.getContents();
+                    Log.d("qrContent","Este es el contenido del qr:\n" + url);
+                    new WebScrapingTask().execute(url);
+                } catch (Exception e){
+                    Log.e("Error", "Este es el error: " + e);
+                }
+            }
+        }
+    }
+
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -214,6 +254,81 @@ public class FragmentoCrearGrupal extends Fragment {
 
         Toast.makeText(getActivity(), radioButtonMessage, Toast.LENGTH_SHORT).show();
     }
+
+    private class WebScrapingTask extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(String... urls){
+            String url = urls[0];
+
+            System.setProperty("jsse.enableSNIExtension", "false");
+            System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
+            TrustManager[] trustAllCertificates = new TrustManager[] {
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+                    }
+            };
+
+            try {
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, trustAllCertificates, new java.security.SecureRandom());
+                HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                org.jsoup.Connection.Response response = Jsoup.connect(url).execute();
+
+                if (response.statusCode() == 200){
+                    Document document = response.parse();
+                    Elements nombreElement = document.select(".nombre");
+                    Elements boletaElement = document.select(".boleta");
+                    Elements carreraElement = document.select(".carrera");
+
+                    nombre = nombreElement.text();
+                    boleta = boletaElement.text();
+                    carrera = carreraElement.text();
+                }
+
+                List<String> fullname = parse.nameParser(nombre);
+                nombre = fullname.get(0);
+                apePa = fullname.get(1);
+                apeMa = fullname.get(2);
+
+            } catch (IOException e){
+                Log.e("Error de web scraping", "Este es el error: " + e);
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid){
+            super.onPostExecute(aVoid);
+
+            nombreAlu.setText(nombre);
+            apePaAlu.setText(apePa);
+            apeMaAlu.setText(apeMa);
+            boletaAlu.setText(boleta);
+            carreraAlu.setText(carrera);
+
+        }
+
+    }
+
     private class ConsultaComputadora extends AsyncTask<Void, Void, String>{
 
         @Override
