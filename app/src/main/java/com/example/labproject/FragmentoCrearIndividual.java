@@ -24,11 +24,13 @@ import com.google.android.material.button.MaterialButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -38,6 +40,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import com.example.labproject.NameParser.parse;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class FragmentoCrearIndividual extends Fragment {
 
@@ -251,11 +260,38 @@ public class FragmentoCrearIndividual extends Fragment {
         @Override
         protected Void doInBackground(String... urls){
             String url = urls[0];
+            Log.d("URL", "este sera el error?\nAqui deberia de aparecer el URL completo\n" + url);
+
+            System.setProperty("jsse.enableSNIExtension", "false");
+            System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
+            TrustManager[] trustAllCertificates = new TrustManager[] {
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+                    }
+            };
+
+            try {
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, trustAllCertificates, new java.security.SecureRandom());
+                HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             try {
 
-                // Aqui se establece que es lo que se va a buscar en la pagina de acuerdo a su html  ---->
-                Connection.Response response = Jsoup.connect(url).execute();
+                Response response = Jsoup.connect(url).execute();
                 Log.d("Connection.Response", "doInBackground: Connections.Response pasado");
 
                 if (response.statusCode() == 200){
