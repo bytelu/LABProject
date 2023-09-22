@@ -12,8 +12,10 @@
 
     <ImageView
         android:id="@+id/imageIconoCompu"
-        android:layout_width="362dp"
-        android:layout_height="318dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.2"
+        android:scaleType="centerInside"
         android:transitionName="logoImageTrans"
         app:layout_constraintBottom_toTopOf="@+id/nuevoUsuario"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +27,7 @@
         android:id="@+id/imageIPN"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:transitionName="logoImageTrans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/abel"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/abel"
                 android:inputType="textPassword"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 

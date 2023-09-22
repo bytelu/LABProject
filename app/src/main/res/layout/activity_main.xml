@@ -9,8 +9,11 @@
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="70dp"
+        android:scaleType="fitXY"
         android:src="@drawable/fondogif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,53 +22,53 @@
 
     <ImageView
         android:id="@+id/logoImageView"
-        android:layout_width="247dp"
-        android:layout_height="407dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
         android:src="@drawable/logoipn"
-        app:layout_constraintBottom_toTopOf="@+id/ipnTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/gifImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintTop_toTopOf="@+id/gifImageView" />
 
     <TextView
         android:id="@+id/deTextView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="de"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/ipnTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/ipnTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:fontFamily="@font/abel"
         android:text="Instituto Politécnico Nacional"
         android:textAlignment="center"
         android:textColor="@color/color_launch"
-        android:textSize="27sp"
-        app:layout_constraintBottom_toTopOf="@+id/elaboradoTextView"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/gifImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deTextView2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/elaboradoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Elaborado por: Jenny, Luis y Angel"
+        android:layout_marginBottom="5dp"
+        android:text="Elaborado por el equipo Umizoomi"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ipnTextView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
