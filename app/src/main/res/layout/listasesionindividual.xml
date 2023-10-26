@@ -149,15 +149,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/finalizarButton"
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="Finalizar"
-                    android:textSize="12dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sin Finalizar"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:background="@drawable/fondo_degradado"/>
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/sesSalida"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
