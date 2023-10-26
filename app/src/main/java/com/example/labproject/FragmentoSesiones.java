@@ -360,15 +360,15 @@ public class FragmentoSesiones extends Fragment {
 
                             nombre = nombreElement.text();
                             boleta = boletaElement.text();
-                            carrera = carreraElement.text();
+                            carrera = capitalizeFirstLetter(carreraElement.text());
 
                         }
 
                         //aqui separar el nombre completo en : nombre,apePA, apeMA.
                         List<String> fullname = parse.nameParser(nombre);
-                        nombre = fullname.get(0);
-                        apePa = fullname.get(1);
-                        apeMa = fullname.get(2);
+                        nombre = capitalizeFirstLetter(fullname.get(0));
+                        apePa = capitalizeFirstLetter(fullname.get(1));
+                        apeMa = capitalizeFirstLetter(fullname.get(2));
 
                         Log.e("Alumno webScraping obtenido", "Datos obtenidos satisfactoriamente");
 
@@ -449,14 +449,14 @@ public class FragmentoSesiones extends Fragment {
                         Elements carreraProElement = document.select(".carrera");
                         nombre = nombreProElement.text();
                         boleta = boletaProElement.text();
-                        carrera = carreraProElement.text();
+                        carrera = capitalizeFirstLetter(carreraProElement.text());
                     }
 
                     //aqui separar el nombre completo en : nombre,apePA, apeMA.
                     List<String> fullname = parse.nameParser(nombre);
-                    nombre = fullname.get(0);
-                    apePa = fullname.get(1);
-                    apeMa = fullname.get(2);
+                    nombre = capitalizeFirstLetter(fullname.get(0));
+                    apePa = capitalizeFirstLetter(fullname.get(1));
+                    apeMa = capitalizeFirstLetter(fullname.get(2));
 
                     Log.e("Datos de webScraping obtenidos", "Datos obtenidos satisfactoriamente");
 
@@ -528,11 +528,11 @@ public class FragmentoSesiones extends Fragment {
                     Log.e("Error", "Error al cerrar conexión: " + e);
                 }
             }
-            Log.e("Datos", "Nombre " + nombre);
-            Log.e("Datos", "Apellido Pa " + apePa);
-            Log.e("Datos", "Apellido Ma " + apeMa);
+            Log.e("Datos", "Nombre " + capitalizeFirstLetter(nombre));
+            Log.e("Datos", "Apellido Pa " + capitalizeFirstLetter(apePa));
+            Log.e("Datos", "Apellido Ma " + capitalizeFirstLetter(apeMa));
             Log.e("Datos", "Boleta " + boleta);
-            Log.e("Datos", "Carrera " + carrera);
+            Log.e("Datos", "Carrera " + capitalizeFirstLetter(carrera));
             return null;
         }
 
@@ -633,9 +633,9 @@ public class FragmentoSesiones extends Fragment {
 
                         //aqui separar el nombre completo en : nombre,apePA, apeMA.
                         List<String> fullname = parse.nameParser(nombreP);
-                        nombreP = fullname.get(0);
-                        apePaP = fullname.get(1);
-                        apeMaP = fullname.get(2);
+                        nombreP = capitalizeFirstLetter(fullname.get(0));
+                        apePaP = capitalizeFirstLetter(fullname.get(1));
+                        apeMaP = capitalizeFirstLetter(fullname.get(2));
 
                         Log.e("Profesor webScraping obtenido", "Datos obtenidos satisfactoriamente");
 
@@ -717,9 +717,9 @@ public class FragmentoSesiones extends Fragment {
 
                     //aqui separar el nombre completo en : nombre,apePA, apeMA.
                     List<String> fullname = parse.nameParser(nombreP);
-                    nombreP = fullname.get(0);
-                    apePaP = fullname.get(1);
-                    apeMaP = fullname.get(2);
+                    nombreP = capitalizeFirstLetter(fullname.get(0));
+                    apePaP = capitalizeFirstLetter(fullname.get(1));
+                    apeMaP = capitalizeFirstLetter(fullname.get(2));
 
                     Log.e("Datos de webScraping obtenidos", "Datos obtenidos satisfactoriamente");
 
@@ -1028,5 +1028,12 @@ public class FragmentoSesiones extends Fragment {
 
             return null;
         }
+    }
+    // Función para capitalizar la primera letra de una cadena
+    private String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
     }
 }
