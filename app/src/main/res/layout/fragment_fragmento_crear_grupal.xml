@@ -327,7 +327,7 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/abel"
                 android:text="Apellido Paterno"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
