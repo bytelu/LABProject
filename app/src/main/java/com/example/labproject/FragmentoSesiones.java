@@ -1,5 +1,6 @@
 package com.example.labproject;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +61,7 @@ public class FragmentoSesiones extends Fragment {
     MaterialButton escanearAlu, escanearProf, guardar;
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
-    private String nombre = "", boleta = "", carrera = "", apePa = "", apeMa = "", nombreP = "", apePaP = "", apeMaP = "", boletaP = "";
+    private String nombre = "", boleta = "", carrera = "", apePa = "", apeMa = "", nombreP = "", apePaP = "", apeMaP = "", boletaP = "", idAlumno, idProfesor, computadoraId;
     private int opcionElegida;
     private static final int OPCION_PROFESOR = 1;
     private static final int OPCION_ALUMNO = 2;
@@ -127,10 +131,25 @@ public class FragmentoSesiones extends Fragment {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Crea una instancia par Obtener el numero de computadora
-                //ConsultaComputadora consultaCompu = new ConsultaComputadora();
-                //consultaCompu.execute();
-                Toast.makeText(requireContext(), "Alumno " + nombre + "Registrado", Toast.LENGTH_SHORT).show();
+                if (idAlumno != null || !idAlumno.isEmpty()) {
+                    // Verificar que se haya elegido una opción de laboratorio
+                    if (laboratorio1.isChecked() || laboratorio2.isChecked()) {
+                        // Ambas condiciones se cumplen, puedes mostrar el mensaje de ingreso
+                        Toast.makeText(requireContext(), nombre + " ingresó a la sesión correctamente", Toast.LENGTH_SHORT).show();
+                        Log.e("Datos", "Profesor de sesión " + idProfesor);
+                        Log.e("Datos", "Alumno de sesión " + idAlumno);
+                        Log.e("Datos", "Laboratorio 1 " + laboratorio1.isChecked());
+                        Log.e("Datos", "Laboratorio 2 " + laboratorio2.isChecked());
+                        FragmentoSesiones.ConsultaComputadora consultaCompu = new FragmentoSesiones.ConsultaComputadora();
+                        consultaCompu.execute();
+                    } else {
+                        // No se eligió una opción de laboratorio
+                        Toast.makeText(requireContext(), "Selecciona un laboratorio para generar la sesión", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // idAlumno no tiene un valor
+                    Toast.makeText(requireContext(), "Escanea el código QR del Alumno", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -264,6 +283,7 @@ public class FragmentoSesiones extends Fragment {
             Connection connection = null;
             PreparedStatement statement = null;
             ResultSet resultSet = null;
+            int alumnoEncontrado = 0;
             try{
                 Class.forName(DRIVER);
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -277,32 +297,118 @@ public class FragmentoSesiones extends Fragment {
                     boleta = resultSet.getString("boleta");
                     apePa = resultSet.getString("apellido_p");
                     apeMa = resultSet.getString("apellido_m");
+                    alumnoEncontrado = 1;
                 }
 
-                Log.e("Alumno encontrado en base de datos", "Alumno encontrado: " + nombre);
+                Log.e("Alumno", "Alumno con nombre?: " + nombre);
 
             } catch(Exception e){
                 Log.e("ERROR EN BUSCAR ALUMNO", String.valueOf(e));
             }finally {
                 // Cerrar los recursos
                 try {
-                    if (resultSet != null) {
-                        resultSet.close();
-                    }
-                    if (statement != null) {
-                        statement.close();
-                    }
-                    if (connection != null) {
-                        connection.close();
-                    }
+                    if (resultSet != null) resultSet.close();
+                    if (statement != null) statement.close();
+                    if (connection != null) connection.close();
                 } catch (Exception e) {
                     Log.e("Error", "Error en la consulta: " + e);
                 }
             }
 
-            if (boleta.isEmpty()){
+            if (alumnoEncontrado == 1){
+                if (boleta.isEmpty() || nombre.isEmpty()){
 
-                Log.e("Buscando alumno", "Buscando alumno por que boleta == Empty");
+                    Log.e("Actualizando alumno", "Buscando alumno por que boleta == Empty");
+
+                    System.setProperty("jsse.enableSNIExtension", "false");
+                    System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
+                    TrustManager[] trustAllCertificates = new TrustManager[] {
+                            new X509TrustManager() {
+                                public X509Certificate[] getAcceptedIssuers() {
+                                    return null;
+                                }
+                                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                                }
+                                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                                }
+                            }
+                    };
+
+                    try {
+                        SSLContext sslContext = SSLContext.getInstance("TLS");
+                        sslContext.init(null, trustAllCertificates, new java.security.SecureRandom());
+                        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                            public boolean verify(String hostname, SSLSession session) {
+                                return true;
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+
+                        org.jsoup.Connection.Response response = Jsoup.connect(url).execute();
+                        Log.d("Connection.Response", "doInBackground: Connections.Response pasado");
+
+                        if (response.statusCode() == 200){
+                            Document document = response.parse();
+                            Elements nombreElement = document.select(".nombre");
+                            Elements boletaElement = document.select(".boleta");
+                            Elements carreraElement = document.select(".carrera");
+
+                            nombre = nombreElement.text();
+                            boleta = boletaElement.text();
+                            carrera = carreraElement.text();
+
+                        }
+
+                        //aqui separar el nombre completo en : nombre,apePA, apeMA.
+                        List<String> fullname = parse.nameParser(nombre);
+                        nombre = fullname.get(0);
+                        apePa = fullname.get(1);
+                        apeMa = fullname.get(2);
+
+                        Log.e("Alumno webScraping obtenido", "Datos obtenidos satisfactoriamente");
+
+                    } catch (IOException e){
+                        Log.d("Error de web scrapping","Este es el eror: " + e);
+                    }
+
+                    try {
+                        Class.forName(DRIVER);
+                        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                        String sql = "UPDATE estudiante SET nombre = ?, apellido_p = ?, apellido_m = ?, boleta = ?, carrera_id = 1 WHERE qr = ?";
+                        statement = connection.prepareStatement(sql);
+                        statement.setString(1, nombre);
+                        statement.setString(2, apePa);
+                        statement.setString(3, apeMa);
+                        statement.setString(4, boleta);
+                        statement.setString(5, url);
+                        statement.executeUpdate();
+
+                        Log.e("Actualizar datos alumno", "Datos actualizados correctamente");
+
+                    } catch (Exception e){
+                        Log.e("Error", "Error al guardar datos de web scraping: " + e);
+                    } finally {
+                        // Cerrar los recursos
+                        try {
+                            if (statement != null) {
+                                statement.close();
+                            }
+                            if (connection != null) {
+                                connection.close();
+                            }
+                        } catch (Exception e) {
+                            Log.e("Error", "Error al cerrar conexión: " + e);
+                        }
+                    }
+                }
+            }else {
+                Log.e("Alumno NO encontrado en base de datos", "Alumno no encontrado en la base de datos.");
+                Log.e("Agregando Alumno", "Agregando Alumno porque no se encontro");
 
                 System.setProperty("jsse.enableSNIExtension", "false");
                 System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
@@ -338,14 +444,12 @@ public class FragmentoSesiones extends Fragment {
 
                     if (response.statusCode() == 200){
                         Document document = response.parse();
-                        Elements nombreElement = document.select(".nombre");
-                        Elements boletaElement = document.select(".boleta");
-                        Elements carreraElement = document.select(".carrera");
-
-                        nombre = nombreElement.text();
-                        boleta = boletaElement.text();
-                        carrera = carreraElement.text();
-
+                        Elements nombreProElement = document.select(".nombre");
+                        Elements boletaProElement = document.select(".boleta");
+                        Elements carreraProElement = document.select(".carrera");
+                        nombre = nombreProElement.text();
+                        boleta = boletaProElement.text();
+                        carrera = carreraProElement.text();
                     }
 
                     //aqui separar el nombre completo en : nombre,apePA, apeMA.
@@ -363,17 +467,16 @@ public class FragmentoSesiones extends Fragment {
                 try {
                     Class.forName(DRIVER);
                     connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-                    String sql = "insert into estudiante(nombre, apellido_p, apellido_m, boleta, qr, carrera_id) values (?, ?, ?, ?, ?, 1)";
+                    String sql = "INSERT INTO estudiante (nombre, apellido_p, apellido_m, boleta, qr, carrera_id) VALUES (?, ?, ?, ?, ?, 1)";
                     statement = connection.prepareStatement(sql);
                     statement.setString(1, nombre);
                     statement.setString(2, apePa);
                     statement.setString(3, apeMa);
                     statement.setString(4, boleta);
+                    //statement.setString(5, carrera);
                     statement.setString(5, url);
                     statement.executeUpdate();
-
-                    Log.e("Guardar datos alumno", "Datos guardados correctamente");
-
+                    Log.e("Guardar datos Alumno", "Datos guardados correctamente");
                 } catch (Exception e){
                     Log.e("Error", "Error al guardar datos de web scraping: " + e);
                 } finally {
@@ -390,6 +493,46 @@ public class FragmentoSesiones extends Fragment {
                     }
                 }
             }
+            /* OBTENIENDO ID Y NOMBRE DE CARRERA */
+            try {
+                Class.forName(DRIVER);
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                String sql = "SELECT estudiante.id, carrera.carrera " +
+                        "FROM estudiante " +
+                        "INNER JOIN carrera ON estudiante.carrera_id = carrera.id " +
+                        "WHERE estudiante.boleta = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, boleta);
+                resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    idAlumno = resultSet.getString("estudiante.id");
+                    carrera = resultSet.getString("carrera.carrera").toUpperCase();
+                    // Ahora tienes el id del alumno, el nombre de la carrera y la boleta del estudiante
+                    Log.e("ID Alumno", "ID del alumno: " + idAlumno);
+                    Log.e("Nombre Carrera", "Nombre de la carrera: " + carrera);
+                }else{
+                    Log.e("Estudiante no encontrado", "No se encontró el estudiante con la boleta proporcionada");
+                }
+            } catch (Exception e){
+                Log.e("Error", "Error al guardar datos ID y Carrera del alumno: " + e);
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e);
+                }
+            }
+            Log.e("Datos", "Nombre " + nombre);
+            Log.e("Datos", "Apellido Pa " + apePa);
+            Log.e("Datos", "Apellido Ma " + apeMa);
+            Log.e("Datos", "Boleta " + boleta);
+            Log.e("Datos", "Carrera " + carrera);
             return null;
         }
 
@@ -401,6 +544,7 @@ public class FragmentoSesiones extends Fragment {
             apeMaAlu.setText(apeMa);
             boletaAlu.setText(boleta);
             carreraAlu.setText(carrera);
+            Log.e("Existe profesor", "Id del profesor " + idProfesor);
         }
     }
     private class BuscarProfesorTask extends AsyncTask<String, Void, Void>{
@@ -493,7 +637,7 @@ public class FragmentoSesiones extends Fragment {
                         apePaP = fullname.get(1);
                         apeMaP = fullname.get(2);
 
-                        Log.e("Datos de webScraping obtenidos", "Datos obtenidos satisfactoriamente");
+                        Log.e("Profesor webScraping obtenido", "Datos obtenidos satisfactoriamente");
 
                     } catch (IOException e){
                         Log.d("Error de web scrapping","Este es el eror: " + e);
@@ -611,6 +755,37 @@ public class FragmentoSesiones extends Fragment {
                     }
                 }
             }
+            try {
+                Class.forName(DRIVER);
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                String sql = "SELECT profesor.id " +
+                        "FROM profesor " +
+                        "WHERE profesor.boleta = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, boletaP);
+                resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    idProfesor = resultSet.getString("profesor.id");
+                    // Ahora tienes el id del alumno, el nombre de la carrera y la boleta del estudiante
+                    Log.e("ID Profesor", "ID del Profesor: " + idProfesor);
+                }else{
+                    Log.e("Profesor no encontrado", "No se encontró el profesor con la boleta proporcionada");
+                }
+            } catch (Exception e){
+                Log.e("Error", "Error al guardar ID del profesor: " + e);
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e);
+                }
+            }
             Log.e("Datos", "Nombre " + nombreP);
             Log.e("Datos", "Apellido Pa " + apePaP);
             Log.e("Datos", "Apellido Ma " + apeMaP);
@@ -624,6 +799,234 @@ public class FragmentoSesiones extends Fragment {
             nombreProf.setText(nombreP);
             apePaProf.setText(apePaP);
             apeMaProf.setText(apeMaP);
+        }
+    }
+    private class ConsultaComputadora extends AsyncTask<Void, Void, String>{
+        @Override
+        protected String doInBackground(Void... voids) {
+            // Aquí realiza la consulta a la base de datos y obtén el mensaje
+            String computadora = "";
+            Connection connection = null;
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                // Preparar la consulta SQL para seleccionar la primera computadora disponible
+                String sql = "SELECT id, numero\n" +
+                        "FROM COMPUTADORA\n" +
+                        "WHERE estado = 1\n" +
+                        "AND ocupada = 0 \n" +
+                        "AND laboratorio = ? \n" +
+                        "LIMIT 1\n";
+                statement = connection.prepareStatement(sql);
+                Log.d("TAG", "RadioButton: "+ radioButtonMessage);
+                if (radioButtonMessage.equals("Laboratorio 1 asignado")){
+                    statement.setInt(1, 1);
+                    Log.d("TAG", "Este es laboratorio 1");
+                }else{
+                    statement.setInt(1, 2);
+                    Log.d("TAG", "Este es laboratorio 2");
+                }
+
+                // Ejecutar la consulta y obtener el resultado
+                resultSet = statement.executeQuery();
+
+                // Verificar si hay un resultado válido
+                if (resultSet.next()) {
+                    computadoraId = resultSet.getString("id");
+                    computadora = resultSet.getString("numero");
+                    Log.d("TAG", "Computadora Id.: "+ computadoraId);
+                    Log.d("TAG", "Computadora No.: "+ computadora);
+                }
+
+            }catch (Exception e){
+                Log.e("Error", "Error en la consulta: " + e.toString());
+            }finally {
+                // Cerrar los recursos
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error en la consultaa: " + e.toString());
+                }
+            }
+            return computadora;
+        }
+
+        @Override
+        protected void onPostExecute(String resultado) {
+            // Aquí puedes llamar a un método para mostrar la ventana flotante con el resultado
+            Log.d("TAG", "On post Computadora No.: "+ resultado);
+            Log.d("TAG", "On post Computadora ID.: "+ computadoraId);
+            mostrarComputadora(resultado);
+            // Una vez que se mostró la computadora, ejecuta la AsyncTask para actualizar a computadora"ocupada" y crear sesion
+            FragmentoSesiones.ActualizarOcupada actualizarOcupada = new FragmentoSesiones.ActualizarOcupada();
+            actualizarOcupada.execute();
+        }
+    }
+    private void mostrarComputadora(String mensaje){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(Html.fromHtml("<center>Confirmación de Sesión</center>"));
+
+        // Crear un diseño de LinearLayout vertical
+        LinearLayout layout = new LinearLayout(requireContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(24, 24, 24, 24);
+        // Crear TextViews para mostrar la información
+        TextView alumnoTextView = new TextView(requireContext());
+        TextView laboratorioTextView = new TextView(requireContext());
+        TextView computadoraTextView = new TextView(requireContext());
+        // Establecer los valores dinámicos
+        String alumnoName = nombre + " " + apePa + " " + apeMa; // Reemplaza con el nombre completo del alumno
+        String laboratorioName;
+        if (laboratorio1.isChecked()) {
+            laboratorioName = "Laboratorio 1";
+        } else if (laboratorio2.isChecked()) {
+            laboratorioName = "Laboratorio 2";
+        } else {
+            // En caso de que ninguno de los laboratorios esté seleccionado
+            laboratorioName = "Laboratorio no seleccionado";
+        }
+        String computerNumber = mensaje; // Reemplaza con el número de la computadora
+        alumnoTextView.setText("El alumno: " + alumnoName);
+        laboratorioTextView.setText("Ha ingresado al: " + laboratorioName);
+        computadoraTextView.setText("Se le ha asignado la computadora: " + computerNumber);
+        // Agregar TextViews al diseño
+        layout.addView(alumnoTextView);
+        layout.addView(computadoraTextView);
+        builder.setView(layout); // Establecer el diseño personalizado
+        builder.setPositiveButton("Aceptar", (dialog, which) -> {
+            // Aquí puedes realizar acciones adicionales si el usuario hace clic en Aceptar
+            dialog.dismiss();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private class ActualizarOcupada extends AsyncTask<Void, Void, String>{
+        @Override
+        protected String doInBackground(Void... voids) {
+            Connection connection = null;
+            PreparedStatement statement = null;
+            Log.d("TAG", "ID Computadora en Actualizar: "+ computadoraId);
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                // Preparar la consulta SQL para actualizar la columna "ocupada" a 1
+                String sql = "UPDATE COMPUTADORA SET ocupada = 1 WHERE id = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, computadoraId);
+                // Ejecutar la consulta para actualizar
+                statement.executeUpdate();
+
+            } catch (Exception e) {
+                Log.e("Error", "Error al actualizar ocupada: " + e.toString());
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e.toString());
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.e("Crear sesion", "Crear sesion iniciado");
+            FragmentoSesiones.CrearSesion crearSesion = new FragmentoSesiones.CrearSesion();
+            crearSesion.execute();
+        }
+    }
+    private class CrearSesion extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Connection connection = null;
+            PreparedStatement statement = null;
+
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                String fechaActual = dateFormat.format(new Date());
+                String horaActual = timeFormat.format(new Date());
+                String encargadoId = null;
+
+                String consultaEncargado = "SELECT id FROM ENCARGADO WHERE usuario = ?";
+                PreparedStatement encargadoStatement = connection.prepareStatement(consultaEncargado);
+                encargadoStatement.setString(1, sharedPreferences.getString("usuario", ""));
+                ResultSet encargadoResultSet = encargadoStatement.executeQuery();
+                if (encargadoResultSet.next()) {
+                    encargadoId = encargadoResultSet.getString("id");
+                }
+                String sql;
+
+                if (idProfesor == null) {
+                    // Si el profesor es nulo, excluye el campo profesor_id de la consulta
+                    sql = "INSERT INTO sesion(fecha, hora_inicio, encargado_id, estudiante_id, computadora_id, activo) " +
+                            "VALUES (?, ?, ?, ?, ?, 1)";
+                    statement = connection.prepareStatement(sql);
+                    statement.setString(1, fechaActual);
+                    statement.setString(2, horaActual);
+                    statement.setString(3, encargadoId);
+                    statement.setString(4, idAlumno);
+                    statement.setString(5, computadoraId);
+                } else {
+                    // Si el profesor no es nulo, incluye el campo profesor_id en la consulta
+                    sql = "INSERT INTO sesion(fecha, hora_inicio, encargado_id, estudiante_id, profesor_id, computadora_id, activo) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, 1)";
+                    statement = connection.prepareStatement(sql);
+                    statement.setString(1, fechaActual);
+                    statement.setString(2, horaActual);
+                    statement.setString(3, encargadoId);
+                    statement.setString(4, idAlumno);
+                    statement.setString(5, idProfesor);
+                    statement.setString(6, computadoraId);
+                }
+                // Ejecutar la consulta para actualizar
+                statement.executeUpdate();
+
+
+                Log.e("Sesion creada", "Sesion creada correctamente");
+
+            } catch (Exception e) {
+                Log.e("Error", "Error al crear sesion: " + e.toString());
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e.toString());
+                }
+            }
+
+            return null;
         }
     }
 }
