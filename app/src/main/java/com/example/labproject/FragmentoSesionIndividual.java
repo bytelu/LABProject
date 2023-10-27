@@ -1,5 +1,8 @@
 package com.example.labproject;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -13,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.labproject.res.CData;
 import com.example.labproject.sesindividual.ListaSesionIndividualAdapter;
@@ -22,7 +27,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class FragmentoSesionIndividual extends Fragment implements SearchView.OnQueryTextListener{
     /*Conexion con BD*/
@@ -88,7 +96,7 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                 // Establecer la conexión a la base de datos
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 // Preparar la consulta SQL para seleccionar las sesiones individuales
-                String sql = "SELECT\n" +
+                String sql = "SELECT sesion.id AS idSesion,\n" +
                         "    DATE_FORMAT(fecha, '%d-%m-%Y') AS fecha,\n" +
                         "    DATE_FORMAT(sesion.hora_inicio, '%H:%i') AS hora_inicio,\n" +
                         "    DATE_FORMAT(sesion.hora_final, '%H:%i') AS hora_final,\n" +
@@ -124,12 +132,11 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
                     sesionIndv.setEncNombre(resultSet.getString("nombre_encargado"));
                     sesionIndv.setEncApeP(resultSet.getString("encargado_apellido_p"));
                     sesionIndv.setEncApeM(resultSet.getString("encargado_apellido_m"));
-
+                    sesionIndv.setIdSesion(resultSet.getString("idSesion"));
                     // Obtener la hora en formato HH:mm
                     String horaEntrada = resultSet.getString("hora_inicio");
-                    String horaSalida = resultSet.getString("hora_final");
+                    //String horaSalida = resultSet.getString("hora_final");
                     sesionIndv.setSesEntrada(horaEntrada);
-                    sesionIndv.setSesSalida(horaSalida);
 
                     listaSesionIndividual.add(sesionIndv);
                 }
@@ -158,6 +165,70 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
             // Una vez terminada la consulta en segundo plano, actualizamos el RecyclerView con los datos
             adapter = new ListaSesionIndividualAdapter(lista);
             listaSesionIndividual.setAdapter(adapter);
+        }
+    }
+    public class ActualizarSesionAsyncTask extends AsyncTask<String, Void, Boolean>{
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            String idSesion = strings[0];
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                String updateQuery = "UPDATE sesion AS s " +
+                        "INNER JOIN computadora AS c ON s.computadora_id = c.id " +
+                        "SET s.activo = 0, s.hora_final = ?, c.ocupada = 0 " +
+                        "WHERE s.id = ?";
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                String horaActual = timeFormat.format(new Date());
+                preparedStatement = connection.prepareStatement(updateQuery);
+                preparedStatement.setString(1, horaActual);
+                preparedStatement.setString(2, idSesion);
+
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                // Cierra los recursos en un bloque finally
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+
+                Log.e("Sesion Individual Finalizada", "Sesión finalizada id " + idSesion);
+
+                return rowsAffected > 0;
+
+            } catch (Exception e) {
+                Log.e("Error", "Error al finalizar sesion: " + e.toString());
+                return false;
+            }finally {
+                // Asegurarse de cerrar los recursos en caso de excepción
+                try {
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar los recursos: " + e.toString());
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                Log.e("Sesion Individual Finalizada", "Se logro" + success);
+
+            } else {
+                Log.e("Sesion Individual Finalizada", "Tambien se logro" + success);
+            }
         }
     }
 }

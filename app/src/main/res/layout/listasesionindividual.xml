@@ -148,20 +148,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sin Finalizar"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
-
-                <TextView
-                    android:id="@+id/sesSalida"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:textColor="@color/white"/>
+                    android:id="@+id/idSesion"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="invisible" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/finalizarIndividual"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Finalizar Sesión"
+                    android:textSize="8dp"
+                    android:textColor="@color/white"
+                    android:transitionName="buttonSignUpTrans"
+                    android:backgroundTint="@color/color_selecionado" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

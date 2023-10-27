@@ -5,11 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.labproject.FragmentoSesionIndividual;
 import com.example.labproject.R;
+import com.google.android.material.button.MaterialButton;
+import com.example.labproject.FragmentoSesionIndividual; // Asegúrate de que la ruta sea la correcta
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +22,13 @@ import java.util.stream.Collectors;
 public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesionIndividualAdapter.ListaSesionIndividualViewHolder> {
     ArrayList<SesionIndividual> listaSesionIndividual;
     ArrayList<SesionIndividual> listaOriginal;
+    private FragmentoSesionIndividual fragmentoSesionIndividual;
 
     public ListaSesionIndividualAdapter(ArrayList<SesionIndividual> listaSesionIndividual){
         this.listaSesionIndividual = listaSesionIndividual;
         listaOriginal = new ArrayList<>();
         listaOriginal.addAll(listaSesionIndividual);
+        fragmentoSesionIndividual = new FragmentoSesionIndividual();
     }
 
     @NonNull
@@ -59,7 +65,19 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
         holder.encApeP.setText(listaSesionIndividual.get(position).getEncApeP());
         holder.encApeM.setText(listaSesionIndividual.get(position).getEncApeM());
         holder.sesEntrada.setText(listaSesionIndividual.get(position).getSesEntrada());
-        holder.sesSalida.setText(listaSesionIndividual.get(position).getSesSalida());
+        holder.idSesion.setText(listaSesionIndividual.get(position).getIdSesion());
+        holder.finalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = holder.idSesion.getText().toString();
+                // Puedes mostrar el ID de la sesión (por ejemplo, en un Toast)
+                // Llama al AsyncTask para realizar la actualización en segundo plano
+                if(fragmentoSesionIndividual != null) {
+                    FragmentoSesionIndividual.ActualizarSesionAsyncTask task = fragmentoSesionIndividual.new ActualizarSesionAsyncTask();
+                    task.execute(id);
+                }
+            }
+        });
     }
 
     public void filtrado(String txtBuscar){
@@ -109,8 +127,9 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
     }
 
     public class ListaSesionIndividualViewHolder extends RecyclerView.ViewHolder {
-        TextView fecha,computadora,aluNombre,aluApeP,aluApeM,encNombre,encApeP,encApeM,sesEntrada,sesSalida;
+        TextView fecha,computadora,aluNombre,aluApeP,aluApeM,encNombre,encApeP,encApeM,sesEntrada,idSesion;
         ImageView laboratorioComputadora;
+        MaterialButton finalizar;
         public ListaSesionIndividualViewHolder(@NonNull View itemView) {
             super(itemView);
             fecha = itemView.findViewById(R.id.fecha);
@@ -123,7 +142,17 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
             encApeP = itemView.findViewById(R.id.encApeP);
             encApeM = itemView.findViewById(R.id.encApeM);
             sesEntrada = itemView.findViewById(R.id.sesEntrada);
-            sesSalida = itemView.findViewById(R.id.sesSalida);
+            idSesion = itemView.findViewById(R.id.idSesion);
+
+            finalizar = itemView.findViewById(R.id.finalizarIndividual);
         }
+    }
+    private void showSuccessMessage() {
+        // Muestra un mensaje de éxito aquí
+        Toast.makeText(fragmentoSesionIndividual.getContext(), "Sesión finalizada con éxito", Toast.LENGTH_SHORT).show();
+    }
+    private void showErrorMessage() {
+        // Muestra un mensaje de error aquí
+        Toast.makeText(fragmentoSesionIndividual.getContext(), "Sesión finalizada con éxito", Toast.LENGTH_SHORT).show();
     }
 }

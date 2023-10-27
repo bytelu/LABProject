@@ -10,7 +10,7 @@ public class SesionIndividual {
     private String encApeP;
     private String encApeM;
     private String sesEntrada;
-    private String sesSalida;
+    private String idSesion;
 
     private String laboratorio;
 
@@ -86,19 +86,19 @@ public class SesionIndividual {
         this.sesEntrada = sesEntrada;
     }
 
-    public String getSesSalida() {
-        return sesSalida;
-    }
-
-    public void setSesSalida(String sesSalida) {
-        this.sesSalida = sesSalida;
-    }
-
     public String getLaboratorio() {
         return laboratorio;
     }
 
     public void setLaboratorio(String laboratorio) {
         this.laboratorio = laboratorio;
+    }
+
+    public String getIdSesion() {
+        return idSesion;
+    }
+
+    public void setIdSesion(String idSesion) {
+        this.idSesion = idSesion;
     }
 }
