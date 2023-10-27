@@ -1,5 +1,7 @@
 package com.example.labproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -8,22 +10,28 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.labproject.res.CData;
 import com.example.labproject.sesiongrupallab1.ListaSesionGrupalLabUnoAdapter;
 import com.example.labproject.sesiongrupallab1.SesionGrupalLaboratorioUno;
+import com.google.android.material.button.MaterialButton;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextListener {
@@ -34,7 +42,7 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
     private static final String USERNAME = CData.getUsername();
     private static final String PASSWORD = CData.getPassword();
     TextView txtNombreEnc,txtEncApeP,txtEncApeM, txtNombreProf, txtProfApeP, txtProfApeM, txtFecha, txtEntrada, txtSalida;
-
+    MaterialButton finalizar;
     SearchView txtBuscar;
     ListaSesionGrupalLabUnoAdapter adapter;
     RecyclerView listaLaboratorioUnoGrupal;
@@ -58,7 +66,7 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
         txtFecha = view.findViewById(R.id.fecha);
         txtEntrada = view.findViewById(R.id.lab1Entrada);
         txtSalida = view.findViewById(R.id.lab1Salida);
-
+        finalizar = view.findViewById(R.id.finalizarGrupal);
         //referencia del buscar
         txtBuscar = view.findViewById(R.id.txtBuscar);
         txtBuscar.setQueryHint("Búsqueda por Alumno");
@@ -77,20 +85,25 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
         task.execute();
 
         txtBuscar.setOnQueryTextListener(this);
+
+        finalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FinalizarSesionTask().execute();
+            }
+        });
+
         return view;
     }
-
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
-
     @Override
     public boolean onQueryTextChange(String newText) {
         adapter.filtrado(newText);
         return false;
     }
-
     private class ConexionAsyncTask extends AsyncTask<Void, Void, ArrayList<SesionGrupalLaboratorioUno>>{
 
         @Override
@@ -199,5 +212,117 @@ public class FragmentoLabUno extends Fragment implements SearchView.OnQueryTextL
             adapter = new ListaSesionGrupalLabUnoAdapter(lista);
             listaLaboratorioUnoGrupal.setAdapter(adapter);
         }
+    }
+    private class FinalizarSesionTask extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Connection connection = null;
+            PreparedStatement statement = null;
+
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                String consulta = "UPDATE computadora\n" +
+                        "SET ocupada = 0\n" +
+                        "WHERE ocupada = 1 AND laboratorio = 1;";
+                statement = connection.prepareStatement(consulta);
+                statement.executeUpdate();
+                Log.e("Computadoras", "Actualizadas");
+
+            } catch (Exception e) {
+                Log.e("Error", "Error al crear sesion: " + e.toString());
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e.toString());
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            Laboratorio laboratorio = new Laboratorio();
+            laboratorio.execute();
+        }
+    }
+    private class Laboratorio extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Connection connection = null;
+            PreparedStatement statement = null;
+
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                String horaActual = timeFormat.format(new Date());
+
+                // Crea y ejecuta la consulta SQL para actualizar la hora final
+                String sql = "UPDATE sesion\n" +
+                        "INNER JOIN computadora ON sesion.computadora_id = computadora.id\n" +
+                        "SET sesion.hora_final = ?, sesion.activo = 0\n" +
+                        "WHERE sesion.activo = 1 AND computadora.laboratorio = 1";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, horaActual);
+
+                // Ejecuta la consulta de actualización
+                statement.executeUpdate();
+                Log.e("Computadoras", "Actualizadas");
+
+            } catch (Exception e) {
+                Log.e("Error", "Error al crear sesion: " + e.toString());
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar conexión: " + e.toString());
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            mostrarConfirmacion();
+        }
+    }
+    private void mostrarConfirmacion(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Sesión Grupal Finalizada");
+        builder.setMessage("La sesión grupal del Laboratorio 1 ha sido finalizada con éxito.");
+
+        // Personaliza el estilo del diálogo (opcional)
+        builder.setIcon(R.drawable.esimefoto); // Agrega un ícono
+        builder.setCancelable(false); // Evita que el diálogo se cierre al tocar fuera de él
+
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Acciones a realizar al hacer clic en "Aceptar"
+                dialog.dismiss(); // Cierra el diálogo
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

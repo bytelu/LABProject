@@ -28,6 +28,18 @@
             android:padding="16dp"
             android:layout_marginTop="4dp"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/finalizarGrupal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp"
+            android:text="Finalizar Sesión"
+            android:textColor="@color/white"
+            android:transitionName="buttonSignUpTrans"
+            app:backgroundTint="@color/color_selecionado" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
