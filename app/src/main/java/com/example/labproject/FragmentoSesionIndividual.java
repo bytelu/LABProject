@@ -163,11 +163,16 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
 
         protected void onPostExecute(ArrayList<SesionIndividual> lista){
             // Una vez terminada la consulta en segundo plano, actualizamos el RecyclerView con los datos
-            adapter = new ListaSesionIndividualAdapter(lista);
+            adapter = new ListaSesionIndividualAdapter(getContext(),lista);
             listaSesionIndividual.setAdapter(adapter);
         }
     }
     public class ActualizarSesionAsyncTask extends AsyncTask<String, Void, Boolean>{
+        private Context context; // Agrega una variable para el contexto
+
+        public ActualizarSesionAsyncTask(Context context) {
+            this.context = context; // Almacena el contexto pasado como argumento
+        }
         @Override
         protected Boolean doInBackground(String... strings) {
             String idSesion = strings[0];
@@ -225,6 +230,9 @@ public class FragmentoSesionIndividual extends Fragment implements SearchView.On
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Log.e("Sesion Individual Finalizada", "Se logro" + success);
+                if (context != null) {
+                    Toast.makeText(context, "Sesión finalizada con éxito. Favor de Actualizar", Toast.LENGTH_SHORT).show();
+                }
 
             } else {
                 Log.e("Sesion Individual Finalizada", "Tambien se logro" + success);

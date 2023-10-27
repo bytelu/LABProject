@@ -1,5 +1,6 @@
 package com.example.labproject.sesindividual;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,10 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
     ArrayList<SesionIndividual> listaSesionIndividual;
     ArrayList<SesionIndividual> listaOriginal;
     private FragmentoSesionIndividual fragmentoSesionIndividual;
+    private Context context;
 
-    public ListaSesionIndividualAdapter(ArrayList<SesionIndividual> listaSesionIndividual){
+    public ListaSesionIndividualAdapter(Context context, ArrayList<SesionIndividual> listaSesionIndividual){
+        this.context = context;
         this.listaSesionIndividual = listaSesionIndividual;
         listaOriginal = new ArrayList<>();
         listaOriginal.addAll(listaSesionIndividual);
@@ -73,7 +76,7 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
                 // Puedes mostrar el ID de la sesión (por ejemplo, en un Toast)
                 // Llama al AsyncTask para realizar la actualización en segundo plano
                 if(fragmentoSesionIndividual != null) {
-                    FragmentoSesionIndividual.ActualizarSesionAsyncTask task = fragmentoSesionIndividual.new ActualizarSesionAsyncTask();
+                    FragmentoSesionIndividual.ActualizarSesionAsyncTask task = fragmentoSesionIndividual.new ActualizarSesionAsyncTask(context);
                     task.execute(id);
                 }
             }
@@ -146,13 +149,5 @@ public class ListaSesionIndividualAdapter extends RecyclerView.Adapter<ListaSesi
 
             finalizar = itemView.findViewById(R.id.finalizarIndividual);
         }
-    }
-    private void showSuccessMessage() {
-        // Muestra un mensaje de éxito aquí
-        Toast.makeText(fragmentoSesionIndividual.getContext(), "Sesión finalizada con éxito", Toast.LENGTH_SHORT).show();
-    }
-    private void showErrorMessage() {
-        // Muestra un mensaje de error aquí
-        Toast.makeText(fragmentoSesionIndividual.getContext(), "Sesión finalizada con éxito", Toast.LENGTH_SHORT).show();
     }
 }
