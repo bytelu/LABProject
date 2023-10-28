@@ -8,7 +8,8 @@
     android:layout_marginTop="80dp"
     android:layout_marginBottom="65dp"
     android:layout_marginStart="4dp"
-    android:layout_marginEnd="4dp">
+    android:layout_marginEnd="4dp"
+    android:background="#F1F0F5">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -434,22 +435,21 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <!-- Boton de guardar -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="center">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/botonGuardar"
-            android:layout_width="wrap_content"
+        <!-- Boton de guardar -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
-            android:text="Guardar"
-            android:textColor="@color/black" />
+            android:layout_gravity="bottom"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/botonGuardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:text="Guardar"
+                android:textColor="@color/black" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

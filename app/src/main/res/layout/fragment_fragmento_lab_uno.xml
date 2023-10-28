@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#F1F0F5">
 
     <!-- Contenedor del título de SESION INDIVIDUAL y RecyclerView -->
     <LinearLayout
@@ -12,21 +13,37 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
-
-        <!-- Título de encargados -->
-        <TextView
-            android:id="@+id/tituloLaboratorio1"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topProfile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Sesion Laboratorio 1"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:layout_marginTop="4dp"/>
+            android:layout_height="150dp"
+            android:background="@color/ipn">
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-1sp"
+                android:scaleType="fitXY"
+                android:src="@drawable/arc_3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/tituloLaboratorio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sesión de Laboratorio 1"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintVertical_bias="0.3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/finalizarGrupal"

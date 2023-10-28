@@ -131,7 +131,7 @@ public class FragmentoSesiones extends Fragment {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (idAlumno != null || !idAlumno.isEmpty()) {
+                if (idAlumno != null && !idAlumno.isEmpty()) {
                     // Verificar que se haya elegido una opción de laboratorio
                     if (laboratorio1.isChecked() || laboratorio2.isChecked()) {
                         // Ambas condiciones se cumplen, puedes mostrar el mensaje de ingreso
