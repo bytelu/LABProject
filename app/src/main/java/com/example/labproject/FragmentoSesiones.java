@@ -62,7 +62,7 @@ public class FragmentoSesiones extends Fragment {
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
     private String nombre = "", boleta = "", carrera = "", apePa = "", apeMa = "", nombreP = "", apePaP = "", apeMaP = "", boletaP = "", idAlumno, idProfesor, computadoraId;
-    private int opcionElegida;
+    private int opcionElegida, lab=0;
     private static final int OPCION_PROFESOR = 1;
     private static final int OPCION_ALUMNO = 2;
     public FragmentoSesiones() {
@@ -135,20 +135,12 @@ public class FragmentoSesiones extends Fragment {
                     // Verificar que se haya elegido una opción de laboratorio
                     if (laboratorio1.isChecked() || laboratorio2.isChecked()) {
                         // Ambas condiciones se cumplen, puedes mostrar el mensaje de ingreso
-                        Toast.makeText(requireContext(), nombre + " ingresó a la sesión correctamente", Toast.LENGTH_SHORT).show();
                         Log.e("Datos", "Profesor de sesión " + idProfesor);
                         Log.e("Datos", "Alumno de sesión " + idAlumno);
                         Log.e("Datos", "Laboratorio 1 " + laboratorio1.isChecked());
                         Log.e("Datos", "Laboratorio 2 " + laboratorio2.isChecked());
-                        FragmentoSesiones.ConsultaComputadora consultaCompu = new FragmentoSesiones.ConsultaComputadora();
-                        consultaCompu.execute();
-                        nombre = "";boleta = ""; carrera = ""; apePa = ""; apeMa = "";
-                        nombreAlu.setText("Nombre");
-                        apePaAlu.setText("del");
-                        apeMaAlu.setText("Alumno");
-                        boletaAlu.setText("Número de boleta");
-                        carreraAlu.setText("Nombre de la carrera");
-
+                        FragmentoSesiones.ExisteSesionGrupalAsyncTask existeSesionGrupalAsyncTask = new FragmentoSesiones.ExisteSesionGrupalAsyncTask();
+                        existeSesionGrupalAsyncTask.execute();
                     } else {
                         // No se eligió una opción de laboratorio
                         Toast.makeText(requireContext(), "Selecciona un laboratorio para generar la sesión", Toast.LENGTH_SHORT).show();
@@ -226,8 +218,10 @@ public class FragmentoSesiones extends Fragment {
         boolean checked = ((RadioButton) view).isChecked();
         if (checked) {
             if (view == laboratorio1) {
+                lab =1;
                 radioButtonMessage = "Laboratorio 1 asignado";
             } else if (view == laboratorio2) {
+                lab=2;
                 radioButtonMessage = "Laboratorio 2 asignado";
             }
         }
@@ -827,6 +821,88 @@ public class FragmentoSesiones extends Fragment {
             apeMaProf.setText(apeMaP);
         }
     }
+    private class ExisteSesionGrupalAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            Connection connection = null;
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+            boolean existeSesionGrupal = false;
+
+            try {
+                // Cargar el controlador JDBC de Oracle
+                Class.forName(DRIVER);
+                // Establecer la conexión a la base de datos
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+                // Preparar la consulta SQL para verificar la existencia de sesiones grupales
+                String sql = "SELECT COUNT(*) AS sesiones_grupales " +
+                        "FROM sesion " +
+                        "INNER JOIN computadora ON sesion.computadora_id = computadora.id " +
+                        "WHERE sesion.activo = 1 " +
+                        "AND computadora.laboratorio = ? " +
+                        "AND profesor_id IS NOT NULL";
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1, lab);
+
+                // Ejecutar la consulta
+                resultSet = statement.executeQuery();
+
+                if (resultSet.next() && resultSet.getInt("sesiones_grupales") > 0) {
+                    existeSesionGrupal = true;
+                }
+            } catch (Exception e) {
+                Log.e("Error", "Error en la consulta de sesiones grupales: " + e);
+            } finally {
+                // Cerrar los recursos
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error al cerrar la conexión: " + e);
+                }
+            }
+
+            return existeSesionGrupal;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean existeSesionGrupal) {
+            if (existeSesionGrupal) {
+                Log.e("Existe Grupal", "Existe sesion grupal");
+                // Hay una sesión grupal, muestra el mensaje correspondiente
+                Toast.makeText(requireContext(), "No puedes crear sesiones individuales porque hay una sesión grupal", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.e("NO Existe Grupal", "No Existe sesion grupal");
+                // No hay sesiones grupales, puedes mostrar el mensaje de ingreso y ejecutar el código
+                Toast.makeText(requireContext(), nombre + " ingresó a la sesión correctamente", Toast.LENGTH_SHORT).show();
+                Log.e("Datos", "Profesor de sesión " + idProfesor);
+                Log.e("Datos", "Alumno de sesión " + idAlumno);
+                Log.e("Datos", "Laboratorio 1 " + laboratorio1.isChecked());
+                Log.e("Datos", "Laboratorio 2 " + laboratorio2.isChecked());
+                FragmentoSesiones.ConsultaComputadora consultaCompu = new FragmentoSesiones.ConsultaComputadora();
+                consultaCompu.execute();
+            }
+            nombre = "";
+            boleta = "";
+            carrera = "";
+            apePa = "";
+            apeMa = "";
+            nombreAlu.setText("Nombre");
+            apePaAlu.setText("del");
+            apeMaAlu.setText("Alumno");
+            boletaAlu.setText("Número de boleta");
+            carreraAlu.setText("Nombre de la carrera");
+        }
+    }
+
     private class ConsultaComputadora extends AsyncTask<Void, Void, String>{
         @Override
         protected String doInBackground(Void... voids) {
