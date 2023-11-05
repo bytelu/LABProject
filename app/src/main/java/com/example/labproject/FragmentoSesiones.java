@@ -142,6 +142,13 @@ public class FragmentoSesiones extends Fragment {
                         Log.e("Datos", "Laboratorio 2 " + laboratorio2.isChecked());
                         FragmentoSesiones.ConsultaComputadora consultaCompu = new FragmentoSesiones.ConsultaComputadora();
                         consultaCompu.execute();
+                        nombre = "";boleta = ""; carrera = ""; apePa = ""; apeMa = "";
+                        nombreAlu.setText("Nombre");
+                        apePaAlu.setText("del");
+                        apeMaAlu.setText("Alumno");
+                        boletaAlu.setText("Número de boleta");
+                        carreraAlu.setText("Nombre de la carrera");
+
                     } else {
                         // No se eligió una opción de laboratorio
                         Toast.makeText(requireContext(), "Selecciona un laboratorio para generar la sesión", Toast.LENGTH_SHORT).show();
@@ -588,9 +595,101 @@ public class FragmentoSesiones extends Fragment {
             }
             if (profesorEncontrado == 1) {
                 if (boletaP.isEmpty() || nombreP.isEmpty() ){
+                    if (url.startsWith("https://")){
+                        Log.e("Actualizando profesor HTTPS", "Buscando profesor porque la Boleta esta vacia");
 
-                    Log.e("Actualizando profesor", "Buscando profesor porque la Boleta esta vacia");
+                        System.setProperty("jsse.enableSNIExtension", "false");
+                        System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
+                        TrustManager[] trustAllCertificates = new TrustManager[] {
+                                new X509TrustManager() {
+                                    public X509Certificate[] getAcceptedIssuers() {
+                                        return null;
+                                    }
+                                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                                    }
+                                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                                    }
+                                }
+                        };
 
+                        try {
+                            SSLContext sslContext = SSLContext.getInstance("TLS");
+                            sslContext.init(null, trustAllCertificates, new java.security.SecureRandom());
+                            HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                                public boolean verify(String hostname, SSLSession session) {
+                                    return true;
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+
+                            org.jsoup.Connection.Response response = Jsoup.connect(url).execute();
+                            Log.d("Connection.Response", "doInBackground: Connections.Response pasado");
+
+                            if (response.statusCode() == 200){
+                                Document document = response.parse();
+                                Elements nombreProElement = document.select(".nombre");
+                                Elements boletaProElement = document.select(".boleta");
+                                nombreP = nombreProElement.text();
+                                boletaP = boletaProElement.text();
+                            }
+                            Log.e("Profesor webScraping obtenido HTTPS", "Datos obtenidos satisfactoriamente");
+
+                        } catch (IOException e){
+                            Log.d("Error de web scrapping","Este es el eror: " + e);
+                        }
+                    } else if (url.startsWith("EMPLEADO")) {
+                        Log.e("Actualizando profesor EMPLEADO", "Buscando profesor porque la Boleta esta vacia");
+                        // Divide la cadena utilizando el guion como delimitador
+                        String[] parts = url.split("-");
+                        if (parts.length >= 3) {
+                            boletaP = parts[1].trim();
+                            nombreP = parts[2].trim();
+                            System.out.println("Número de boleta EMPLEADO: " + boleta);
+                            System.out.println("Nombre EMPLEADO: " + nombre);
+                        }
+                    }
+                    //aqui separar el nombre completo en : nombre,apePA, apeMA.
+                    List<String> fullname = parse.nameParser(nombreP);
+                    nombreP = capitalizeFirstLetter(fullname.get(0));
+                    apePaP = capitalizeFirstLetter(fullname.get(1));
+                    apeMaP = capitalizeFirstLetter(fullname.get(2));
+                    try {
+                        Class.forName(DRIVER);
+                        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                        String sql = "UPDATE profesor SET nombre = ?, apellido_p = ?, apellido_m = ?, boleta = ? WHERE qr = ?";
+                        statement = connection.prepareStatement(sql);
+                        statement.setString(1, nombreP);
+                        statement.setString(2, apePaP);
+                        statement.setString(3, apeMaP);
+                        statement.setString(4, boletaP);
+                        statement.setString(5, url);
+                        statement.executeUpdate();
+                        Log.e("Actualizar datos de profesor", "Datos actualizados correctamente");
+                    } catch (Exception e){
+                        Log.e("Error", "Error al guardar datos de web scraping: " + e);
+                    } finally {
+                        // Cerrar los recursos
+                        try {
+                            if (statement != null) {
+                                statement.close();
+                            }
+                            if (connection != null) {
+                                connection.close();
+                            }
+                        } catch (Exception e) {
+                            Log.e("Error", "Error al cerrar conexión: " + e);
+                        }
+                    }
+                }
+            } else {
+                Log.e("Profesor NO encontrado en base de datos", "Profesor no encontrado en la base de datos.");
+                if(url.startsWith("https://")){
+                    Log.e("Agregando profesor HTTPS", "Agregando profesor porque no se encontro");
                     System.setProperty("jsse.enableSNIExtension", "false");
                     System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
                     TrustManager[] trustAllCertificates = new TrustManager[] {
@@ -630,103 +729,29 @@ public class FragmentoSesiones extends Fragment {
                             nombreP = nombreProElement.text();
                             boletaP = boletaProElement.text();
                         }
-
-                        //aqui separar el nombre completo en : nombre,apePA, apeMA.
-                        List<String> fullname = parse.nameParser(nombreP);
-                        nombreP = capitalizeFirstLetter(fullname.get(0));
-                        apePaP = capitalizeFirstLetter(fullname.get(1));
-                        apeMaP = capitalizeFirstLetter(fullname.get(2));
-
-                        Log.e("Profesor webScraping obtenido", "Datos obtenidos satisfactoriamente");
+                        Log.e("Datos de webScraping obtenidos", "Datos obtenidos satisfactoriamente");
 
                     } catch (IOException e){
                         Log.d("Error de web scrapping","Este es el eror: " + e);
                     }
 
-                    try {
-                        Class.forName(DRIVER);
-                        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-                        String sql = "UPDATE profesor SET nombre = ?, apellido_p = ?, apellido_m = ?, boleta = ? WHERE qr = ?";
-                        statement = connection.prepareStatement(sql);
-                        statement.setString(1, nombreP);
-                        statement.setString(2, apePaP);
-                        statement.setString(3, apeMaP);
-                        statement.setString(4, boletaP);
-                        statement.setString(5, url);
-                        statement.executeUpdate();
-                        Log.e("Actualizar datos de profesor", "Datos actualizados correctamente");
-                    } catch (Exception e){
-                        Log.e("Error", "Error al guardar datos de web scraping: " + e);
-                    } finally {
-                        // Cerrar los recursos
-                        try {
-                            if (statement != null) {
-                                statement.close();
-                            }
-                            if (connection != null) {
-                                connection.close();
-                            }
-                        } catch (Exception e) {
-                            Log.e("Error", "Error al cerrar conexión: " + e);
-                        }
+                } else if (url.startsWith("EMPLEADO")) {
+                    Log.e("Agregando profesor EMPLEADO", "Agregando profesor porque no se encontro");
+                    Log.e("Actualizando profesor EMPLEADO", "Buscando profesor porque la Boleta esta vacia");
+                    // Divide la cadena utilizando el guion como delimitador
+                    String[] parts = url.split("-");
+                    if (parts.length >= 3) {
+                        boletaP = parts[1].trim();
+                        nombreP = parts[2].trim();
+                        System.out.println("Número de boleta EMPLEADO: " + boleta);
+                        System.out.println("Nombre EMPLEADO: " + nombre);
                     }
                 }
-            } else {
-                Log.e("Profesor NO encontrado en base de datos", "Profesor no encontrado en la base de datos.");
-                Log.e("Agregando profesor", "Agregando profesor porque no se encontro");
-
-                System.setProperty("jsse.enableSNIExtension", "false");
-                System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
-                TrustManager[] trustAllCertificates = new TrustManager[] {
-                        new X509TrustManager() {
-                            public X509Certificate[] getAcceptedIssuers() {
-                                return null;
-                            }
-                            public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                            }
-                            public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                            }
-                        }
-                };
-
-                try {
-                    SSLContext sslContext = SSLContext.getInstance("TLS");
-                    sslContext.init(null, trustAllCertificates, new java.security.SecureRandom());
-                    HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-                    HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-                        public boolean verify(String hostname, SSLSession session) {
-                            return true;
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                try {
-
-                    org.jsoup.Connection.Response response = Jsoup.connect(url).execute();
-                    Log.d("Connection.Response", "doInBackground: Connections.Response pasado");
-
-                    if (response.statusCode() == 200){
-                        Document document = response.parse();
-                        Elements nombreProElement = document.select(".nombre");
-                        Elements boletaProElement = document.select(".boleta");
-                        nombreP = nombreProElement.text();
-                        boletaP = boletaProElement.text();
-                    }
-
-                    //aqui separar el nombre completo en : nombre,apePA, apeMA.
-                    List<String> fullname = parse.nameParser(nombreP);
-                    nombreP = capitalizeFirstLetter(fullname.get(0));
-                    apePaP = capitalizeFirstLetter(fullname.get(1));
-                    apeMaP = capitalizeFirstLetter(fullname.get(2));
-
-                    Log.e("Datos de webScraping obtenidos", "Datos obtenidos satisfactoriamente");
-
-                } catch (IOException e){
-                    Log.d("Error de web scrapping","Este es el eror: " + e);
-                }
-
+                //aqui separar el nombre completo en : nombre,apePA, apeMA.
+                List<String> fullname = parse.nameParser(nombreP);
+                nombreP = capitalizeFirstLetter(fullname.get(0));
+                apePaP = capitalizeFirstLetter(fullname.get(1));
+                apeMaP = capitalizeFirstLetter(fullname.get(2));
                 try {
                     Class.forName(DRIVER);
                     connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -755,6 +780,7 @@ public class FragmentoSesiones extends Fragment {
                     }
                 }
             }
+
             try {
                 Class.forName(DRIVER);
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
