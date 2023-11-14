@@ -875,7 +875,7 @@ public class FragmentoSesiones extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean existeSesionGrupal) {
-            if (existeSesionGrupal) {
+            if (existeSesionGrupal && (idProfesor == null || idProfesor.isEmpty())) {
                 Log.e("Existe Grupal", "Existe sesion grupal");
                 // Hay una sesión grupal, muestra el mensaje correspondiente
                 Toast.makeText(requireContext(), "No puedes crear sesiones individuales porque hay una sesión grupal", Toast.LENGTH_SHORT).show();
