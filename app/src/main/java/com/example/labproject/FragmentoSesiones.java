@@ -42,6 +42,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -684,6 +686,7 @@ public class FragmentoSesiones extends Fragment {
                 Log.e("Profesor NO encontrado en base de datos", "Profesor no encontrado en la base de datos.");
                 if(url.startsWith("https://")){
                     Log.e("Agregando profesor HTTPS", "Agregando profesor porque no se encontro");
+
                     System.setProperty("jsse.enableSNIExtension", "false");
                     System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1");
                     TrustManager[] trustAllCertificates = new TrustManager[] {
@@ -716,14 +719,39 @@ public class FragmentoSesiones extends Fragment {
                         org.jsoup.Connection.Response response = Jsoup.connect(url).execute();
                         Log.d("Connection.Response", "doInBackground: Connections.Response pasado");
 
+
+
                         if (response.statusCode() == 200){
                             Document document = response.parse();
-                            Elements nombreProElement = document.select(".nombre");
-                            Elements boletaProElement = document.select(".boleta");
-                            nombreP = nombreProElement.text();
-                            boletaP = boletaProElement.text();
+                            String texto = document.text();
+                            Pattern patronNombre = Pattern.compile("Nombre: (.+?) Número de empleado:");
+                            Pattern patronNumEmpleado = Pattern.compile("Número de empleado: (\\d+)");
+                            nombreP = "";
+                            boletaP = "";
+
+                            Matcher matcherNombre = patronNombre.matcher(texto);
+                            if (matcherNombre.find()) {
+                                nombreP = matcherNombre.group(1).trim();
+                                StringBuilder result = new StringBuilder();
+                                String[] words = nombreP.split("\\s+");
+                                for (String word : words) {
+                                    if (!word.isEmpty()) {
+                                        String capitalizedWord = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+                                        result.append(capitalizedWord).append(" ");
+                                    }
+                                }
+
+                                nombreP = result.toString().trim();
+
+                            }
+
+                            Matcher matcherNumEmpleado = patronNumEmpleado.matcher(texto);
+                            if (matcherNumEmpleado.find()) {
+                                boletaP = matcherNumEmpleado.group(1).trim();
+                            }
+
                         }
-                        Log.e("Datos de webScraping obtenidos", "Datos obtenidos satisfactoriamente");
+                        Log.e("Datos de webScraping obtenidos", "Datos obtenidos satisfactoriamente, nombre:"+ nombreP);
 
                     } catch (IOException e){
                         Log.d("Error de web scrapping","Este es el eror: " + e);
@@ -744,6 +772,16 @@ public class FragmentoSesiones extends Fragment {
                 //aqui separar el nombre completo en : nombre,apePA, apeMA.
                 List<String> fullname = parse.nameParser(nombreP);
                 nombreP = capitalizeFirstLetter(fullname.get(0));
+
+                StringBuilder result = new StringBuilder();
+                String[] words = nombreP.split("\\s+");
+                for (String word : words) {
+                    if (!word.isEmpty()) {
+                        String capitalizedWord = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+                        result.append(capitalizedWord).append(" ");
+                    }
+                }
+                nombreP = result.toString().trim();
                 apePaP = capitalizeFirstLetter(fullname.get(1));
                 apeMaP = capitalizeFirstLetter(fullname.get(2));
                 try {
