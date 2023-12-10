@@ -55,6 +55,7 @@
                 android:id="@+id/profNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Sin"
                 android:layout_marginStart="6dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/abel"
@@ -64,6 +65,7 @@
                 android:id="@+id/profApeP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Profesor"
                 android:layout_marginStart="6dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/abel"
@@ -73,6 +75,7 @@
                 android:id="@+id/profApeM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Asignado"
                 android:layout_marginStart="6dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/abel"
@@ -130,7 +133,7 @@
                 android:layout_marginStart="6dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/abel"
-                android:textSize="18dp"/>
+                android:textSize="16dp"/>
 
             <TextView
                 android:id="@+id/encApeM"
@@ -139,7 +142,7 @@
                 android:layout_marginStart="6dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/abel"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:paddingEnd="10dp"/>
         </LinearLayout>
 

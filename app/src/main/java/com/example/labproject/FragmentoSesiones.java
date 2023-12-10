@@ -63,7 +63,7 @@ public class FragmentoSesiones extends Fragment {
     MaterialButton escanearAlu, escanearProf, guardar;
     RadioButton laboratorio1, laboratorio2;
     private String radioButtonMessage = ""; //Variable para almacenar el laboratorio
-    private String nombre = "", boleta = "", carrera = "", apePa = "", apeMa = "", nombreP = "", apePaP = "", apeMaP = "", boletaP = "", idAlumno, idProfesor, computadoraId;
+    private String nombre = "", boleta = "", carrera = "", apePa = "", apeMa = "", nombreP = "", apePaP = "", apeMaP = "", boletaP = "", idAlumno, idAlumnoAnt = null, idProfesor, computadoraId;
     private int opcionElegida, lab=0;
     private static final int OPCION_PROFESOR = 1;
     private static final int OPCION_ALUMNO = 2;
@@ -143,6 +143,11 @@ public class FragmentoSesiones extends Fragment {
                         Log.e("Datos", "Laboratorio 2 " + laboratorio2.isChecked());
                         FragmentoSesiones.ExisteSesionGrupalAsyncTask existeSesionGrupalAsyncTask = new FragmentoSesiones.ExisteSesionGrupalAsyncTask();
                         existeSesionGrupalAsyncTask.execute();
+                        nombreAlu.setText("Nombre");
+                        apePaAlu.setText("del");
+                        apeMaAlu.setText("Alumno");
+                        boletaAlu.setText("Número de boleta");
+                        carreraAlu.setText("Nombre de la carrera");
                     } else {
                         // No se eligió una opción de laboratorio
                         Toast.makeText(requireContext(), "Selecciona un laboratorio para generar la sesión", Toast.LENGTH_SHORT).show();
@@ -513,6 +518,7 @@ public class FragmentoSesiones extends Fragment {
                     // Ahora tienes el id del alumno, el nombre de la carrera y la boleta del estudiante
                     Log.e("ID Alumno", "ID del alumno: " + idAlumno);
                     Log.e("Nombre Carrera", "Nombre de la carrera: " + carrera);
+
                 }else{
                     Log.e("Estudiante no encontrado", "No se encontró el estudiante con la boleta proporcionada");
                 }
@@ -548,6 +554,19 @@ public class FragmentoSesiones extends Fragment {
             boletaAlu.setText(boleta);
             carreraAlu.setText(carrera);
             Log.e("Existe profesor", "Id del profesor " + idProfesor);
+            Log.e("Datos en Buscar Alumnos", "ID Alumno anterior: " + idAlumnoAnt );
+            Log.e("Datos en Buscar Alumnos", "ID Alumno ingreso: " + idAlumno );
+            if (idAlumno != null && idAlumno.equals(idAlumnoAnt)) {
+                Toast.makeText(requireContext(), "El alumno acaba de ingresar", Toast.LENGTH_SHORT).show();
+                idAlumno = null;
+                nombreAlu.setText("Nombre");
+                apePaAlu.setText("del");
+                apeMaAlu.setText("Alumno");
+                boletaAlu.setText("Número de boleta");
+                carreraAlu.setText("Nombre de la carrera");
+            } else {
+                Toast.makeText(requireContext(), "Datos Obtenidos", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     private class BuscarProfesorTask extends AsyncTask<String, Void, Void>{
@@ -928,16 +947,6 @@ public class FragmentoSesiones extends Fragment {
                 FragmentoSesiones.ConsultaComputadora consultaCompu = new FragmentoSesiones.ConsultaComputadora();
                 consultaCompu.execute();
             }
-            nombre = "";
-            boleta = "";
-            carrera = "";
-            apePa = "";
-            apeMa = "";
-            nombreAlu.setText("Nombre");
-            apePaAlu.setText("del");
-            apeMaAlu.setText("Alumno");
-            boletaAlu.setText("Número de boleta");
-            carreraAlu.setText("Nombre de la carrera");
         }
     }
 
@@ -1148,6 +1157,14 @@ public class FragmentoSesiones extends Fragment {
                 statement.executeUpdate();
 
 
+                nombre = "";
+                boleta = "";
+                carrera = "";
+                apePa = "";
+                apeMa = "";
+                idAlumnoAnt = idAlumno;
+                Log.e("Sesion creada", "ID Alumno anterior: " + idAlumnoAnt );
+                Log.e("Sesion creada", "ID Alumno ingreso: " + idAlumno );
                 Log.e("Sesion creada", "Sesion creada correctamente");
 
             } catch (Exception e) {
@@ -1174,6 +1191,21 @@ public class FragmentoSesiones extends Fragment {
         if (input == null || input.isEmpty()) {
             return input;
         }
-        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+
+        StringBuilder capitalized = new StringBuilder();
+        String[] words = input.trim().split("\\s+");
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                capitalized.append(Character.toUpperCase(word.charAt(0)));
+                if (word.length() > 1) {
+                    capitalized.append(word.substring(1).toLowerCase());
+                }
+                capitalized.append(" ");
+            }
+        }
+
+        return capitalized.toString().trim();
     }
+
 }

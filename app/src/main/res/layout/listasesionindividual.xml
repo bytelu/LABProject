@@ -101,7 +101,7 @@
                 android:id="@+id/encNombreID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
+                android:layout_marginEnd="5dp"
                 android:text="Encargado:"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
@@ -110,14 +110,14 @@
                 android:id="@+id/encNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
+                android:layout_marginEnd="5dp"
                 android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/encApeP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
+                android:layout_marginEnd="5dp"
                 android:textColor="@color/white" />
 
             <TextView
@@ -150,13 +150,9 @@
                     android:id="@+id/sesEntrada"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginStart="5dp"
                     android:textColor="@color/white"/>
             </LinearLayout>
-
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="0dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
